@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AmanKas - Sumber Data &amp; Privasi</title>
+<!-- Material Symbols Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Web Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim from Design System -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#fffbff",
+            "primary-container": "#008562",
+            "inverse-on-surface": "#d6f8eb",
+            "on-primary-fixed-variant": "#00513b",
+            "surface": "#e6fff5",
+            "primary": "#00694d",
+            "on-surface-variant": "#3d4a43",
+            "tertiary-container": "#d83734",
+            "error-container": "#ffdad6",
+            "inverse-surface": "#17362d",
+            "secondary-fixed": "#ffdbcf",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#f5fff8",
+            "on-secondary-fixed-variant": "#6b3a27",
+            "tertiary": "#b51b1f",
+            "primary-fixed": "#84f8ca",
+            "on-surface": "#012019",
+            "on-error-container": "#93000a",
+            "surface-dim": "#c0e1d5",
+            "surface-bright": "#e6fff5",
+            "outline": "#6d7a73",
+            "primary-fixed-dim": "#66dbaf",
+            "surface-container-highest": "#c8eadd",
+            "error": "#ba1a1a",
+            "surface-container": "#d3f5e8",
+            "tertiary-fixed": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed": "#351003",
+            "tertiary-fixed-dim": "#ffb3ac",
+            "background": "#e6fff5",
+            "on-tertiary-fixed-variant": "#93000f",
+            "on-primary-fixed": "#002116",
+            "secondary": "#86513d",
+            "on-background": "#012019",
+            "secondary-fixed-dim": "#fdb69d",
+            "surface-container-high": "#cef0e3",
+            "on-error": "#ffffff",
+            "inverse-primary": "#66dbaf",
+            "surface-tint": "#006c4f",
+            "secondary-container": "#fdb69d",
+            "surface-container-low": "#d9fbee",
+            "surface-container-lowest": "#ffffff",
+            "surface-variant": "#c8eadd",
+            "outline-variant": "#bccac1",
+            "on-secondary-container": "#784532",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed": "#410003"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "margin-sm": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Space Grotesk"],
+            "label-mono-md": ["JetBrains Mono"],
+            "headline-lg": ["Space Grotesk"],
+            "body-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-mono-sm": ["JetBrains Mono"],
+            "display-lg": ["Space Grotesk"],
+            "body-lg": ["Inter"],
+            "headline-xl": ["Space Grotesk"],
+            "headline-md": ["Space Grotesk"],
+            "label-mono-lg": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-mono-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-mono-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-mono-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Dot Matrix Atmosphere */
+    .bg-dot-pattern {
+      background-color: #FFF8F4;
+      background-image: 
+        radial-gradient(#FFB89F 1px, transparent 1px),
+        linear-gradient(180deg, #FFF8F4 0%, #FFE9DF 100%);
+      background-size: 20px 20px, 100% 100%;
+      background-position: 0 0, 0 0;
+    }
+    
+    /* Warm Glass Panel */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid #F3D9CE;
+      box-shadow: 0 4px 20px -2px rgba(107, 90, 85, 0.05), 0 2px 6px -1px rgba(107, 90, 85, 0.03);
+    }
+
+    /* Radar Pulse Animation */
+    @keyframes subtle-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.2); }
+    }
+    .animate-radar {
+      animation: subtle-pulse 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-dot-pattern min-h-screen text-[#0A2A22] font-body-md text-body-md antialiased overflow-x-hidden">
+<!-- ========================================================
+       SHARED COMPONENT 1: SideNavBar (Fixed Left, 240px / w-60)
+       ======================================================== -->
+<aside class="fixed top-0 left-0 h-screen w-60 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-40 flex flex-col justify-between p-4">
+<!-- Top Brand & Header -->
+<div>
+<div class="flex items-center gap-3 px-2 py-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-[#009770] flex items-center justify-center text-white shadow-sm ring-4 ring-[#E0F4EE]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface leading-none tracking-tight">AmanKas</div>
+<p class="text-label-mono-sm font-label-mono-sm text-[#6B5A55] mt-1">Sistem Keamanan Koperasi</p>
+</div>
+</div>
+<!-- Navigation Tabs (5 Tabs with Exact active/inactive classes from JSON) -->
+<nav aria-label="Menu Utama" class="space-y-1.5">
+<!-- Tab 1: Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-outline-variant hover:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">radar</span>
+<span class="text-label-mono-md font-label-mono-md">Pemantauan Langsung</span>
+</a>
+<!-- Tab 2: Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-outline-variant hover:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-label-mono-md font-label-mono-md">Daftar Transaksi</span>
+</a>
+<!-- Tab 3: Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-outline-variant hover:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+<span class="text-label-mono-md font-label-mono-md">Audit Anomali</span>
+</a>
+<!-- Tab 4: ACTIVE (Sumber Data dan Privasi / Buku Kas & Anggota context) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-low dark:bg-surface-container text-primary dark:text-primary-fixed font-semibold border-l-4 border-primary transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="text-label-mono-md font-label-mono-md font-semibold">Buku Kas &amp; Anggota</span>
+</a>
+<!-- Tab 5: Inactive -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-outline-variant hover:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container hover:text-primary dark:hover:text-primary-fixed transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="text-label-mono-md font-label-mono-md">Pengaturan Sistem</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Module: Radar Health & KSP Identity -->
+<div class="space-y-3 pt-3 border-t border-[#F3D9CE]">
+<!-- Radar Status Badge -->
+<div class="bg-[#E0F4EE] rounded-xl p-3 border border-[#BCE7DB] flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-[#009770] animate-radar shadow-[0_0_8px_rgba(0,151,112,0.8)]"></span>
+<span class="text-label-mono-sm font-label-mono-sm font-bold text-[#009770] tracking-wide">RADAR AKTIF</span>
+</div>
+<span class="text-label-mono-sm font-label-mono-sm text-[#00694d] font-semibold">99.8%</span>
+</div>
+<!-- KSP Identity Pill -->
+<div class="px-2 py-1.5 bg-[#FFF8F4] rounded-lg border border-[#F3D9CE]">
+<div class="text-[10px] font-label-mono-sm text-[#6B5A55] uppercase tracking-wider">Entitas Koperasi</div>
+<div class="text-body-sm font-body-sm font-semibold text-[#0A2A22] truncate">KSP Mitra Sejahtera (Demo)</div>
+</div>
+<!-- Help / Footer Action -->
+<a class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low transition-colors duration-150 text-label-mono-md font-label-mono-md" href="#">
+<span class="material-symbols-outlined text-[18px]">help_outline</span>
+<span>Bantuan</span>
+</a>
+</div>
+</aside>
+<!-- ========================================================
+       SHARED COMPONENT 2: TopNavBar (Fixed Top, left-60, h-16)
+       ======================================================== -->
+<header class="fixed top-0 left-60 right-0 h-16 bg-surface-container-lowest/90 dark:bg-inverse-surface/90 backdrop-blur-md border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-30 flex items-center justify-between px-6">
+<!-- Search Element & Breadcrumbs -->
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<!-- Breadcrumb Label -->
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-[#6B5A55] shrink-0">
+<span>Audit Anomali</span>
+<span class="material-symbols-outlined text-[16px] text-[#BCCAC1]">chevron_right</span>
+<span class="font-semibold text-primary">Sumber Data dan Privasi</span>
+</div>
+<!-- Functional Search Bar -->
+<div class="relative w-full max-w-md">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#6B5A55]">
+<span class="material-symbols-outlined text-[18px]">search</span>
+</div>
+<input class="w-full pl-9 pr-4 py-1.5 bg-white border border-[#F3D9CE] rounded-full text-body-sm font-body-sm text-[#0A2A22] placeholder-[#6B5A55] focus:outline-none focus:ring-2 focus:ring-[#009770] focus:border-transparent transition-all shadow-sm" placeholder="Cari konektor, log akses, atau NIK..." type="text"/>
+</div>
+</div>
+<!-- Trailing Actions & Profile -->
+<div class="flex items-center gap-4">
+<!-- Security Badge -->
+<div class="hidden lg:flex items-center gap-1.5 bg-[#E0F4EE] px-2.5 py-1 rounded-full border border-[#BCE7DB]">
+<span class="material-symbols-outlined text-[16px] text-[#009770]">lock</span>
+<span class="text-label-mono-sm font-label-mono-sm font-semibold text-[#009770]">Enkripsi AES-256 Aktif</span>
+</div>
+<!-- Notification Trigger with Dot -->
+<button class="relative w-9 h-9 rounded-full bg-white border border-[#F3D9CE] flex items-center justify-center text-[#6B5A55] hover:bg-surface-container-low transition-all duration-150 active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#CE2F2E] ring-2 ring-white"></span>
+</button>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-2.5 pl-2 pr-3 py-1 bg-white border border-[#F3D9CE] rounded-full shadow-sm">
+<div class="w-7 h-7 rounded-full bg-[#009770] text-white flex items-center justify-center text-label-mono-sm font-bold shadow-xs">
+          SW
+        </div>
+<div class="flex flex-col text-left">
+<span class="text-body-sm font-body-sm font-semibold text-[#0A2A22] leading-tight">Bendahara · Sari W.</span>
+<span class="text-[10px] font-label-mono-sm text-[#009770] font-medium leading-tight">Otoritas Verifikator</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================
+       MAIN CONTENT CANVAS (Left margin: 240px, Top margin: 64px)
+       ======================================================== -->
+<main class="ml-60 pt-20 pb-16 px-8 max-w-7xl">
+<!-- TOP COMPLIANCE SOVEREIGNTY BANNER -->
+<div class="mb-8 rounded-2xl bg-gradient-to-r from-[#FFF8F4] via-white to-[#E0F4EE] border border-[#F3D9CE] p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div>
+<div class="flex items-center gap-2.5 flex-wrap">
+<h1 class="text-headline-md font-headline-md font-bold text-[#0A2A22]">Prinsip Kedaulatan Data Koperasi</h1>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770] border border-[#BCE7DB]">
+<span class="material-symbols-outlined text-[14px]">gavel</span>
+              Kepatuhan UU No. 27/2022 (UU PDP)
+            </span>
+</div>
+<p class="text-body-md font-body-md text-[#6B5A55] mt-1 max-w-3xl leading-relaxed">
+            Data simpan pinjam anggota diproses secara lokal dan tersamarkan (<em class="text-[#0A2A22] font-semibold">pseudonimisasi</em>). KSP Mitra Sejahtera memegang kendali penuh atas kunci enkripsi tanpa perantara pihak ketiga.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<div class="px-3 py-1.5 rounded-xl bg-white border border-[#F3D9CE] text-right">
+<div class="text-[11px] font-label-mono-sm text-[#6B5A55]">STATUS AUDIT LOKAL</div>
+<div class="text-label-mono-md font-label-mono-md font-bold text-[#009770]">TERISOLASI &amp; AMAN</div>
+</div>
+</div>
+</div>
+<!-- ========================================================
+         SECTION 1: Sumber Data Terhubung
+         ======================================================== -->
+<section class="mb-10">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+<div>
+<h2 class="text-headline-lg font-headline-lg font-bold text-[#0A2A22] tracking-tight">Sumber Data Terhubung</h2>
+<p class="text-body-md font-body-md text-[#6B5A55] mt-0.5">Integrasi otomatis transaksi masuk untuk mendeteksi indikasi anomali dan fraud sedini mungkin.</p>
+</div>
+<span class="text-label-mono-sm font-label-mono-sm text-[#6B5A55] bg-white px-3 py-1 rounded-full border border-[#F3D9CE] shadow-xs">
+          3 Kanal Aktif · 1 Siaga Sandbox
+        </span>
+</div>
+<!-- Connector 4-Card Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Connector Card 1: Core Banking ERP -->
+<div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-10 h-10 rounded-xl bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
+<span class="material-symbols-outlined text-[24px]">account_balance</span>
+</div>
+<!-- Status Pill: Normal/Aman -->
+<span class="h-6 px-2.5 inline-flex items-center gap-1.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#009770] animate-radar"></span>
+                Terhubung
+              </span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-[#0A2A22] leading-snug">Sistem Inti Simpan Pinjam</h3>
+<p class="text-label-mono-sm font-label-mono-sm text-[#6B5A55] mt-0.5">Core Banking / Koperasi ERP</p>
+<div class="my-3 py-2 px-2.5 bg-[#FFF8F4] rounded-xl border border-[#F3D9CE] text-[12px] space-y-1">
+<div class="flex justify-between text-[#6B5A55]">
+<span>Protokol:</span>
+<span class="font-label-mono-sm font-medium text-[#0A2A22]">API Langsung (5s)</span>
+</div>
+<div class="flex justify-between text-[#6B5A55]">
+<span>Ditarik Hari Ini:</span>
+<span class="font-label-mono-sm font-bold text-[#009770]">1.248 trx</span>
+</div>
+<div class="flex justify-between text-[#6B5A55]">
+<span>Latensi:</span>
+<span class="font-label-mono-sm text-[#0A2A22]">42ms (Optimal)</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-2 py-2 px-3 rounded-xl border border-[#009770] text-[#009770] hover:bg-[#E0F4EE] font-label-mono-md font-label-mono-md font-semibold text-center transition-colors">
+            Uji Koneksi
+          </button>
+</div>
+<!-- Connector Card 2: POS Pembukuan Kasir -->
+<div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-10 h-10 rounded-xl bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
+<span class="material-symbols-outlined text-[24px]">point_of_sale</span>
+</div>
+<span class="h-6 px-2.5 inline-flex items-center gap-1.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#009770]"></span>
+                Terhubung
+              </span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-[#0A2A22] leading-snug">Aplikasi Kasir / POS</h3>
+<p class="text-label-mono-sm font-label-mono-sm text-[#6B5A55] mt-0.5">Webhook Real-Time Pembukuan</p>
+<div class="my-3 py-2 px-2.5 bg-[#FFF8F4] rounded-xl border border-[#F3D9CE] text-[12px] space-y-1">
+<div class="text-[#6B5A55]">
+<span>Cakupan Loket:</span>
+<p class="font-label-mono-sm font-medium text-[#0A2A22] truncate">Cabang Barat &amp; Unit Pasar</p>
+</div>
+<div class="flex justify-between text-[#6B5A55]">
+<span>Verifikasi:</span>
+<span class="font-label-mono-sm text-[#009770] font-semibold">Payload Valid</span>
+</div>
+<div class="flex justify-between text-[#6B5A55]">
+<span>Status:</span>
+<span class="font-label-mono-sm text-[#0A2A22]">Siaga Listener</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-2 py-2 px-3 rounded-xl border border-[#009770] text-[#009770] hover:bg-[#E0F4EE] font-label-mono-md font-label-mono-md font-semibold text-center transition-colors">
+            Konfigurasi Webhook
+          </button>
+</div>
+<!-- Connector Card 3: QRIS & E-Wallet Standar SNAP BI -->
+<div class="glass-card rounded-2xl p-5 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-10 h-10 rounded-xl bg-[#FFF637]/30 flex items-center justify-center text-[#6B5F00]">
+<span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+</div>
+<!-- Status Pill: Warning/Siaga -->
+<span class="h-6 px-2.5 inline-flex items-center gap-1.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#FFF637] text-[#6B5F00]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6B5F00]"></span>
+                Siaga / Sandbox
+              </span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-[#0A2A22] leading-snug">QRIS &amp; Dompet Koperasi</h3>
+<p class="text-label-mono-sm font-label-mono-sm text-[#6B5A55] mt-0.5">Open API Standar SNAP BI</p>
+<div class="my-3 py-2 px-2.5 bg-[#FFF8F4] rounded-xl border border-[#F3D9CE] text-[12px] space-y-1">
+<div class="text-[#6B5A55]">
+<span>Kendala Autentikasi:</span>
+<p class="font-label-mono-sm text-[#6B5F00] font-medium leading-tight">Menunggu sertifikat sandbox Kemenkop</p>
+</div>
+<div class="flex justify-between text-[#6B5A55]">
+<span>Protokol:</span>
+<span class="font-label-mono-sm text-[#0A2A22]">ASPI SNAP 1.1</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#009770] to-[#00B386] text-white hover:opacity-95 font-label-mono-md font-label-mono-md font-semibold text-center shadow-[0_2px_8px_rgba(0,151,112,0.25)] transition-all">
+            Hubungkan Sekarang
+          </button>
+</div>
+<!-- Connector Card 4: Unggah CSV / XLSX Manual -->
+<div class="glass-card rounded-2xl p-5 flex flex-col justify-between border-2 border-dashed border-[#FFB89F] bg-gradient-to-b from-white to-[#FFF8F4]">
+<div>
+<div class="flex items-start justify-between gap-2 mb-2">
+<div class="w-10 h-10 rounded-xl bg-[#FFB89F]/30 flex items-center justify-center text-[#86513D]">
+<span class="material-symbols-outlined text-[24px]">upload_file</span>
+</div>
+<span class="h-6 px-2.5 inline-flex items-center rounded-full text-[10px] font-label-mono-sm font-bold bg-[#FFDBCF] text-[#6B3A27]">
+                Koperasi Non-Digital
+              </span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-[#0A2A22]">Unggah Rekening Koran</h3>
+<!-- Drag and drop zone -->
+<div class="mt-2.5 p-3 rounded-xl border border-dashed border-[#FFB89F] bg-white/80 text-center cursor-pointer hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[24px] text-[#86513D]">cloud_upload</span>
+<p class="text-[11px] font-body-sm text-[#0A2A22] font-medium mt-1">Tarik berkas rekening koran / kas ke sini</p>
+<p class="text-[10px] font-label-mono-sm text-[#6B5A55]">.csv, .xlsx max 25MB</p>
+</div>
+<!-- Intelligent Column Mapping Preview -->
+<div class="mt-2.5 pt-2 border-t border-[#F3D9CE]">
+<div class="text-[10px] font-label-mono-sm text-[#6B5A55] mb-1">Pemetaan Cerdas Terdeteksi:</div>
+<div class="flex flex-wrap gap-1 font-label-mono-sm text-[10px]">
+<span class="px-1.5 py-0.5 rounded bg-[#E0F4EE] text-[#009770]">[Tgl_Trx]</span>
+<span class="px-1.5 py-0.5 rounded bg-[#E0F4EE] text-[#009770]">[Uraian]</span>
+<span class="px-1.5 py-0.5 rounded bg-[#E0F4EE] text-[#009770]">[Jumlah_IDR]</span>
+<span class="px-1.5 py-0.5 rounded bg-[#E0F4EE] text-[#009770]">[BukuKas]</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-3 py-2 px-3 rounded-xl bg-[#009770] text-white hover:bg-[#008562] font-label-mono-md font-label-mono-md font-semibold text-center transition-all shadow-xs">
+            Proses &amp; Uji Anomali
+          </button>
+</div>
+</div>
+</section>
+<!-- ========================================================
+         SECTION 2 & 3: Perlindungan Data Anggota (2-Column Grid)
+         ======================================================== -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+<!-- LEFT COLUMN (7 Cols): Masking Settings & Differential Privacy -->
+<div class="lg:col-span-7 space-y-6">
+<div class="glass-card rounded-2xl p-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 rounded-xl bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
+<span class="material-symbols-outlined text-[22px]">enhanced_encryption</span>
+</div>
+<div>
+<h2 class="text-headline-md font-headline-md font-bold text-[#0A2A22]">Perlindungan Data Anggota</h2>
+<p class="text-body-sm font-body-sm text-[#6B5A55]">Pseudonimisasi deterministik tingkat pangkalan data lokal.</p>
+</div>
+</div>
+<!-- Toggle 1: Masking State -->
+<div class="p-4 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] mb-4">
+<div class="flex items-start justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-body-md font-body-md font-bold text-[#0A2A22]">Samarkan nama dan NIK anggota di dasbor analitik</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">AKTIF</span>
+</div>
+<p class="text-body-sm font-body-sm text-[#6B5A55] mt-1">Mencegah kebocoran data sensitif saat layar dasbor dilihat oleh staf umum atau pihak luar.</p>
+</div>
+<!-- Switch control -->
+<button class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#009770] transition-colors duration-200 ease-in-out focus:outline-none" type="button">
+<span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<!-- Visual Before & After Pseudonymization Box -->
+<div class="mt-4 p-3.5 bg-white rounded-xl border border-[#F3D9CE]">
+<div class="text-[11px] font-label-mono-sm text-[#6B5A55] uppercase font-semibold mb-2">Simulasi Transformasi Masking Real-Time</div>
+<div class="grid grid-cols-1 md:grid-cols-11 items-center gap-2 text-center md:text-left">
+<!-- Before -->
+<div class="md:col-span-5 p-2.5 rounded-lg bg-[#FFDAD6]/30 border border-[#FFDAD6]">
+<div class="text-[10px] font-label-mono-sm font-bold text-[#B51B1F]">SEBELUM (DATA MENTAH PRIVAT)</div>
+<div class="mt-1 font-body-sm font-bold text-[#0A2A22]">Budi Santoso</div>
+<div class="font-label-mono-sm text-[11px] text-[#6B5A55]">NIK: 3273012908850002</div>
+<div class="font-label-mono-sm text-[11px] text-[#6B5A55]">Rek: 0182-993-110</div>
+</div>
+<!-- Transform Indicator -->
+<div class="md:col-span-1 flex justify-center text-[#009770]">
+<span class="material-symbols-outlined text-[24px]">sync_alt</span>
+</div>
+<!-- After -->
+<div class="md:col-span-5 p-2.5 rounded-lg bg-[#E0F4EE] border border-[#BCE7DB]">
+<div class="text-[10px] font-label-mono-sm font-bold text-[#009770]">SESUDAH (TERSAMARKAN DI MONITOR)</div>
+<div class="mt-1 font-body-sm font-bold text-[#00694D]">B**** S*****</div>
+<div class="font-label-mono-sm text-[11px] text-[#00694D] tracking-wider">NIK: 327301********02</div>
+<div class="font-label-mono-sm text-[11px] text-[#00694D] tracking-wider">Rek: ••••-•••-110</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Toggle 2: Controlled Identity Reveal -->
+<div class="p-4 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] mb-4">
+<div class="flex items-start justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-body-md font-body-md font-bold text-[#0A2A22]">Dekripsi Sesaat (Hanya Pengurus Berwenang)</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">AKTIF</span>
+</div>
+<p class="text-body-sm font-body-sm text-[#6B5A55] mt-1">
+                  Pembukaan identitas asli hanya dapat diakses dengan verifikasi PIN / OTP Bendahara. Seluruh pembukaan data dicatat otomatis pada audit log abadi.
+                </p>
+</div>
+<button class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#009770] transition-colors duration-200 ease-in-out focus:outline-none" type="button">
+<span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+</div>
+<!-- Data Retention Setting -->
+<div class="p-4 rounded-xl bg-white border border-[#F3D9CE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px] text-[#86513D]">history_toggle_off</span>
+<div>
+<div class="text-body-sm font-body-sm font-bold text-[#0A2A22]">Retensi Log Finansial &amp; Jejak Akses</div>
+<div class="text-label-mono-sm font-label-mono-sm text-[#6B5A55]">Standar Kemenkop-UKM &amp; Ketentuan Pajak Perpajakan</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<select class="px-3 py-1.5 rounded-xl border border-[#F3D9CE] bg-[#FFF8F4] text-label-mono-sm font-label-mono-sm font-semibold text-[#0A2A22] focus:ring-1 focus:ring-[#009770] focus:outline-none">
+<option selected="">5 Tahun (Wajib Regulasi KSP)</option>
+<option>7 Tahun (Audit Khusus Eksternal)</option>
+<option>10 Tahun (Arsip Permanen)</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (5 Cols): PDP Act Checklist & Consent Management -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Checklist UU PDP (UU No. 27/2022) -->
+<div class="glass-card rounded-2xl p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
+<span class="material-symbols-outlined text-[20px]">checklist</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-[#0A2A22]">Daftar Periksa UU PDP</h3>
+</div>
+<span class="text-label-mono-sm font-label-mono-sm font-bold text-[#009770] bg-[#E0F4EE] px-2 py-0.5 rounded-full">
+              5/5 Terpenuhi
+            </span>
+</div>
+<div class="space-y-2.5">
+<div class="flex items-start gap-3 p-2.5 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE]">
+<div class="w-5 h-5 rounded-full bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<div class="text-body-sm font-body-sm">
+<span class="font-semibold text-[#0A2A22]">Tujuan pemrosesan sah:</span>
+<span class="text-[#6B5A55]"> Khusus mitigasi risiko kecurangan kas anggota koperasi.</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-2.5 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE]">
+<div class="w-5 h-5 rounded-full bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<div class="text-body-sm font-body-sm">
+<span class="font-semibold text-[#0A2A22]">Akses berbasis peran:</span>
+<span class="text-[#6B5A55]"> Hanya Bendahara &amp; Pengawas dengan kredensial terdaftar.</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-2.5 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE]">
+<div class="w-5 h-5 rounded-full bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<div class="text-body-sm font-body-sm">
+<span class="font-semibold text-[#0A2A22]">Privacy by Design:</span>
+<span class="text-[#6B5A55]"> Penyamaran identitas anggota aktif secara bawaan (default).</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-2.5 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE]">
+<div class="w-5 h-5 rounded-full bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<div class="text-body-sm font-body-sm">
+<span class="font-semibold text-[#0A2A22]">Jejak audit digital abadi:</span>
+<span class="text-[#6B5A55]"> Log tak dapat diubah tanpa tanda tangan kriptografi pengawas.</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-2.5 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE]">
+<div class="w-5 h-5 rounded-full bg-[#009770] text-white flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+<div class="text-body-sm font-body-sm">
+<span class="font-semibold text-[#0A2A22]">Hak Anggota Koperasi:</span>
+<span class="text-[#6B5A55]"> Akses transparansi buku simpan pinjam diakomodir penuh.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Persetujuan (Consent) Pemrosesan Data -->
+<div class="glass-card rounded-2xl p-6">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-headline-sm font-headline-sm font-bold text-[#0A2A22]">Persetujuan (Consent) Anggota</h3>
+<span class="material-symbols-outlined text-[20px] text-[#6B5A55]">fact_check</span>
+</div>
+<div class="space-y-2.5 font-label-mono-sm text-[11px]">
+<div class="p-2.5 rounded-xl bg-white border border-[#F3D9CE]">
+<div class="flex items-center justify-between text-[#0A2A22] font-bold">
+<span>Nominal &amp; Waktu Transaksi</span>
+<span class="text-[#009770]">✓ Sah (RAT 2024)</span>
+</div>
+<div class="text-[#6B5A55] mt-0.5">Disetujui 1.420 Anggota pada 14 Jan 2024</div>
+</div>
+<div class="p-2.5 rounded-xl bg-white border border-[#F3D9CE]">
+<div class="flex items-center justify-between text-[#0A2A22] font-bold">
+<span>No. Rekening &amp; Kanal Bayar</span>
+<span class="text-[#009770]">✓ Sah (RAT 2024)</span>
+</div>
+<div class="text-[#6B5A55] mt-0.5">Disetujui 1.420 Anggota pada 14 Jan 2024</div>
+</div>
+<div class="p-2.5 rounded-xl bg-white border border-[#F3D9CE]">
+<div class="flex items-center justify-between text-[#0A2A22] font-bold">
+<span>Geolokasi IP Kasir Cabang</span>
+<span class="text-[#009770]">✓ Sah (Manajemen)</span>
+</div>
+<div class="text-[#6B5A55] mt-0.5">SK Pengurus No. 04/SK-KSP/II/2024</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================
+         SECTION 4: Jejak Audit Akses (Access Audit Trail)
+         ======================================================== -->
+<section class="glass-card rounded-2xl p-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px] text-[#009770]">manage_search</span>
+<h2 class="text-headline-lg font-headline-lg font-bold text-[#0A2A22]">Jejak Audit Akses (Access Audit Trail)</h2>
+</div>
+<p class="text-body-md font-body-md text-[#6B5A55] mt-0.5">
+            Rekam jejak transparan: siapa membuka data anggota apa, kapan waktu pastinya, dan alasan operasional pemeriksaannya.
+          </p>
+</div>
+<!-- Filter & Export Controls -->
+<div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+<button class="px-3 py-1.5 rounded-xl border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4] text-label-mono-sm font-label-mono-sm text-[#0A2A22] flex items-center gap-1.5 shadow-xs transition-colors">
+<span class="material-symbols-outlined text-[16px]">filter_alt</span>
+            Filter Berdasarkan Waktu
+          </button>
+<button class="px-3.5 py-1.5 rounded-xl bg-[#009770] hover:bg-[#008562] text-white text-label-mono-sm font-label-mono-sm font-semibold flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,151,112,0.2)] transition-all">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+            Ekspor Jejak Audit (Tanda Tangan Digital)
+          </button>
+</div>
+</div>
+<!-- Modern Instrument Audit Table -->
+<div class="overflow-x-auto rounded-xl border border-[#F3D9CE]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#FFF8F4] border-b border-[#F3D9CE] text-label-mono-sm font-label-mono-sm text-[#6B5A55]">
+<th class="py-3 px-4 font-semibold">WAKTU (WIB)</th>
+<th class="py-3 px-4 font-semibold">AKTOR / PENGGUNA</th>
+<th class="py-3 px-4 font-semibold">PERAN</th>
+<th class="py-3 px-4 font-semibold">TINDAKAN</th>
+<th class="py-3 px-4 font-semibold">TARGET DATA ANGGOTA</th>
+<th class="py-3 px-4 font-semibold">ALASAN INVESTIGASI</th>
+<th class="py-3 px-4 font-semibold text-right">STATUS VERIFIKASI</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#F3D9CE] text-body-sm font-body-sm">
+<!-- Row 1: High Risk Unmask Action -->
+<tr class="bg-white hover:bg-[#E0F4EE]/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22] font-semibold whitespace-nowrap">23:51:10</td>
+<td class="py-3.5 px-4 font-semibold text-[#0A2A22]">Sari Wulandari</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded-md bg-[#FFF8F4] text-[#86513D] border border-[#F3D9CE] text-[11px] font-medium">Bendahara Utama</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 text-[#CE2F2E] font-semibold">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  Buka Masking Nama &amp; NIK
+                </span>
+</td>
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22]">Anggota #0421 (Bpk. Hendro P.)</td>
+<td class="py-3.5 px-4 text-[#6B5A55]">Investigasi Penarikan Jam 23:47 (Skor Anomali 92)</td>
+<td class="py-3.5 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="material-symbols-outlined text-[13px]">key</span>
+                  Disetujui PIN OTP
+                </span>
+</td>
+</tr>
+<!-- Row 2: Cashier Access -->
+<tr class="bg-[#FFF8F4]/40 hover:bg-[#E0F4EE]/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22] font-semibold whitespace-nowrap">21:14:02</td>
+<td class="py-3.5 px-4 font-semibold text-[#0A2A22]">Ahmad Fauzi</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded-md bg-[#FFF8F4] text-[#86513D] border border-[#F3D9CE] text-[11px] font-medium">Kasir Shift 2</span>
+</td>
+<td class="py-3.5 px-4 text-[#0A2A22]">Akses Buku Kasir Cabang Barat</td>
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22]">Kas Operasional #K-109</td>
+<td class="py-3.5 px-4 text-[#6B5A55]">Rekonsiliasi Tutup Kas Harian</td>
+<td class="py-3.5 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#009770]"></span>
+                  Valid
+                </span>
+</td>
+</tr>
+<!-- Row 3: Supervisor Download -->
+<tr class="bg-white hover:bg-[#E0F4EE]/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22] font-semibold whitespace-nowrap">17:30:45</td>
+<td class="py-3.5 px-4 font-semibold text-[#0A2A22]">Bambang I.</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded-md bg-[#FFF8F4] text-[#86513D] border border-[#F3D9CE] text-[11px] font-medium">Ketua Pengawas</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 text-[#009770] font-semibold">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                  Unduh Laporan Benford
+                </span>
+</td>
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22]">Akun Kas Operasional (#K-104)</td>
+<td class="py-3.5 px-4 text-[#6B5A55]">Persiapan Sidang Pengurus Bulanan</td>
+<td class="py-3.5 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="material-symbols-outlined text-[13px]">lock</span>
+                  Enkripsi PDF
+                </span>
+</td>
+</tr>
+<!-- Row 4: Daemon System Scan -->
+<tr class="bg-[#FFF8F4]/40 hover:bg-[#E0F4EE]/40 transition-colors">
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22] font-semibold whitespace-nowrap">14:05:12</td>
+<td class="py-3.5 px-4 font-semibold text-[#009770] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                Sistem AmanKas
+              </td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded-md bg-[#E0F4EE] text-[#009770] border border-[#BCE7DB] text-[11px] font-medium">AI Engine Daemon</span>
+</td>
+<td class="py-3.5 px-4 text-[#0A2A22]">Audit Algoritmik Benford</td>
+<td class="py-3.5 px-4 font-label-mono-sm text-[#0A2A22]">4.820 Transaksi Buku Kas</td>
+<td class="py-3.5 px-4 text-[#6B5A55]">Pemindaian Rutin 24 Jam</td>
+<td class="py-3.5 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-mono-sm font-label-mono-sm font-bold bg-[#E0F4EE] text-[#009770]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#009770]"></span>
+                  Sukses
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Meta Footer -->
+<div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between text-label-mono-sm font-label-mono-sm text-[#6B5A55] gap-2">
+<div>Menampilkan 4 dari 842 entri audit log tersimpan</div>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 rounded-lg border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4] disabled:opacity-50" disabled="">Sebelumnya</button>
+<span class="px-3 py-1 rounded-lg bg-[#009770] text-white font-bold">1</span>
+<button class="px-2.5 py-1 rounded-lg border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4]">2</button>
+<button class="px-2.5 py-1 rounded-lg border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4]">3</button>
+<button class="px-2.5 py-1 rounded-lg border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4]">Berikutnya</button>
+</div>
+</div>
+</section>
+<!-- ========================================================
+         PAGE FOOTER: Institutional Disclaimers
+         ======================================================== -->
+<footer class="mt-12 pt-6 border-t border-[#F3D9CE] flex flex-col md:flex-row items-center justify-between text-body-sm font-body-sm text-[#6B5A55] gap-3">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#009770]"></span>
+<span>Data simulasi untuk demonstrasi · KSP Mitra Sejahtera (Demo)</span>
+</div>
+<div class="text-label-mono-sm font-label-mono-sm text-center md:text-right">
+        AmanKas v1.4 · Protokol Audit Standar Kemenkop-UKM &amp; UU PDP No. 27/2022 · Enkripsi AES-GCM 256-bit
+      </div>
+</footer>
+</main>
+</body></html>

@@ -1,0 +1,6 @@
+{
+  "name": "AmanKas - Sistem Keamanan Koperasi",
+  "description": "Sistem deteksi anomali integritas pembukuan dan transaksi koperasi dengan Benford's Law dan Isolation Forest.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

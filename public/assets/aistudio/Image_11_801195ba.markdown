@@ -1,0 +1,254 @@
+---
+name: Warm Retro-Futuristic Fintech
+colors:
+  surface: '#e6fff5'
+  surface-dim: '#c0e1d5'
+  surface-bright: '#e6fff5'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#d9fbee'
+  surface-container: '#d3f5e8'
+  surface-container-high: '#cef0e3'
+  surface-container-highest: '#c8eadd'
+  on-surface: '#012019'
+  on-surface-variant: '#3d4a43'
+  inverse-surface: '#17362d'
+  inverse-on-surface: '#d6f8eb'
+  outline: '#6d7a73'
+  outline-variant: '#bccac1'
+  surface-tint: '#006c4f'
+  primary: '#00694d'
+  on-primary: '#ffffff'
+  primary-container: '#008562'
+  on-primary-container: '#f5fff8'
+  inverse-primary: '#66dbaf'
+  secondary: '#86513d'
+  on-secondary: '#ffffff'
+  secondary-container: '#fdb69d'
+  on-secondary-container: '#784532'
+  tertiary: '#b51b1f'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#d83734'
+  on-tertiary-container: '#fffbff'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#84f8ca'
+  primary-fixed-dim: '#66dbaf'
+  on-primary-fixed: '#002116'
+  on-primary-fixed-variant: '#00513b'
+  secondary-fixed: '#ffdbcf'
+  secondary-fixed-dim: '#fdb69d'
+  on-secondary-fixed: '#351003'
+  on-secondary-fixed-variant: '#6b3a27'
+  tertiary-fixed: '#ffdad6'
+  tertiary-fixed-dim: '#ffb3ac'
+  on-tertiary-fixed: '#410003'
+  on-tertiary-fixed-variant: '#93000f'
+  background: '#e6fff5'
+  on-background: '#012019'
+  surface-variant: '#c8eadd'
+typography:
+  display-lg:
+    fontFamily: Space Grotesk
+    fontSize: 40px
+    fontWeight: '700'
+    lineHeight: 48px
+    letterSpacing: -0.03em
+  headline-xl:
+    fontFamily: Space Grotesk
+    fontSize: 32px
+    fontWeight: '700'
+    lineHeight: 40px
+    letterSpacing: -0.02em
+  headline-lg:
+    fontFamily: Space Grotesk
+    fontSize: 24px
+    fontWeight: '600'
+    lineHeight: 32px
+    letterSpacing: -0.02em
+  headline-md:
+    fontFamily: Space Grotesk
+    fontSize: 20px
+    fontWeight: '600'
+    lineHeight: 28px
+    letterSpacing: -0.01em
+  headline-sm:
+    fontFamily: Space Grotesk
+    fontSize: 16px
+    fontWeight: '600'
+    lineHeight: 24px
+    letterSpacing: 0em
+  body-lg:
+    fontFamily: Inter
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+    letterSpacing: -0.01em
+  body-md:
+    fontFamily: Inter
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 20px
+    letterSpacing: 0em
+  body-sm:
+    fontFamily: Inter
+    fontSize: 12px
+    fontWeight: '400'
+    lineHeight: 16px
+    letterSpacing: 0em
+  label-mono-lg:
+    fontFamily: JetBrains Mono
+    fontSize: 15px
+    fontWeight: '600'
+    lineHeight: 20px
+    letterSpacing: -0.01em
+  label-mono-md:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 18px
+    letterSpacing: 0em
+  label-mono-sm:
+    fontFamily: JetBrains Mono
+    fontSize: 11px
+    fontWeight: '500'
+    lineHeight: 14px
+    letterSpacing: 0.02em
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  gutter: 1.5rem
+  gutter-sm: 1rem
+  margin: 2rem
+  margin-sm: 1rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2rem
+---
+
+## Brand & Style
+
+This design system establishes a warm, retro-futuristic fintech aesthetic tailored for Indonesian credit unions (*koperasi simpan pinjam*) and MSMEs (*UMKM*). The design balances institutional credibility, communal warmth, and precision fraud surveillance. It trades sterile corporate blues for organic warmth and jade luminescence, evoking trust, vitality, and advanced pattern detection.
+
+### Tone & Personality
+- **Guardian & Vigilant:** Analytical precision, real-time threat detection, and clarity under stress.
+- **Warm Institutional Trust:** Anchored in Indonesian cooperative heritage (*gotong royong* and *kekeluargaan*) through warm peach and linen undertones.
+- **Tactile Retro-Futurism:** Late-70s control-room ergonomics updated with crisp modern vector clarity, phosphor glows, and technical monospaced telemetry.
+
+### Visual Principles
+- **Luminous Glass over Warm Paper:** Frosted white panels floating on a gradient background (#FFF8F4 to #FFE9DF), paired with structural borders.
+- **Instrument-Grade Information Hierarchy:** Immediate differentiation between standard operational flow and flagged anomalies using high-contrast semantic signaling.
+- **Local Context First:** Indonesian language terminology structured for administrators, treasurers (*bendahara*), and audit officers.
+
+## Colors
+
+The palette relies on a warm atmospheric base paired with jade-green telemetry, retro-alarm reds, and cautionary yellows.
+
+### Color Tokens & Rules
+- **Base Canvas:** Linear gradient from `#FFF8F4` (top) to `#FFE9DF` (bottom). Never render flat cold whites as canvas backgrounds.
+- **Primary Brand (Jade Green):** `#009770` serves as the primary visual anchor for active states, key data paths, primary controls, and verified badges.
+- **Bright Jade Glow:** `#00B386` is used exclusively for gradient endings (`#009770` to `#00B386`), hover glows, and live telemetry pulses.
+- **Light Jade Tint:** `#E0F4EE` provides the background for active navigation nodes, icon badges, and verified status containers.
+- **High Risk / Danger Alert:** Retro Red `#CE2F2E`. Strictly reserved for critical fraud indicators, high-risk flags, anomaly scores exceeding thresholds, and destructive confirmations.
+- **Warning / Review Flag:** Vanilla `#FFF637`. Always rendered with high-contrast olive-gold text `#6B5F00`. Yellow text on white or light backgrounds is prohibited.
+- **Soft Peach:** `#FFB89F` drives secondary visual interest: radar scan lines, decorative micro dot grids, and low-priority container accents.
+- **Typography & Surfaces:**
+  - Primary Content / Headers: Deep Jade-Black `#0A2A22`.
+  - Secondary / Supporting: Muted Bark `#6B5A55`.
+  - Glass Card Background: Pure White `#FFFFFF` with glassmorphic transparency (92% opacity) and 1px border `#F3D9CE`.
+
+## Typography
+
+Typography establishes an intentional cadence between human reading comfort and scientific measurement:
+
+1. **Display & Headings (Space Grotesk):** Provides structured geometric energy with subtle retro-futuristic nuances in letterforms (e.g., counters and terminals). Used for screen titles, metrics, and KPI readouts.
+2. **Body & Interface (Inter):** Maximizes interface legibility across tabular transaction feeds, contextual explanations, and Indonesian administrative workflows.
+3. **Data Telemetry (JetBrains Mono):** Applied to monetary values (`Rp`), transaction IDs, timestamps, anomaly thresholds, and national identity formats (NIK, NIB). Tabular numbers ensure vertical alignment across data grids.
+
+## Layout & Spacing
+
+The dashboard uses a desktop-first shell designed for standard office displays (1440px target, min 1280px, responsive down to 1024px tablet landscape).
+
+### Desktop Shell Structure
+- **Persistent Slim Sidebar:** Fixed width of 240px. Hosts branding, identity, and navigation.
+- **Top Utility Header:** Fixed height of 64px spanning across the content canvas.
+- **Content Viewport:** 12-column responsive grid with 1.5rem (24px) gutters and 2rem (32px) screen margins.
+
+### Vertical Rhythm & Density
+- Component interiors utilize an 8px base rhythm (`space-sm` 8px, `space-md` 16px, `space-lg` 24px).
+- Generous padding inside cards gives transaction lists and risk heatmaps clean breathing room against high-density data.
+
+## Elevation & Depth
+
+Visual hierarchy uses frosted glass strata, warm contact shadows, and low-contrast borders rather than deep, cold dropshadows.
+
+### Layering Philosophy
+- **Level 0 (Atmosphere):** Gradient canvas (`#FFF8F4` to `#FFE9DF`) overlayed with faint decorative dot grids (`#FFB89F` at 25% opacity, 16px pitch).
+- **Level 1 (Panels & Cards):** Pure White `#FFFFFF` with 92% opacity and `backdrop-filter: blur(12px)`. Enclosed by a 1px solid border `#F3D9CE`. Shadow: `0 4px 20px -2px rgba(107, 90, 85, 0.06), 0 2px 6px -1px rgba(107, 90, 85, 0.04)`.
+- **Level 2 (Popovers, Tooltips & Threat Drawers):** High-opacity pure white (98%), border `#F3D9CE`, shadow: `0 12px 32px -4px rgba(10, 42, 34, 0.12), 0 4px 12px -2px rgba(10, 42, 34, 0.06)`.
+- **Live Signal Layers (Radar Pulses):** Glowing highlights using `box-shadow: 0 0 12px rgba(0, 179, 134, 0.45)` for Jade and `0 0 12px rgba(206, 47, 46, 0.4)` for Retro Red alerts.
+
+## Shapes
+
+The design uses balanced, rounded geometries (roundedness tier `2`) providing 16px (`1rem`) to 20px corners on main functional containers, avoiding sharp industrial brutality while retaining control-panel discipline.
+
+### Geometry Specifications
+- **Dashboard Metric Cards & Tables:** `1rem` (16px) border-radius.
+- **Modal Viewports & Threat Drawers:** `1.25rem` (20px) border-radius.
+- **Form Controls & Inputs:** `0.75rem` (12px) border-radius.
+- **Badges & Status Tags:** Fully rounded pill shapes (`9999px`).
+- **Icons & Micro-Indicators:** 8px to 10px rounded squares for icon background badges.
+
+## Components
+
+### 1. Left Navigation Sidebar
+- **Dimensions & Background:** Fixed width 240px, full viewport height, background translucent `#FFFFFF` (85% opacity, backdrop blur 16px), right border 1px solid `#F3D9CE`.
+- **Logo Area:** Bold Space Grotesk typemark **AmanKas** in Deep Jade `#0A2A22`, accompanied by a Jade Green geometric shield/vault icon.
+- **Navigation Links:** Height 44px, horizontal padding 12px, border-radius 12px.
+  - *Default:* Text `#6B5A55`, icon clean 1.5px outline stroke `#6B5A55`.
+  - *Active:* Background `#E0F4EE`, text `#009770` (font-weight 600), icon `#009770`, left-edge vertical indicator pill (3px width, `#009770`).
+- **Live System Health:** Bottom module featuring a pulsing green radar dot labeled `RADAR AKTIF` in JetBrains Mono.
+
+### 2. Header Bar
+- **Search Element:** Pill-shaped input container, background `#FFFFFF`, border 1px solid `#F3D9CE`, search icon in `#6B5A55`, placeholder `Cari NIK, ID Transaksi, atau Nama Anggota...`.
+- **Notification Trigger:** 40px circular glass button. Bell icon with an active Retro Red `#CE2F2E` 8px badge with subtle radar pulse.
+- **User Profile Pill:** Enclosed capsule containing avatar, and label `Bendahara · Sari W.` with metadata in JetBrains Mono sm.
+
+### 3. Metric & Fraud Anomaly Cards
+- **Card Chassis:** White glassmorphic surface, 1px border `#F3D9CE`, 20px padding.
+- **Headline Layout:** Top row displays technical label (Inter sm, uppercase, tracking +0.05em, text `#6B5A55`) plus icon container (32x32px, `#E0F4EE` background, jade icon).
+- **Metric Presentation:** Large numerical metric in Space Grotesk or JetBrains Mono (`Rp 1.420.000.000` or `0.04%`).
+- **Trend Footers:** Contextual delta capsules displaying "+12% dari minggu lalu" in jade or retro red.
+
+### 4. Status Badges & Pill Tags
+Strict layout: 24px height, horizontal padding 10px, inline-flex, gap 6px, font JetBrains Mono 11px bold, border-radius 9999px.
+- **Normal / Aman:**
+  - Background: `#E0F4EE`
+  - Text: `#009770`
+  - Indicator: 6px solid circle `#009770`
+- **Perlu Ditinjau (Warning):**
+  - Background: `#FFF637`
+  - Text: `#6B5F00`
+  - Indicator: 6px solid circle `#6B5F00`
+- **Segera Verifikasi (High Risk):**
+  - Background: `#FDE8E8`
+  - Text: `#CE2F2E`
+  - Indicator: 6px solid circle `#CE2F2E` with 2s continuous pulse animation.
+
+### 5. Buttons & Controls
+- **Primary Action:** Linear gradient background from `#009770` to `#00B386`, text `#FFFFFF` (font-weight 600), subtle inner glow, shadow `0 2px 8px rgba(0, 151, 112, 0.25)`. Active scale 0.98.
+- **Secondary Action:** Transparent glass background, 1.5px border `#009770`, text `#009770`. Hover background `#E0F4EE`.
+- **Danger Action:** Solid Retro Red `#CE2F2E` background, white bold text. Used exclusively for fraud quarantines (`Bekukan Akun`, `Tolak Transaksi`).
+
+### 6. Data Tables (Audit Stream)
+- **Header Cells:** Background `#FFF8F4`, text `#6B5A55`, JetBrains Mono 11px uppercase, border-bottom 1px solid `#F3D9CE`.
+- **Rows:** Zebra alternating between `#FFFFFF` and `rgba(255, 248, 244, 0.4)`. Hover state triggers soft jade-tinted row `#F3FAF7`.
+- **Data Formatting:** Monetary values and timestamps right-aligned in tabular JetBrains Mono figures.
