@@ -1,5 +1,83 @@
 @import "tailwindcss";
 
+@property --pos-x {
+  syntax: '<percentage>';
+  initial-value: 11.14%;
+  inherits: false;
+}
+
+@property --pos-y {
+  syntax: '<percentage>';
+  initial-value: 140%;
+  inherits: false;
+}
+
+@property --spread-x {
+  syntax: '<percentage>';
+  initial-value: 150%;
+  inherits: false;
+}
+
+@property --spread-y {
+  syntax: '<percentage>';
+  initial-value: 180.06%;
+  inherits: false;
+}
+
+@property --color-1 {
+  syntax: '<color>';
+  initial-value: #009770;
+  inherits: false;
+}
+
+@property --color-2 {
+  syntax: '<color>';
+  initial-value: #007657;
+  inherits: false;
+}
+
+@property --color-3 {
+  syntax: '<color>';
+  initial-value: #0A2A22;
+  inherits: false;
+}
+
+@property --color-4 {
+  syntax: '<color>';
+  initial-value: #00B386;
+  inherits: false;
+}
+
+@property --color-5 {
+  syntax: '<color>';
+  initial-value: #84F8CA;
+  inherits: false;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 200deg;
+  inherits: false;
+}
+
+@property --border-color-1 {
+  syntax: '<color>';
+  initial-value: hsla(164, 95%, 75%, 0.45);
+  inherits: false;
+}
+
+@property --border-color-2 {
+  syntax: '<color>';
+  initial-value: hsla(164, 100%, 30%, 0.85);
+  inherits: false;
+}
+
+@property --stop-color {
+  syntax: '<color>';
+  initial-value: #009770;
+  inherits: false;
+}
+
 @layer base {
   :root {
     --jade: #009770;
@@ -24,6 +102,197 @@
     color: var(--ink);
     font-family: 'Inter', sans-serif;
   }
+}
+
+/* AmanKas Gradient Button Core Styles */
+.gradient-button {
+  --pos-x: 11.14%;
+  --pos-y: 140%;
+  --spread-x: 150%;
+  --spread-y: 180.06%;
+  --color-1: #009770;
+  --color-2: #007657;
+  --color-3: #0A2A22;
+  --color-4: #00B386;
+  --color-5: #84F8CA;
+  --border-angle: 200deg;
+  --border-color-1: rgba(132, 248, 202, 0.5);
+  --border-color-2: rgba(0, 151, 112, 0.8);
+  
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(
+    var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+    var(--color-4) 0%,
+    var(--color-1) 32%,
+    var(--color-2) 65%,
+    var(--color-3) 100%
+  );
+  color: #ffffff;
+  border: 1px solid rgba(132, 248, 202, 0.4);
+  box-shadow: 
+    0 4px 16px -2px rgba(0, 151, 112, 0.35),
+    0 1px 3px 0 rgba(10, 42, 34, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: 
+    --pos-x 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    --pos-y 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    --spread-x 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    --spread-y 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease,
+    transform 0.15s ease,
+    border-color 0.3s ease;
+}
+
+.gradient-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    80px 80px at var(--pos-x) var(--pos-y),
+    rgba(255, 246, 55, 0.25),
+    transparent 80%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-button:hover {
+  --pos-x: 50%;
+  --pos-y: 20%;
+  --spread-x: 180%;
+  --spread-y: 200%;
+  border-color: rgba(132, 248, 202, 0.75);
+  box-shadow: 
+    0 8px 24px -2px rgba(0, 151, 112, 0.5),
+    0 0 16px 2px rgba(132, 248, 202, 0.35),
+    inset 0 1px 1px rgba(255, 246, 55, 0.45);
+  transform: translateY(-1.5px);
+}
+
+.gradient-button:hover::before {
+  opacity: 1;
+}
+
+.gradient-button:active {
+  transform: translateY(0.5px) scale(0.985);
+}
+
+/* Variant 2: Deep Obsidian & Dark Ink with Jade Accent */
+.gradient-button-variant {
+  --color-1: #0A2A22;
+  --color-2: #071C17;
+  --color-3: #020C0A;
+  --color-4: #009770;
+  --color-5: #84F8CA;
+  
+  background: radial-gradient(
+    var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+    rgba(0, 151, 112, 0.9) 0%,
+    var(--color-2) 40%,
+    var(--color-3) 90%
+  );
+  color: #ffffff;
+  border: 1px solid rgba(132, 248, 202, 0.25);
+  box-shadow: 
+    0 4px 14px -1px rgba(10, 42, 34, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.gradient-button-variant:hover {
+  --pos-x: 50%;
+  --pos-y: 30%;
+  border-color: rgba(132, 248, 202, 0.6);
+  box-shadow: 
+    0 8px 22px -2px rgba(0, 151, 112, 0.38),
+    0 0 12px 1px rgba(132, 248, 202, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Destructive / Alert Variant (Red Alert for critical fraud flags) */
+.gradient-button-destructive {
+  --color-1: #CE2F2E;
+  --color-2: #9B1A1A;
+  --color-3: #4A0B0B;
+  --color-4: #FF6665;
+  --color-5: #FFB89F;
+  
+  background: radial-gradient(
+    var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+    var(--color-4) 0%,
+    var(--color-1) 35%,
+    var(--color-2) 70%,
+    var(--color-3) 100%
+  );
+  color: #ffffff;
+  border: 1px solid rgba(255, 184, 159, 0.45);
+  box-shadow: 
+    0 4px 16px -2px rgba(206, 47, 46, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.gradient-button-destructive:hover {
+  --pos-x: 50%;
+  --pos-y: 20%;
+  border-color: rgba(255, 184, 159, 0.8);
+  box-shadow: 
+    0 8px 24px -2px rgba(206, 47, 46, 0.55),
+    0 0 14px 2px rgba(255, 102, 101, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  transform: translateY(-1.5px);
+}
+
+/* Outline Glass Variant */
+.gradient-button-outline {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #0A2A22;
+  border: 1px solid #F3D9CE;
+  box-shadow: 0 2px 8px -1px rgba(107, 90, 85, 0.08);
+}
+
+.gradient-button-outline:hover {
+  background: #ffffff;
+  border-color: #009770;
+  color: #009770;
+  box-shadow: 
+    0 6px 18px -2px rgba(0, 151, 112, 0.18),
+    0 0 10px 1px rgba(132, 248, 202, 0.25);
+  transform: translateY(-1.5px);
+}
+
+/* Vanilla Highlight Variant */
+.gradient-button-vanilla {
+  background: linear-gradient(135deg, #FFF96B 0%, #FFF637 60%, #E6DD19 100%);
+  color: #0A2A22;
+  border: 1px solid rgba(255, 246, 55, 0.8);
+  box-shadow: 
+    0 4px 14px -2px rgba(255, 246, 55, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.gradient-button-vanilla:hover {
+  box-shadow: 
+    0 8px 22px -2px rgba(255, 246, 55, 0.6),
+    0 0 12px 2px rgba(255, 246, 55, 0.4);
+  transform: translateY(-1.5px);
+}
+
+/* Ghost Variant */
+.gradient-button-ghost {
+  background: transparent;
+  color: #0A2A22;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.gradient-button-ghost:hover {
+  background: rgba(0, 151, 112, 0.08);
+  color: #009770;
+  border-color: rgba(0, 151, 112, 0.2);
 }
 
 .font-display {
