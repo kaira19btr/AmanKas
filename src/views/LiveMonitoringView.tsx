@@ -1,12 +1,21 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useState } from 'react';
-import { Transaction, Account } from '../types';
+import { Transaction, Account, AppMode, UserRole } from '../types';
 import { maskName } from '../utils/privacy';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { soundEngine } from '../utils/soundEffects';
+import { SadarText } from '../components/SadarText';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 interface LiveMonitoringViewProps {
   transactions: Transaction[];
   accounts: Account[];
+  mode: AppMode;
+  userRole: UserRole;
   onSelectTransaction: (trx: Transaction) => void;
   onNavigateToQueue: () => void;
   onNavigateToAccounts: () => void;
@@ -18,6 +27,8 @@ interface LiveMonitoringViewProps {
 export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
   transactions,
   accounts,
+  mode,
+  userRole,
   onSelectTransaction,
   onNavigateToQueue,
   onNavigateToAccounts,
@@ -25,46 +36,58 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
   streamingActive,
   setStreamingActive,
 }) => {
-  const [filterType, setFilterType] = useState<'Semua' | 'Perlu Ditinjau' | 'Segera Verifikasi'>('Semua');
+  const [filterType, setFilterType] = useState<'Semua' | 'Perlu ditinjau' | 'Prioritas tinggi'>('Semua');
   const [activeKpiInfo, setActiveKpiInfo] = useState<number | null>(null);
 
   // Compute live KPIs
   const totalToday = transactions.length;
   const reviewCount = transactions.filter((t) => t.status === 'Perlu ditinjau').length;
-  const criticalCount = transactions.filter((t) => t.status === 'Segera verifikasi').length;
-  const healthyAccountsCount = accounts.filter((a) => a.status === 'Wajar' || a.status === 'Dikecualikan (Nominal Tetap)').length;
+  const criticalCount = transactions.filter((t) => t.status === 'Prioritas tinggi').length;
+  const healthyAccountsCount = accounts.filter(
+    (a) => a.status === 'Hijau' || a.status === 'Dikecualikan (Nominal Tetap)'
+  ).length;
   const totalAccounts = accounts.length;
-  const healthyPercent = ((healthyAccountsCount / totalAccounts) * 100).toFixed(1);
+  const healthyPercent = totalAccounts > 0 ? ((healthyAccountsCount / totalAccounts) * 100).toFixed(1) : '100';
 
   // Filtered transactions for live table
   const displayedTransactions = transactions.filter((t) => {
-    if (filterType === 'Perlu Ditinjau') return t.status === 'Perlu ditinjau';
-    if (filterType === 'Segera Verifikasi') return t.status === 'Segera verifikasi';
+    if (filterType === 'Perlu ditinjau') return t.status === 'Perlu ditinjau';
+    if (filterType === 'Prioritas tinggi') return t.status === 'Prioritas tinggi';
     return true;
   });
 
-  // Top 3 urgent alerts for the right panel
-  const instantAlerts = transactions.filter((t) => t.status === 'Segera verifikasi' || t.status === 'Perlu ditinjau').slice(0, 3);
+  // Top urgent alerts
+  const instantAlerts = transactions
+    .filter((t) => t.status === 'Prioritas tinggi' || t.status === 'Perlu ditinjau')
+    .slice(0, 3);
 
   return (
     <div className="space-y-6">
-      {/* 1. Institutional Reminder Banner */}
-      <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/95 border border-[#F3D9CE] shadow-xs backdrop-blur-sm">
+      {/* 1. Institutional Position Statement Banner */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3 rounded-xl bg-white/95 border border-[#F3D9CE] shadow-xs backdrop-blur-sm gap-2">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-[#FFDBCF]/50 flex items-center justify-center text-[#86513D]">
-            <span className="material-symbols-outlined text-base">shield_with_heart</span>
+          <div className="w-8 h-8 rounded-lg bg-[#E0F4EE] flex items-center justify-center text-[#009770] shrink-0">
+            <span className="material-symbols-outlined text-lg">verified</span>
           </div>
-          <p className="text-xs font-medium text-[#0A2A22]">
-            <span className="font-semibold text-[#86513D]">Pedoman Integritas:</span> AmanKas hanya menandai. Keputusan akhir ada pada pengurus.
+          <p className="text-xs font-medium text-[#0A2A22] leading-tight flex items-center gap-1.5 flex-wrap">
+            <span className="font-bold text-[#009770] flex items-center gap-1">
+              <span>Prinsip</span>
+              <SadarText variant="light" className="text-xs font-black" />:
+            </span>
+            <span>
+              <SadarText variant="light" className="text-xs font-bold mr-1 inline-flex" /> adalah alat bantu pengendalian internal: bukan alat penindakan dan bukan pengganti auditor.
+            </span>
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="font-mono-tabular text-[#6B5A55] text-[11px]">SOP No. 04/KSP-MS/2025</span>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <span className="font-mono-tabular text-[#6B5A55] text-[11px] bg-[#FFF8F4] px-2 py-0.5 rounded border border-[#F3D9CE]">
+            Mode: {mode === 'koperasi' ? 'Koperasi Simpan Pinjam' : 'UMKM / Ritel'}
+          </span>
           <button
             onClick={onNavigateToQueue}
             className="text-[#009770] hover:underline font-semibold flex items-center gap-0.5 text-xs cursor-pointer"
           >
-            Pelajari Panduan
+            Antrean Tinjauan
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
         </div>
@@ -80,19 +103,19 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
             <div className="text-xs space-y-1">
               <div className="font-display font-bold text-sm text-[#0A2A22]">
                 {activeKpiInfo === 1 && 'Metrik: Total Transaksi Terpantau'}
-                {activeKpiInfo === 2 && 'Metrik: Antrean Transaksi Perlu Ditinjau (Skor 41–70)'}
-                {activeKpiInfo === 3 && 'Metrik: Anomali Kritis Segera Verifikasi (Skor 71–100)'}
-                {activeKpiInfo === 4 && 'Metrik: Indeks Kesehatan Akun Berbasis Benford’s Law'}
+                {activeKpiInfo === 2 && 'Metrik: Indikator Risiko - Perlu Ditinjau'}
+                {activeKpiInfo === 3 && 'Metrik: Indikator Risiko - Prioritas Tinggi'}
+                {activeKpiInfo === 4 && 'Metrik: Akun Terverifikasi Benford'}
               </div>
               <p className="text-[#6B5A55] leading-relaxed">
                 {activeKpiInfo === 1 &&
-                  'Seluruh arus transaksi simpanan, pinjaman, dan angsuran diproses real-time oleh model machine learning lokal tanpa jeda server eksternal.'}
+                  'Seluruh arus transaksi diproses di peramban tanpa pengiriman data mentah ke server eksternal, menjamin kerahasiaan buku kas.'}
                 {activeKpiInfo === 2 &&
-                  'Ditandai oleh kombinasi 60% Isolation Forest + 40% Red-Flags (pembulatan tidak lazim, penarikan malam hari di luar jam operasional, atau mendekati ambang batas otorisasi).'}
+                  'Transaksi dengan deviasi statistik moderat (persentil P90) atau terpicu aturan red-flag. Diteliti manusia tanpa sanksi otomatis.'}
                 {activeKpiInfo === 3 &&
-                  'Deviasi ekstrem multi-parameter atau terjadi pada akun dengan status Anomali Kuat (MAD > 0,015). Pengurus diwajibkan melakukan konfirmasi dokumen fisik/slip tanpa pembekuan dana otomatis.'}
+                  'Transaksi deviasi ekstrem (persentil P98) atau akumulasi red-flag. Pengurus/pemilik perlu memverifikasi dokumen pendukung.'}
                 {activeKpiInfo === 4 &&
-                  'Menggunakan standar Nigrini Mean Absolute Deviation (MAD). Akun wajar (MAD ≤ 0,012) mematuhi kurva logaritmik digit pertama log10(1 + 1/d). Akun nominal tetap dapat dikecualikan.'}
+                  'Uji digit pertama Benford (Chi-square & MAD). Akun bernominal tetap (angsuran/iuran) dikecualikan agar tidak menimbulkan bias.'}
               </p>
             </div>
           </div>
@@ -105,381 +128,282 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
         </div>
       )}
 
-      {/* 2. Top KPI 4-Card Bento Grid with Moving Animated Sparklines */}
+      {/* 2. Top KPI 4-Card Bento Grid */}
       <section aria-label="Ringkasan Indikator Kunci" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-        {/* Card 1: Transaksi Hari Ini */}
+        {/* Card 1: Transaksi Terpantau */}
         <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all relative group">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="font-mono-tabular text-[11px] text-[#6B5A55] uppercase tracking-wider font-semibold">
-                Transaksi Hari Ini
+                Transaksi Terpantau
               </span>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
-                  onClick={() => { soundEngine.playClick(900); setActiveKpiInfo(activeKpiInfo === 1 ? null : 1); }}
-                  className="w-6 h-6 rounded-md hover:bg-[#E0F4EE] text-[#6B5A55] hover:text-[#009770] flex items-center justify-center cursor-pointer"
-                  title="Lihat penjelasan informatif"
+                  onClick={() => setActiveKpiInfo(1)}
+                  className="w-5 h-5 rounded-full bg-[#FFF8F4] border border-[#F3D9CE] text-[#6B5A55] hover:text-[#009770] text-[11px] font-bold flex items-center justify-center cursor-pointer"
+                  title="Penjelasan Metrik"
                 >
-                  <span className="material-symbols-outlined text-sm">help</span>
+                  ?
                 </button>
-                <div className="w-8 h-8 rounded-lg bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
-                  <span className="material-symbols-outlined text-lg">receipt_long</span>
-                </div>
+                <span className="w-2 h-2 rounded-full bg-[#009770] animate-pulse"></span>
               </div>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl font-bold text-[#0A2A22]">
+              <span className="font-display text-3xl font-extrabold text-[#0A2A22]">
                 <AnimatedCounter value={totalToday} />
               </span>
-              <span className="font-mono-tabular text-xs text-[#6B5A55]">transaksi</span>
+              <span className="text-xs font-semibold text-[#009770] bg-[#E0F4EE] px-2 py-0.5 rounded-full font-mono-tabular">
+                {streamingActive ? 'Live Sync' : 'Jeda'}
+              </span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#F3D9CE]/60 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 font-mono-tabular text-xs text-[#009770] font-semibold">
-              <span className="material-symbols-outlined text-sm">trending_up</span>
-              <span>+14% vs kemarin</span>
-            </div>
-            {/* Moving Animated Sparkline SVG 1 */}
-            <div className="w-24 h-7 relative">
-              <svg className="w-full h-full fill-none" viewBox="0 0 100 30">
-                <path
-                  d="M 5 24 Q 25 22, 40 16 T 70 12 T 95 6"
-                  stroke="#009770"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="animate-spark-flow"
-                />
-                <circle cx="95" cy="6" r="4" fill="#009770" className="animate-ping opacity-75 origin-center" />
-                <circle cx="95" cy="6" r="3" fill="#009770" stroke="#FFFFFF" strokeWidth="1.5" />
-              </svg>
-            </div>
+          <div className="mt-4 pt-3 border-t border-[#F3D9CE]/60 flex items-center justify-between text-xs text-[#6B5A55]">
+            <span>Mode: {mode === 'koperasi' ? 'Buku Kas KSP' : 'POS / Mutasi Kas'}</span>
+            <button
+              onClick={() => {
+                soundEngine.playClick(streamingActive ? 400 : 800);
+                setStreamingActive(!streamingActive);
+              }}
+              className="text-[#009770] hover:underline font-semibold cursor-pointer"
+            >
+              {streamingActive ? 'Jeda Stream' : 'Lanjutkan'}
+            </button>
           </div>
         </div>
 
         {/* Card 2: Perlu Ditinjau */}
-        <div
-          onClick={() => { soundEngine.playClick(750); onNavigateToQueue(); }}
-          className="bg-gradient-to-br from-white via-white to-[#FFFDE6] backdrop-blur-md rounded-2xl p-5 border border-[#FFF637] shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer relative group"
-        >
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-mono-tabular text-[11px] text-[#6B5F00] uppercase tracking-wider font-semibold">
-                Perlu Ditinjau
+              <span className="font-mono-tabular text-[11px] text-[#86513D] uppercase tracking-wider font-semibold">
+                Perlu Ditinjau (P90)
               </span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); soundEngine.playClick(900); setActiveKpiInfo(activeKpiInfo === 2 ? null : 2); }}
-                  className="w-6 h-6 rounded-md hover:bg-[#FFF637]/60 text-[#6B5F00] flex items-center justify-center cursor-pointer"
-                  title="Lihat penjelasan informatif"
-                >
-                  <span className="material-symbols-outlined text-sm">help</span>
-                </button>
-                <div className="w-8 h-8 rounded-lg bg-[#FFF637] flex items-center justify-center text-[#6B5F00] shadow-xs">
-                  <span className="material-symbols-outlined text-lg font-bold">visibility</span>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => setActiveKpiInfo(2)}
+                className="w-5 h-5 rounded-full bg-[#FFF8F4] border border-[#F3D9CE] text-[#6B5A55] hover:text-[#86513D] text-[11px] font-bold flex items-center justify-center cursor-pointer"
+              >
+                ?
+              </button>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl font-bold text-[#6B5F00]">
+              <span className="font-display text-3xl font-extrabold text-[#86513D]">
                 <AnimatedCounter value={reviewCount} />
               </span>
-              <span className="font-mono-tabular text-xs text-[#6B5F00]/80">pola sedang</span>
+              <span className="text-xs font-semibold text-[#86513D] bg-[#FFE9DF] px-2 py-0.5 rounded-full font-mono-tabular">
+                Indikator Risiko
+              </span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#FFF637]/60 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 font-mono-tabular text-xs text-[#6B5F00] font-semibold">
-              <span className="material-symbols-outlined text-sm">schedule</span>
-              <span>Antrean tinjauan</span>
-            </div>
-            {/* Moving Animated Sparkline SVG 2 */}
-            <div className="w-24 h-7 relative">
-              <svg className="w-full h-full fill-none" viewBox="0 0 100 30">
-                <path
-                  d="M 5 18 Q 20 6, 35 19 T 65 14 T 95 18"
-                  stroke="#8C7D00"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="animate-spark-flow"
-                />
-                <circle cx="95" cy="18" r="4" fill="#8C7D00" className="animate-ping opacity-75 origin-center" />
-                <circle cx="95" cy="18" r="3" fill="#8C7D00" stroke="#FFFFFF" strokeWidth="1.5" />
-              </svg>
-            </div>
+          <div className="mt-4 pt-3 border-t border-[#F3D9CE]/60 flex items-center justify-between text-xs text-[#6B5A55]">
+            <span>Perlu evaluasi operasional</span>
+            <button
+              onClick={() => {
+                setFilterType('Perlu ditinjau');
+                onNavigateToQueue();
+              }}
+              className="text-[#86513D] hover:underline font-semibold cursor-pointer"
+            >
+              Buka Antrean &rarr;
+            </button>
           </div>
         </div>
 
-        {/* Card 3: Segera Verifikasi */}
-        <div
-          onClick={() => { soundEngine.playClick(600); onNavigateToQueue(); }}
-          className="bg-gradient-to-br from-white via-white to-[#FFF0F0] backdrop-blur-md rounded-2xl p-5 border border-[#CE2F2E]/40 shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer relative group"
-        >
+        {/* Card 3: Prioritas Tinggi */}
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#CE2F2E]/30 bg-gradient-to-br from-white via-white to-[#FDE8E8]/40 shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="font-mono-tabular text-[11px] text-[#CE2F2E] uppercase tracking-wider font-bold">
-                Segera Verifikasi
+                Prioritas Tinggi (P98)
               </span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); soundEngine.playClick(900); setActiveKpiInfo(activeKpiInfo === 3 ? null : 3); }}
-                  className="w-6 h-6 rounded-md hover:bg-[#FDE8E8] text-[#CE2F2E] flex items-center justify-center cursor-pointer"
-                  title="Lihat penjelasan informatif"
-                >
-                  <span className="material-symbols-outlined text-sm">help</span>
-                </button>
-                <div className="w-8 h-8 rounded-lg bg-[#FDE8E8] flex items-center justify-center text-[#CE2F2E]">
-                  <span className="material-symbols-outlined text-lg font-bold">priority_high</span>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => setActiveKpiInfo(3)}
+                className="w-5 h-5 rounded-full bg-[#FDE8E8] border border-[#CE2F2E]/30 text-[#CE2F2E] text-[11px] font-bold flex items-center justify-center cursor-pointer"
+              >
+                ?
+              </button>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl font-bold text-[#CE2F2E]">
+              <span className="font-display text-3xl font-extrabold text-[#CE2F2E]">
                 <AnimatedCounter value={criticalCount} />
               </span>
-              <span className="font-mono-tabular text-xs text-[#CE2F2E]/80">ancaman tinggi</span>
+              <span className="text-xs font-bold text-[#CE2F2E] bg-[#FDE8E8] px-2 py-0.5 rounded-full font-mono-tabular">
+                Verifikasi Dokumen
+              </span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#CE2F2E]/30 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 font-mono-tabular text-xs text-[#CE2F2E] font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#CE2F2E] radar-pulse-red" />
-              <span>Tindakan segera</span>
-            </div>
-            {/* Moving Animated Sparkline SVG 3 */}
-            <div className="w-24 h-7 relative">
-              <svg className="w-full h-full fill-none" viewBox="0 0 100 30">
-                <path
-                  d="M 5 22 L 30 20 L 50 24 L 70 6 L 85 18 L 95 9"
-                  stroke="#CE2F2E"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="animate-spark-flow"
-                />
-                <circle cx="95" cy="9" r="4" fill="#CE2F2E" className="animate-ping opacity-75 origin-center" />
-                <circle cx="95" cy="9" r="3" fill="#CE2F2E" stroke="#FFFFFF" strokeWidth="1.5" />
-              </svg>
-            </div>
+          <div className="mt-4 pt-3 border-t border-[#CE2F2E]/20 flex items-center justify-between text-xs text-[#CE2F2E]">
+            <span>Tanpa sanksi otomatis</span>
+            <button
+              onClick={() => {
+                setFilterType('Prioritas tinggi');
+                onNavigateToQueue();
+              }}
+              className="text-[#CE2F2E] hover:underline font-bold cursor-pointer"
+            >
+              Tinjau Sekarang &rarr;
+            </button>
           </div>
         </div>
 
-        {/* Card 4: Akun Sehat */}
-        <div
-          onClick={() => { soundEngine.playClick(850); onNavigateToAccounts(); }}
-          className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer relative group"
-        >
+        {/* Card 4: Kepatuhan Akun */}
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-mono-tabular text-[11px] text-[#6B5A55] uppercase tracking-wider font-semibold">
-                Akun Sehat
+              <span className="font-mono-tabular text-[11px] text-[#009770] uppercase tracking-wider font-semibold">
+                Kesehatan Akun (Benford)
               </span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); soundEngine.playClick(900); setActiveKpiInfo(activeKpiInfo === 4 ? null : 4); }}
-                  className="w-6 h-6 rounded-md hover:bg-[#E0F4EE] text-[#6B5A55] hover:text-[#009770] flex items-center justify-center cursor-pointer"
-                  title="Lihat penjelasan informatif"
-                >
-                  <span className="material-symbols-outlined text-sm">help</span>
-                </button>
-                <div className="w-8 h-8 rounded-lg bg-[#E0F4EE] flex items-center justify-center text-[#009770]">
-                  <span className="material-symbols-outlined text-lg">verified_user</span>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => setActiveKpiInfo(4)}
+                className="w-5 h-5 rounded-full bg-[#FFF8F4] border border-[#F3D9CE] text-[#6B5A55] hover:text-[#009770] text-[11px] font-bold flex items-center justify-center cursor-pointer"
+              >
+                ?
+              </button>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl font-bold text-[#0A2A22]">
-                <AnimatedCounter value={healthyAccountsCount} />
+              <span className="font-display text-3xl font-extrabold text-[#009770]">{healthyPercent}%</span>
+              <span className="text-xs font-semibold text-[#009770] bg-[#E0F4EE] px-2 py-0.5 rounded-full font-mono-tabular">
+                {healthyAccountsCount}/{totalAccounts} Akun
               </span>
-              <span className="font-display text-lg text-[#6B5A55] font-medium">/ {totalAccounts} akun</span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-[#F3D9CE]/60 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 font-mono-tabular text-xs text-[#009770] font-semibold">
-              <span className="material-symbols-outlined text-sm">check_circle</span>
-              <span>
-                <AnimatedCounter value={parseFloat(healthyPercent)} decimals={1} suffix="% aman terkendali" />
-              </span>
-            </div>
-            {/* Moving Animated Sparkline SVG 4 */}
-            <div className="w-24 h-7 relative">
-              <svg className="w-full h-full fill-none" viewBox="0 0 100 30">
-                <path
-                  d="M 5 18 Q 30 15, 55 16 T 95 12"
-                  stroke="#009770"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="animate-spark-flow"
-                />
-                <circle cx="95" cy="12" r="4" fill="#009770" className="animate-ping opacity-75 origin-center" />
-                <circle cx="95" cy="12" r="3" fill="#009770" stroke="#FFFFFF" strokeWidth="1.5" />
-              </svg>
-            </div>
+          <div className="mt-4 pt-3 border-t border-[#F3D9CE]/60 flex items-center justify-between text-xs text-[#6B5A55]">
+            <span>Uji Chi-square &amp; MAD</span>
+            <button
+              onClick={onNavigateToAccounts}
+              className="text-[#009770] hover:underline font-semibold cursor-pointer"
+            >
+              Detail Akun &rarr;
+            </button>
           </div>
         </div>
       </section>
 
-      {/* 3. Middle Section: Live Stream Table (2/3) + Instant Alerts (1/3) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left (2/3): Live Transaction Feed */}
-        <section className="lg:col-span-2 bg-white/95 backdrop-blur-md rounded-2xl border border-[#F3D9CE] shadow-xs flex flex-col overflow-hidden">
-          {/* Header Umpan */}
-          <div className="p-5 border-b border-[#F3D9CE] flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <span className="font-display text-base font-bold text-[#0A2A22]">
-                  Umpan Transaksi Langsung
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[11px] font-bold">
-                  <span className={`w-2 h-2 rounded-full ${streamingActive ? 'bg-[#009770] radar-pulse-green' : 'bg-gray-400'}`} />
-                  {streamingActive ? 'LIVE' : 'PAUSED'}
-                </span>
-              </div>
-              <span className="font-body text-xs text-[#6B5A55] hidden sm:inline">
-                | Telemetri Real-Time
-              </span>
+      {/* 3. Main Split View: Stream Table & Urgent Panel */}
+      <div className="grid grid-cols-12 gap-6 items-start">
+        {/* Left Column: Live Stream Table (8 cols) */}
+        <section className="col-span-12 lg:col-span-8 bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="font-display text-base font-bold text-[#0A2A22]">
+                Aliran Transaksi Terkini
+              </h2>
+              <p className="text-xs text-[#6B5A55]">
+                {mode === 'koperasi' ? 'Buku kas dan pergerakan dana simpan pinjam' : 'Transaksi kasir POS, QRIS, dan mutasi kas'}
+              </p>
             </div>
 
-            {/* Filter buttons & Pause/Play */}
-            <div className="flex items-center gap-2">
-              <div className="inline-flex p-1 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] text-xs font-mono-tabular">
-                {(['Semua', 'Perlu Ditinjau', 'Segera Verifikasi'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setFilterType(tab)}
-                    className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-                      filterType === tab
-                        ? 'bg-white font-semibold text-[#009770] shadow-xs'
-                        : 'text-[#6B5A55] hover:text-[#0A2A22]'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-
+            {/* Filter Tabs */}
+            <div className="flex items-center gap-1.5 p-1 bg-[#FFF8F4] rounded-xl border border-[#F3D9CE] text-xs font-medium">
               <button
-                onClick={() => setStreamingActive(!streamingActive)}
-                className="w-8 h-8 rounded-lg border border-[#F3D9CE] flex items-center justify-center text-[#6B5A55] hover:text-[#009770] hover:bg-[#E0F4EE] cursor-pointer"
-                title={streamingActive ? 'Jeda Stream' : 'Lanjutkan Stream'}
+                onClick={() => setFilterType('Semua')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  filterType === 'Semua' ? 'bg-[#009770] text-white font-semibold shadow-xs' : 'text-[#6B5A55] hover:text-[#0A2A22]'
+                }`}
               >
-                <span className="material-symbols-outlined text-base">
-                  {streamingActive ? 'pause' : 'play_arrow'}
-                </span>
+                Semua ({transactions.length})
+              </button>
+              <button
+                onClick={() => setFilterType('Perlu ditinjau')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  filterType === 'Perlu ditinjau'
+                    ? 'bg-[#86513D] text-white font-semibold shadow-xs'
+                    : 'text-[#6B5A55] hover:text-[#0A2A22]'
+                }`}
+              >
+                Perlu Ditinjau ({reviewCount})
+              </button>
+              <button
+                onClick={() => setFilterType('Prioritas tinggi')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  filterType === 'Prioritas tinggi'
+                    ? 'bg-[#CE2F2E] text-white font-semibold shadow-xs'
+                    : 'text-[#6B5A55] hover:text-[#0A2A22]'
+                }`}
+              >
+                Prioritas Tinggi ({criticalCount})
               </button>
             </div>
           </div>
 
-          {/* Interactive Transactions Table */}
-          <div className="overflow-x-auto max-h-[460px]">
-            <table className="w-full text-left border-collapse">
-              <thead className="sticky top-0 bg-[#FFF8F4] z-10 shadow-xs">
-                <tr className="border-b border-[#F3D9CE] text-[11px] font-mono-tabular font-semibold uppercase text-[#6B5A55] tracking-wider">
-                  <th className="py-3 px-4">Waktu</th>
-                  <th className="py-3 px-4">Akun &amp; Anggota</th>
-                  <th className="py-3 px-4">Keterangan</th>
-                  <th className="py-3 px-4 text-right">Nominal</th>
-                  <th className="py-3 px-4 text-center">Skor Risiko</th>
-                  <th className="py-3 px-4 text-center">Status</th>
-                  <th className="py-3 px-4 text-center">Aksi</th>
+          {/* Table Container */}
+          <div className="overflow-x-auto rounded-xl border border-[#F3D9CE]/70 max-h-[520px]">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-[#FFF8F4] text-[#6B5A55] font-semibold sticky top-0 z-10 border-b border-[#F3D9CE]">
+                <tr>
+                  <th className="py-2.5 px-3">Waktu</th>
+                  <th className="py-2.5 px-3">ID / Entitas</th>
+                  <th className="py-2.5 px-3">Akun / Pos</th>
+                  <th className="py-2.5 px-3 text-right">Nominal</th>
+                  <th className="py-2.5 px-3 text-center">Skor Risiko</th>
+                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#F3D9CE]/60 text-xs">
-                {displayedTransactions.slice(0, 10).map((trx) => {
-                  const isCritical = trx.status === 'Segera verifikasi';
-                  const isReview = trx.status === 'Perlu ditinjau';
+              <tbody className="divide-y divide-[#F3D9CE]/50">
+                {displayedTransactions.slice(0, 30).map((t) => {
+                  const isCritical = t.status === 'Prioritas tinggi';
+                  const isReview = t.status === 'Perlu ditinjau';
+                  const rowBg = isCritical
+                    ? 'bg-[#FDE8E8]/30 hover:bg-[#FDE8E8]/60'
+                    : isReview
+                    ? 'bg-[#FFE9DF]/20 hover:bg-[#FFE9DF]/50'
+                    : 'hover:bg-[#FFF8F4]/80';
 
                   return (
-                    <tr
-                      key={trx.id}
-                      className={`transition-colors hover:bg-[#F3FAF7] ${
-                        isCritical ? 'bg-[#FFEAEA]/60 border-l-4 border-[#CE2F2E]' : isReview ? 'bg-[#FFFDE8]/30 border-l-4 border-[#6B5F00]' : ''
-                      }`}
-                    >
-                      <td className="py-3 px-4 font-mono-tabular text-[#0A2A22] whitespace-nowrap">
-                        {trx.timestamp}
-                        {isCritical && (
-                          <span className="block text-[10px] text-[#CE2F2E] font-medium">Tengah Malam</span>
-                        )}
+                    <tr key={t.id} className={`transition-colors ${rowBg}`}>
+                      <td className="py-2.5 px-3 font-mono-tabular text-[#6B5A55] whitespace-nowrap">
+                        {t.timestamp}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-2.5 px-3">
                         <div className="font-semibold text-[#0A2A22]">
-                          {maskName(trx.memberName, isMasked)}
+                          {isMasked ? maskName(t.memberName) : t.memberName}
                         </div>
-                        <div className="text-[11px] font-mono-tabular text-[#6B5A55]">
-                          {trx.accountId} · {trx.memberId}
-                        </div>
+                        <div className="text-[10px] font-mono-tabular text-[#6B5A55]">{t.memberId}</div>
                       </td>
-                      <td className="py-3 px-4 max-w-[200px]">
-                        <span className="font-medium text-[#0A2A22] block truncate">
-                          {trx.description}
+                      <td className="py-2.5 px-3">
+                        <div className="text-[#0A2A22] font-medium truncate max-w-[140px]">{t.accountName}</div>
+                        <div className="text-[10px] font-mono-tabular text-[#6B5A55]">{t.accountId}</div>
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono-tabular font-bold text-[#0A2A22] whitespace-nowrap">
+                        Rp {new Intl.NumberFormat('id-ID').format(t.amount)}
+                      </td>
+                      <td className="py-2.5 px-3 text-center">
+                        <span
+                          className={`font-mono-tabular px-2 py-0.5 rounded text-[11px] font-bold ${
+                            isCritical
+                              ? 'bg-[#FDE8E8] text-[#CE2F2E] border border-[#CE2F2E]/30'
+                              : isReview
+                              ? 'bg-[#FFE9DF] text-[#86513D] border border-[#86513D]/30'
+                              : 'bg-[#E0F4EE] text-[#009770]'
+                          }`}
+                        >
+                          {t.finalScore}
                         </span>
-                        <span className={`block text-[10px] truncate ${isCritical ? 'text-[#CE2F2E]' : isReview ? 'text-[#6B5F00]' : 'text-[#6B5A55]'}`}>
-                          {trx.flagReasons[0] || trx.channel}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
+                            isCritical
+                              ? 'bg-[#CE2F2E] text-white'
+                              : isReview
+                              ? 'bg-[#86513D] text-white'
+                              : 'bg-[#009770]/15 text-[#00694D]'
+                          }`}
+                        >
+                          {t.status}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-right font-mono-tabular font-bold text-[#0A2A22] whitespace-nowrap">
-                        Rp {new Intl.NumberFormat('id-ID').format(trx.amount)}
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <div className="inline-flex flex-col items-center gap-1 w-16">
-                          <span
-                            className={`font-mono-tabular font-bold text-[11px] ${
-                              isCritical ? 'text-[#CE2F2E]' : isReview ? 'text-[#6B5F00]' : 'text-[#009770]'
-                            }`}
-                          >
-                            {trx.finalScore}/100
-                          </span>
-                          <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${
-                                isCritical ? 'bg-[#CE2F2E]' : isReview ? 'bg-[#6B5F00]' : 'bg-[#009770]'
-                              }`}
-                              style={{ width: `${Math.min(100, Math.max(5, trx.finalScore))}%` }}
-                            />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-center whitespace-nowrap">
-                        {isCritical ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FDE8E8] text-[#CE2F2E] font-mono-tabular font-bold text-[10px] border border-[#CE2F2E]/30">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#CE2F2E] radar-pulse-red" />
-                            Segera Verifikasi
-                          </span>
-                        ) : isReview ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFF637] text-[#6B5F00] font-mono-tabular font-bold text-[10px] border border-[#6B5F00]/30">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#6B5F00]" />
-                            Perlu Ditinjau
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular font-bold text-[10px]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#009770]" />
-                            Normal
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        {isCritical || isReview ? (
-                          <button
-                            onClick={() => {
-                              onSelectTransaction(trx);
-                              onNavigateToQueue();
-                            }}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-mono-tabular font-semibold shadow-xs cursor-pointer ${
-                              isCritical
-                                ? 'bg-[#CE2F2E] text-white hover:bg-[#b51b1f]'
-                                : 'bg-[#FFF637] text-[#6B5F00] hover:bg-[#FFE920] border border-[#6B5F00]/40'
-                            }`}
-                          >
-                            Tinjau
-                          </button>
-                        ) : (
-                          <span className="text-[#6B5A55] text-xs font-mono-tabular">Wajar</span>
-                        )}
+                      <td className="py-2.5 px-3 text-center">
+                        <button
+                          onClick={() => onSelectTransaction(t)}
+                          className="px-2.5 py-1 rounded bg-white hover:bg-[#E0F4EE] text-[#009770] font-semibold border border-[#009770]/30 hover:border-[#009770] transition-colors cursor-pointer text-[11px]"
+                        >
+                          Detail
+                        </button>
                       </td>
                     </tr>
                   );
@@ -487,238 +411,85 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
               </tbody>
             </table>
           </div>
+        </section>
 
-          {/* Footer Tabel */}
-          <div className="p-3 px-5 bg-[#FFF8F4]/70 border-t border-[#F3D9CE] flex items-center justify-between font-mono-tabular text-xs text-[#6B5A55]">
-            <span>Menampilkan {Math.min(10, displayedTransactions.length)} dari {transactions.length} transaksi hari ini</span>
+        {/* Right Column: Top Urgent Alerts & SOP Checklist (4 cols) */}
+        <section className="col-span-12 lg:col-span-4 space-y-4">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-[#F3D9CE] shadow-xs">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-display text-sm font-bold text-[#0A2A22]">
+                Peringatan Indikator Teratas
+              </h3>
+              <span className="text-[10px] font-mono-tabular bg-[#FFE9DF] text-[#86513D] px-2 py-0.5 rounded font-bold">
+                Prioritas
+              </span>
+            </div>
+
+            {instantAlerts.length === 0 ? (
+              <div className="p-6 text-center text-xs text-[#6B5A55]">
+                <span className="material-symbols-outlined text-2xl text-[#009770] block mb-1">check_circle</span>
+                Tidak ada peringatan prioritas saat ini. Semua transaksi dalam ambang wajar.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {instantAlerts.map((alt) => (
+                  <div
+                    key={alt.id}
+                    className="p-3 rounded-xl border border-[#F3D9CE] bg-[#FFF8F4]/60 hover:bg-[#FFF8F4] transition-all cursor-pointer"
+                    onClick={() => onSelectTransaction(alt)}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className={`w-2 h-2 rounded-full ${
+                              alt.status === 'Prioritas tinggi' ? 'bg-[#CE2F2E]' : 'bg-[#86513D]'
+                            }`}
+                          />
+                          <span className="font-semibold text-xs text-[#0A2A22]">
+                            {isMasked ? maskName(alt.memberName) : alt.memberName}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-[#6B5A55] font-mono-tabular mt-0.5">
+                          {alt.accountName} &bull; Rp {new Intl.NumberFormat('id-ID').format(alt.amount)}
+                        </div>
+                      </div>
+                      <span className="font-mono-tabular text-xs font-bold text-[#CE2F2E] bg-white px-2 py-0.5 rounded border border-[#CE2F2E]/30">
+                        {alt.finalScore}
+                      </span>
+                    </div>
+
+                    {alt.flagReasons && alt.flagReasons.length > 0 && (
+                      <div className="mt-2 text-[10px] text-[#86513D] bg-white/80 p-1.5 rounded border border-[#F3D9CE]">
+                        {alt.flagReasons[0]}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
             <button
               onClick={onNavigateToQueue}
-              className="text-[#009770] hover:underline font-semibold inline-flex items-center gap-1 cursor-pointer"
+              className="w-full mt-4 py-2 rounded-xl bg-[#009770] hover:bg-[#008260] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer"
             >
               Buka Semua Antrean Tinjauan
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
-        </section>
 
-        {/* Right (1/3): Notifikasi Instan */}
-        <aside className="space-y-4">
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#F3D9CE] p-5 shadow-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F3D9CE]">
-              <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-sm text-[#0A2A22]">
-                  Notifikasi Instan
-                </span>
-                <span className="w-2 h-2 rounded-full bg-[#CE2F2E] radar-pulse-red" />
-              </div>
-              <span className="px-2 py-0.5 rounded-full bg-[#FDE8E8] text-[#CE2F2E] font-mono-tabular text-xs font-bold">
-                {instantAlerts.length} Kasus
-              </span>
+          {/* SOP Compliance Card */}
+          <div className="bg-gradient-to-br from-[#FFF8F4] to-white rounded-2xl p-4 border border-[#F3D9CE] text-xs space-y-2">
+            <div className="flex items-center gap-2 text-[#009770] font-bold text-xs">
+              <span className="material-symbols-outlined text-base">policy</span>
+              Standar Operasional Tinjauan
             </div>
-
-            {/* Alert items */}
-            <div className="mt-4 space-y-3.5">
-              {instantAlerts.map((alert, idx) => {
-                const isCrit = alert.status === 'Segera verifikasi';
-                return (
-                  <div
-                    key={alert.id}
-                    className={`p-3.5 rounded-xl border-l-4 shadow-xs transition-all ${
-                      isCrit
-                        ? 'bg-[#FFF2F2] border-l-[#CE2F2E] border-t border-r border-b border-[#F8D2D2]'
-                        : 'bg-[#FFFDE8] border-l-[#6B5F00] border-t border-r border-b border-[#EEDC9A]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        className={`inline-flex items-center gap-1 text-[11px] font-mono-tabular font-bold ${
-                          isCrit ? 'text-[#CE2F2E]' : 'text-[#6B5F00]'
-                        }`}
-                      >
-                        <span className="material-symbols-outlined text-sm">
-                          {isCrit ? 'emergency' : 'sync_problem'}
-                        </span>
-                        {isCrit ? 'KRITIS · SEGERA TINDAK' : 'POLA ANOMALI SEDANG'}
-                      </span>
-                      <span className="text-[10px] font-mono-tabular text-[#6B5A55]">
-                        {alert.timestamp}
-                      </span>
-                    </div>
-
-                    <h4 className="font-display text-sm font-bold text-[#0A2A22] leading-snug">
-                      Transaksi Rp {new Intl.NumberFormat('id-ID').format(alert.amount)} ({alert.id})
-                    </h4>
-
-                    <p className="text-xs text-[#6B5A55] mt-1 leading-snug">
-                      Akun: <span className="font-semibold text-[#0A2A22]">{maskName(alert.memberName, isMasked)}</span> ({alert.accountId}). {alert.flagReasons[0] || 'Perlu evaluasi pengurus.'}
-                    </p>
-
-                    <div className="mt-3 flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          onSelectTransaction(alert);
-                          onNavigateToQueue();
-                        }}
-                        className={`px-3 py-1.5 rounded-lg text-white font-mono-tabular text-xs font-semibold shadow-xs flex-1 transition-all cursor-pointer ${
-                          isCrit ? 'bg-[#CE2F2E] hover:bg-[#b51b1f]' : 'bg-[#009770] hover:bg-[#008562]'
-                        }`}
-                      >
-                        Tinjau Sekarang
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-[#F3D9CE] text-center">
-              <button
-                onClick={onNavigateToQueue}
-                className="text-[#009770] hover:underline font-mono-tabular font-semibold text-xs inline-flex items-center gap-1.5 cursor-pointer"
-              >
-                Buka Semua Antrean Tinjauan
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      {/* 4. Bottom Section: 7-Day Cooperative Risk Score Trend (Area Chart SVG) */}
-      <section className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#F3D9CE] p-6 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-[#F3D9CE]">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-display text-lg font-bold text-[#0A2A22]">
-                Tren Skor Risiko 7 Hari Koperasi
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-xs font-bold">
-                Model Hybrid Isolation Forest + Benford
-              </span>
-            </div>
-            <p className="text-xs text-[#6B5A55] mt-0.5">
-              Agregasi anomali transaksi harian terhadap ambang batas kepatuhan KSP Mitra Sejahtera.
+            <p className="text-[#6B5A55] text-[11px] leading-relaxed">
+              Hasil analisis SADAR hanya merupakan indikator risiko pendukung. Seluruh tindak lanjut wajib mengonfirmasi bukti fisik transaksi dan tidak dapat dijadikan dasar tunggal pembekuan sepihak.
             </p>
           </div>
-
-          {/* Compliant telemetry indicators (NO false detection accuracy claims!) */}
-          <div className="flex items-center gap-5">
-            <div className="text-right">
-              <span className="font-mono-tabular text-[#6B5A55] block text-[11px] uppercase">
-                Cakupan Surveilans
-              </span>
-              <span className="font-mono-tabular text-base font-bold text-[#009770]">
-                100% Transaksi
-              </span>
-            </div>
-            <div className="h-8 w-px bg-[#F3D9CE]" />
-            <div className="text-right">
-              <span className="font-mono-tabular text-[#6B5A55] block text-[11px] uppercase">
-                Respon Rata-Rata
-              </span>
-              <span className="font-mono-tabular text-base font-bold text-[#0A2A22]">
-                4.2 menit
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* SVG Area Chart Canvas */}
-        <div className="mt-6 relative">
-          {/* Floating Tooltip */}
-          <div className="absolute right-12 top-6 bg-white border border-[#009770] rounded-xl p-2.5 shadow-lg z-10 pointer-events-none hidden sm:block">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#009770]" />
-              <span className="font-mono-tabular font-bold text-xs text-[#0A2A22]">
-                Hari Ini (Puncak Terkendali)
-              </span>
-            </div>
-            <div className="text-[11px] text-[#6B5A55] mt-1 font-mono-tabular">
-              Skor Risiko Koperasi: <strong className="text-[#009770]">28 / 100</strong> (Terkendali)
-            </div>
-          </div>
-
-          <div className="w-full h-56">
-            <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 240">
-              <defs>
-                <linearGradient id="jadeGradientLive" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#009770" stopOpacity="0.32" />
-                  <stop offset="60%" stopColor="#00B386" stopOpacity="0.10" />
-                  <stop offset="100%" stopColor="#00B386" stopOpacity="0.00" />
-                </linearGradient>
-                <linearGradient id="thresholdLineLive" x1="0" x2="1" y1="0" y2="0">
-                  <stop offset="0%" stopColor="#CE2F2E" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#CE2F2E" stopOpacity="0.8" />
-                </linearGradient>
-              </defs>
-
-              {/* Grid Lines */}
-              <line stroke="#F3D9CE" strokeDasharray="4 4" strokeWidth="1" x1="0" x2="1000" y1="30" y2="30" />
-              <line stroke="#F3D9CE" strokeDasharray="4 4" strokeWidth="1" x1="0" x2="1000" y1="90" y2="90" />
-              <line stroke="#F3D9CE" strokeDasharray="4 4" strokeWidth="1" x1="0" x2="1000" y1="150" y2="150" />
-              <line stroke="#F3D9CE" strokeWidth="1" x1="0" x2="1000" y1="210" y2="210" />
-
-              {/* Threshold line at Score 60 (y=90) */}
-              <line stroke="url(#thresholdLineLive)" strokeWidth="1.5" x1="0" x2="1000" y1="90" y2="90" />
-              <text className="text-[10px] font-mono-tabular font-semibold" fill="#CE2F2E" x="10" y="84">
-                Garis Batas Intervensi Pengurus (Skor 60)
-              </text>
-
-              {/* Filled Area Under Curve */}
-              <path
-                d="M 50 185 C 110 183, 140 178, 200 178 C 260 178, 290 188, 350 188 C 410 188, 440 170, 500 170 C 560 170, 590 176, 650 176 C 710 176, 740 183, 800 183 C 860 183, 900 159, 950 159 L 950 210 L 50 210 Z"
-                fill="url(#jadeGradientLive)"
-              />
-
-              {/* Moving Real-time Scanning Radar Laser Beam */}
-              <line
-                x1="0"
-                y1="30"
-                x2="0"
-                y2="210"
-                stroke="#00B386"
-                strokeWidth="2"
-                strokeDasharray="4 2"
-                className="animate-[graphScan_5s_ease-in-out_infinite] pointer-events-none"
-              />
-
-              {/* Curve Stroke with flowing moving pulse */}
-              <path
-                d="M 50 185 C 110 183, 140 178, 200 178 C 260 178, 290 188, 350 188 C 410 188, 440 170, 500 170 C 560 170, 590 176, 650 176 C 710 176, 740 183, 800 183 C 860 183, 900 159, 950 159"
-                fill="none"
-                stroke="#009770"
-                strokeLinecap="round"
-                strokeWidth="3.5"
-                className="animate-spark-flow"
-              />
-
-              {/* Point Markers with Live Animated Radar Waves */}
-              <circle cx="50" cy="185" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle cx="200" cy="178" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle cx="350" cy="188" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle cx="500" cy="170" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle cx="650" cy="176" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle cx="800" cy="183" fill="#009770" r="4" stroke="#FFFFFF" strokeWidth="2" />
-              
-              {/* Today's Peak with Animated Pulsing Waves */}
-              <circle cx="950" cy="159" r="14" fill="#009770" className="animate-ping opacity-40 origin-center" />
-              <circle cx="950" cy="159" fill="#009770" fillOpacity="0.3" r="9" />
-              <circle cx="950" cy="159" fill="#009770" r="5" stroke="#FFFFFF" strokeWidth="2.5" />
-            </svg>
-          </div>
-
-          {/* Horizontal X Axis */}
-          <div className="grid grid-cols-7 text-center pt-2 font-mono-tabular text-xs text-[#6B5A55] font-medium">
-            <span>Senin (14)</span>
-            <span>Selasa (18)</span>
-            <span>Rabu (12)</span>
-            <span>Kamis (22)</span>
-            <span>Jumat (19)</span>
-            <span>Sabtu (15)</span>
-            <span className="text-[#009770] font-bold">Hari Ini (28)</span>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };

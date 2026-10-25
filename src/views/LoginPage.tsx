@@ -4,9 +4,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { AmanKasLogo } from '../components/AmanKasLogo';
+import { SadarLogo } from '../components/SadarLogo';
+import { SadarText } from '../components/SadarText';
 import { soundEngine } from '../utils/soundEffects';
 import { AnimatedCounter } from '../components/AnimatedCounter';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 interface LoginPageProps {
   onLoginSuccess: (userRole?: string) => void;
@@ -120,7 +122,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   const bootMessages = [
-    'Menginisialisasi Kernel AI AmanKas Neural Engine...',
+    'Menginisialisasi Kernel SADAR Explainable AI Engine...',
     'Memuat Model Isolation Forest (35 Pohon Anomali)...',
     'Sinkronisasi Vektor Uji Nigrini (Benford MAD Multi-Akun)...',
     'Otentikasi Kredensial & Enkripsi Kunci Sesi AES-256...',
@@ -136,20 +138,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({
       <div className="absolute inset-0 bg-[radial-gradient(#009770_0.75px,transparent_0.75px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
 
       {/* Top Bar for Login */}
-      <header className="px-8 py-5 flex items-center justify-between border-b border-[#F3D9CE]/60 bg-white/70 backdrop-blur-md relative z-10">
+      <header className="px-8 py-5 flex items-center justify-between border-b border-[#00B386]/30 bg-[#031B15]/95 backdrop-blur-md relative z-10 text-white">
         <div className="flex items-center gap-3.5 cursor-pointer" onClick={() => { soundEngine.playClick(600); onDirectToLanding(); }}>
-          <AmanKasLogo size="md" animated={true} />
+          <SadarLogo size="md" animated={true} variant="dark" />
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-base text-[#0A2A22] tracking-tight leading-none">
-                AmanKas
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[9px] font-bold border border-[#009770]/30 uppercase tracking-wider">
-                DETEKSI DINI FRAUD
+              <SadarText variant="dark" className="text-xl leading-none" />
+              <span className="px-2 py-0.5 rounded-full bg-[#009770]/30 text-[#84F8CA] font-mono-tabular text-[9px] font-bold border border-[#84F8CA]/40 uppercase tracking-wider">
+                Explainable AI
               </span>
             </div>
-            <span className="font-mono-tabular text-[10px] text-[#6B5A55] tracking-wide mt-0.5">
-              Pemantauan Pembukuan Koperasi &amp; UMKM
+            <span className="font-mono-tabular text-gray-400 text-[10px] tracking-wide mt-0.5">
+              Pengendalian internal koperasi dan UMKM yang dapat dijelaskan
             </span>
           </div>
         </div>
@@ -161,7 +161,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               soundEngine.playClick(720);
               onDirectToLanding();
             }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-[#E0F4EE] text-[#009770] border border-[#009770]/30 font-mono-tabular text-xs font-semibold shadow-xs transition-all cursor-pointer group active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-[#009770]/25 text-[#84F8CA] border border-[#00B386]/40 font-mono-tabular text-xs font-semibold shadow-xs transition-all cursor-pointer group active:scale-95"
           >
             <span>Kembali ke Landing Page</span>
             <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
@@ -177,24 +177,22 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           {/* Top Decorative Amber Line with scan glow */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#009770] via-[#00B386] to-[#FFF637]" />
 
-          {/* Centered Animative AmanKas Logo matching Menu */}
+          {/* Centered Animative Sadar Logo matching Menu */}
           <div className="flex flex-col items-center text-center mb-6">
             <div className="p-3 rounded-2xl bg-gradient-to-b from-[#E0F4EE]/70 to-white border border-[#F3D9CE] shadow-sm mb-3 relative group">
-              <AmanKasLogo size="lg" animated={true} />
+              <SadarLogo size="lg" animated={true} />
               <div className="absolute -inset-1 rounded-3xl bg-[#009770]/15 filter blur-sm -z-10 group-hover:bg-[#009770]/25 transition-all" />
             </div>
 
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="font-display font-bold text-2xl text-[#0A2A22] tracking-tight">
-                AmanKas
-              </h1>
+              <SadarText variant="light" className="text-3xl font-black tracking-tight" />
               <span className="px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[10px] font-bold border border-[#009770]/30 uppercase tracking-wider">
-                DETEKSI DINI FRAUD
+                Explainable AI
               </span>
             </div>
 
             <p className="text-xs text-[#6B5A55] max-w-xs leading-relaxed">
-              Pemantauan Pembukuan Koperasi &amp; UMKM · Gerbang Akses Terotentikasi
+              Pengendalian internal koperasi dan UMKM yang dapat dijelaskan · Gerbang Akses Terotentikasi
             </p>
           </div>
 
@@ -339,10 +337,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </div>
 
             {/* Futuristic Submit Button */}
-            <button
+            <GradientButton
               type="submit"
               disabled={isAiBooting}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#009770] via-[#00B386] to-[#009770] hover:brightness-105 text-white font-display font-bold text-sm shadow-md shadow-[#009770]/25 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98 disabled:opacity-75 group relative overflow-hidden"
+              size="full"
+              variant="default"
+              className="group relative overflow-hidden"
             >
               {/* Animated reflective shine effect */}
               <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-[shimmer_2.5s_infinite]" />
@@ -354,22 +354,24 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
                 arrow_forward
               </span>
-            </button>
+            </GradientButton>
           </form>
 
           {/* Quick Landing Direct Link */}
           <div className="mt-5 text-center pt-4 border-t border-[#F3D9CE]">
-            <button
+            <GradientButton
               type="button"
+              variant="outline"
+              size="sm"
               onClick={() => {
                 soundEngine.playClick(640);
                 onDirectToLanding();
               }}
-              className="text-xs text-[#009770] font-mono-tabular hover:underline flex items-center justify-center gap-1.5 mx-auto cursor-pointer"
+              className="mx-auto"
             >
               <span className="material-symbols-outlined text-[14px]">arrow_back</span>
               <span>Kembali ke Halaman Web Utama AmanKas</span>
-            </button>
+            </GradientButton>
           </div>
         </div>
       </main>
@@ -421,13 +423,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
               {/* Glowing Core with Logo */}
               <div className="relative z-10 p-2 rounded-2xl bg-[#00513B] border border-[#84F8CA] shadow-[0_0_20px_#00B386]">
-                <AmanKasLogo size="md" animated={true} />
+                <SadarLogo size="md" animated={true} />
               </div>
             </div>
 
             {/* Neural Matrix Status Title */}
-            <h3 className="font-display font-bold text-xl text-white tracking-wide mt-2">
-              OTENTIKASI AI AMANKAS
+            <h3 className="font-display font-bold text-xl text-white tracking-wide mt-2 flex items-center justify-center gap-2">
+              <span>OTENTIKASI AI</span>
+              <SadarText variant="dark" className="text-xl font-black" />
             </h3>
             <p className="text-xs font-mono-tabular text-[#84F8CA] mt-1">
               {bootMessages[bootStep]}

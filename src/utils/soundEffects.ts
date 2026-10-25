@@ -220,6 +220,33 @@ class SoundEngine {
       osc.stop(now + idx * 0.1 + 0.12);
     });
   }
+
+  /**
+   * Affirmative success confirmation chime
+   */
+  public playSuccess() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    [523.25, 659.25, 783.99].forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+      gain.gain.setValueAtTime(0.001, now + idx * 0.08);
+      gain.gain.linearRampToValueAtTime(0.08, now + idx * 0.08 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.4);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + idx * 0.08);
+      osc.stop(now + idx * 0.08 + 0.4);
+    });
+  }
 }
 
 export const soundEngine = new SoundEngine();

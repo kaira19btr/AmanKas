@@ -17,7 +17,7 @@ export const BENFORD_THEORETICAL = [
   Math.log10(1 + 1 / 9), // 0.04576
 ];
 
-export const BENFORD_THEORETICAL_PERCENT = BENFORD_THEORETICAL.map(v => Number((v * 100).toFixed(1)));
+export const BENFORD_THEORETICAL_PERCENT = BENFORD_THEORETICAL.map((v) => Number((v * 100).toFixed(1)));
 
 /**
  * Extracts the first non-zero leading digit from a numeric amount.
@@ -34,15 +34,26 @@ export function getFirstDigit(amount: number): number | null {
 export interface BenfordResult {
   digitCounts: number[]; // counts for 1..9
   digitFrequencies: number[]; // 0..1 proportion for 1..9
-  mad: number;
+  mad: number; // Nigrini Mean Absolute Deviation
+  chiSquare: number; // Chi-Square goodness-of-fit
+  pValue: number;
+  conformityLevel: string;
   totalValid: number;
   status: AccountStatus;
+  isVolumeSufficient: boolean;
 }
 
 /**
- * Calculates Benford's Law distribution and Nigrini Mean Absolute Deviation (MAD).
+ * Calculates Benford's Law distribution, Nigrini MAD, and Chi-Square statistic.
+ * @param amounts array of transaction amounts
+ * @param isFixedAmount whether account is excluded (fixed installments, standard dues, etc.)
+ * @param minVolumeThreshold minimum transaction volume required (default 300)
  */
-export function calculateBenford(amounts: number[], isFixedAmount: boolean = false): BenfordResult {
+export function calculateBenford(
+  amounts: number[],
+  isFixedAmount: boolean = false,
+  minVolumeThreshold: number = 300
+): BenfordResult {
   const counts = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let totalValid = 0;
 
@@ -59,36 +70,63 @@ export function calculateBenford(amounts: number[], isFixedAmount: boolean = fal
       digitCounts: counts,
       digitFrequencies: counts.map(() => 0),
       mad: 0,
+      chiSquare: 0,
+      pValue: 1.0,
+      conformityLevel: 'Data Kosong',
       totalValid: 0,
-      status: 'Data belum cukup',
+      status: 'Volume belum cukup',
+      isVolumeSufficient: false,
     };
   }
 
-  const frequencies = counts.map(c => c / totalValid);
+  const frequencies = counts.map((c) => c / totalValid);
   let absDiffSum = 0;
+  let chiSquareSum = 0;
+
   for (let i = 0; i < 9; i++) {
+    const observedCount = counts[i];
+    const expectedCount = totalValid * BENFORD_THEORETICAL[i];
     absDiffSum += Math.abs(frequencies[i] - BENFORD_THEORETICAL[i]);
+    if (expectedCount > 0) {
+      chiSquareSum += Math.pow(observedCount - expectedCount, 2) / expectedCount;
+    }
   }
+
   const mad = absDiffSum / 9;
+  const isVolumeSufficient = totalValid >= minVolumeThreshold;
+
+  // Approximate p-value for chi-square with df=8 (critical value at 0.05 is 15.51)
+  const pValue = chiSquareSum <= 15.51 ? Math.max(0.06, 1 - chiSquareSum / 20) : Math.max(0.001, 15.51 / (chiSquareSum * 1.5));
 
   let status: AccountStatus;
+  let conformityLevel: string;
+
   if (isFixedAmount) {
     status = 'Dikecualikan (Nominal Tetap)';
-  } else if (totalValid < 30) {
-    status = 'Data belum cukup';
+    conformityLevel = 'Dikecualikan (Nominal Rutin / Tetap)';
+  } else if (!isVolumeSufficient) {
+    status = 'Volume belum cukup';
+    conformityLevel = 'Volume Transaksi Belum Mencukupi Uji (<300)';
   } else if (mad <= 0.012) {
-    status = 'Wajar';
+    status = 'Hijau';
+    conformityLevel = 'Kepatuhan Dekat (Close Conformity)';
   } else if (mad <= 0.015) {
-    status = 'Mencurigakan';
+    status = 'Kuning';
+    conformityLevel = 'Kepatuhan Moderat (Acceptable Conformity)';
   } else {
-    status = 'Anomali Kuat';
+    status = 'Merah';
+    conformityLevel = 'Deviasi Signifikan (Non-Conformity)';
   }
 
   return {
     digitCounts: counts,
     digitFrequencies: frequencies,
     mad,
+    chiSquare: chiSquareSum,
+    pValue,
+    conformityLevel,
     totalValid,
     status,
+    isVolumeSufficient,
   };
 }

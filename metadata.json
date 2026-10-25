@@ -1,6 +1,6 @@
 {
-  "name": "AmanKas - Sistem Keamanan Koperasi",
-  "description": "Sistem deteksi anomali integritas pembukuan dan transaksi koperasi dengan Benford's Law dan Isolation Forest.",
+  "name": "SADAR - Pengendalian Internal Koperasi & UMKM",
+  "description": "Sistem Analitik Deteksi Anomali dan Risiko Keuangan Berbasis Explainable AI untuk Koperasi dan UMKM.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

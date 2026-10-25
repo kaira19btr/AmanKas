@@ -5,6 +5,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Transaction } from '../types';
+import { SadarText } from './SadarText';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 interface InteractiveDemoModalProps {
   isOpen: boolean;
@@ -19,7 +21,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
   onEnterFullDashboard,
   transactions,
 }) => {
-  const [filter, setFilter] = useState<'Semua' | 'Perlu Ditinjau' | 'Segera Verifikasi'>('Semua');
+  const [filter, setFilter] = useState<'Semua' | 'Perlu Ditinjau' | 'Prioritas Tinggi'>('Semua');
   const [simulatedStream, setSimulatedStream] = useState<Transaction[]>(transactions.slice(0, 15));
   const [isLivePaused, setIsLivePaused] = useState(false);
 
@@ -44,7 +46,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
         : Math.floor(100 + Math.random() * 2500) * 10000;
 
       const score = isAnomaly ? Math.floor(75 + Math.random() * 23) : Math.floor(2 + Math.random() * 32);
-      const status = score >= 71 ? 'Segera verifikasi' : score >= 41 ? 'Perlu ditinjau' : 'Normal';
+      const status = score >= 71 ? 'Prioritas tinggi' : score >= 41 ? 'Perlu ditinjau' : 'Normal';
 
       const now = new Date();
       const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
@@ -57,8 +59,6 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
         accountName: randomAcc === '#K-104' ? 'Kas Operasional & Cadangan' : 'Kas Utama Bank Mandiri',
         memberId: `#${Math.floor(100 + Math.random() * 900)}`,
         memberName: randomMember,
-        memberNIK: '327301********02',
-        memberAccountNo: '••••-•••-110',
         description: randomDesc,
         amount,
         channel: 'Telemetri Real-Time',
@@ -68,7 +68,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
         status,
         decisionStatus: 'Menunggu Keputusan',
         flagReasons: isAnomaly
-          ? ['Nominal bulat mendekati ambang approval PPATK', 'Frekuensi penarikan di luar rentang normal']
+          ? ['Nominal bulat mendekati ambang approval', 'Frekuensi penarikan di luar rentang normal']
           : ['Pola transaksi selaras dengan profil historis operasional'],
         parentAccountAnomalySensitive: randomAcc === '#K-104',
         isNew: true,
@@ -84,7 +84,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
 
   const filtered = simulatedStream.filter((t) => {
     if (filter === 'Perlu Ditinjau') return t.status === 'Perlu ditinjau';
-    if (filter === 'Segera Verifikasi') return t.status === 'Segera verifikasi';
+    if (filter === 'Prioritas Tinggi') return t.status === 'Prioritas tinggi';
     return true;
   });
 
@@ -136,7 +136,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
         {/* Filter bar & stats banner */}
         <div className="px-6 py-3 bg-[#FFF8F4] border-b border-[#F3D9CE] flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="inline-flex p-1 rounded-xl bg-white border border-[#F3D9CE] font-mono-tabular text-xs">
-            {(['Semua', 'Perlu Ditinjau', 'Segera Verifikasi'] as const).map((f) => (
+            {(['Semua', 'Perlu Ditinjau', 'Prioritas Tinggi'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -157,10 +157,10 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
             </span>
             <span>•</span>
             <span className="text-[#CE2F2E] font-semibold">
-              Kritis: {simulatedStream.filter((t) => t.status === 'Segera verifikasi').length}
+              Prioritas Tinggi: {simulatedStream.filter((t) => t.status === 'Prioritas tinggi').length}
             </span>
             <span>•</span>
-            <span className="text-[#6B5F00] font-semibold">
+            <span className="text-[#86513D] font-semibold">
               Perlu Ditinjau: {simulatedStream.filter((t) => t.status === 'Perlu ditinjau').length}
             </span>
           </div>
@@ -268,20 +268,27 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button
+            <GradientButton
+              variant="outline"
+              size="sm"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-[#F3D9CE] bg-white text-xs font-mono-tabular font-medium text-[#6B5A55] hover:bg-gray-50 cursor-pointer flex-1 sm:flex-none text-center"
+              className="flex-1 sm:flex-none"
             >
               Tutup Demo
-            </button>
+            </GradientButton>
 
-            <button
+            <GradientButton
+              variant="default"
+              size="sm"
               onClick={onEnterFullDashboard}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#009770] to-[#00B386] hover:brightness-105 text-white font-display text-xs font-semibold shadow-md shadow-[#009770]/25 transition-all cursor-pointer flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
+              className="flex-1 sm:flex-none"
             >
-              <span>Masuk ke Dasbor Lengkap 5 Layar</span>
+              <span className="inline-flex items-center gap-1.5">
+                <span>Masuk ke Dasbor Lengkap</span>
+                <SadarText variant="dark" className="text-xs font-black" />
+              </span>
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
-            </button>
+            </GradientButton>
           </div>
         </div>
       </div>

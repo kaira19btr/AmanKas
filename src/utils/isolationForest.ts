@@ -149,6 +149,10 @@ export class IsolationForest {
     scaled = Math.max(0, Math.min(1, scaled)) * 100;
     return Math.round(scaled);
   }
+
+  public predict(x: number[]): number {
+    return this.score(x);
+  }
 }
 
 /**
