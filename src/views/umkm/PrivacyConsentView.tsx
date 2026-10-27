@@ -114,14 +114,14 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Izin &amp; Kedaulatan Data Usaha Saya
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-medium tracking-[0.08em] uppercase">
                   Data Mentah Tetap di Pemilik
                 </span>
               </div>
-              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed">
+              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed font-ui font-normal">
                 Kendali penuh privasi warung Anda (UU PDP 27/2022). Data mentah transaksi tersimpan lokal di peramban Anda. Anda bebas mengunduh templat data, mengatur izin berbagi ke bank, atau menghapus seluruh catatan seketika.
               </p>
             </div>
@@ -131,7 +131,7 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
 
       {/* Download Alert Notice */}
       {downloadNotice && (
-        <div className="p-3.5 rounded-xl bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-mono font-bold flex items-center gap-2 animate-fadeIn">
+        <div className="p-3.5 rounded-xl bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-mono font-medium flex items-center gap-2 animate-fadeIn">
           <span className="material-symbols-outlined text-base">download_done</span>
           <span>{downloadNotice}</span>
         </div>
@@ -143,10 +143,10 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
         <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100">
             <div>
-              <h2 className="font-display font-bold text-sm text-[#0A2A22]">
+              <h2 className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Persetujuan Berbagi Data (Opt-In Revocable)
               </h2>
-              <p className="text-xs text-gray-500 font-sans">
+              <p className="text-xs text-gray-500 font-ui font-normal">
                 Kapan pun Anda mencabut izin, tautan ke pihak bank langsung mati otomatis
               </p>
             </div>
@@ -154,10 +154,10 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
           </div>
 
           {/* Big Toggle Banner */}
-          <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/70 space-y-3 font-mono-tabular text-xs">
+          <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/70 space-y-3 text-xs font-ui">
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-bold text-gray-900 text-sm">
+                <div className="font-bold text-gray-900 text-sm font-ui">
                   Izinkan Tautan Ringkasan Arus Kas untuk Bank
                 </div>
                 <div className="text-gray-500 text-[11px] font-sans">
@@ -240,31 +240,31 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
         {/* Right: Data Sources & Downloadable Templates */}
         <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-5">
           <div className="pb-3 border-b border-gray-100">
-            <h3 className="font-display font-bold text-sm text-[#0A2A22]">
+            <h3 className="font-ui font-semibold text-sm text-[#0A2A22]">
               Pilihan Sumber Data &amp; Templat Unduhan
             </h3>
-            <p className="text-xs text-gray-500 font-sans">
+            <p className="text-xs text-gray-500 font-ui font-normal">
               Unduh templat format CSV untuk menyalin catatan kasir, bank, atau settlement QRIS Anda
             </p>
           </div>
 
-          <div className="space-y-3 font-mono-tabular text-xs">
+          <div className="space-y-3 text-xs font-ui">
             {/* Source 1: Kasir POS */}
             <div className="p-4 rounded-xl border border-gray-200 hover:border-[#009770] bg-gray-50/70 transition-all space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-700">point_of_sale</span>
-                  <span className="font-bold text-gray-900 text-sm">1. Ekspor CSV Kasir POS</span>
+                  <span className="font-bold text-gray-900 text-sm font-ui">1. Ekspor CSV Kasir POS</span>
                 </div>
                 <button
                   onClick={() => handleDownloadTemplate('pos')}
-                  className="px-3 py-1 rounded-lg bg-[#009770] hover:bg-[#009770]/90 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1 rounded-lg bg-[#009770] hover:bg-[#009770]/90 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer font-ui"
                 >
                   <span className="material-symbols-outlined text-sm">download</span>
                   <span>Unduh Templat</span>
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500 font-sans">
+              <p className="text-[11px] text-gray-500 font-mono">
                 Kolom: tanggal_jam, kasir_shift, jenis, nominal, metode, ada_struk, deskripsi
               </p>
             </div>
@@ -274,17 +274,17 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-blue-700">account_balance</span>
-                  <span className="font-bold text-gray-900 text-sm">2. Mutasi Rekening Bank (BRI/BCA)</span>
+                  <span className="font-bold text-gray-900 text-sm font-ui">2. Mutasi Rekening Bank (BRI/BCA)</span>
                 </div>
                 <button
                   onClick={() => handleDownloadTemplate('bank')}
-                  className="px-3 py-1 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer font-ui"
                 >
                   <span className="material-symbols-outlined text-sm">download</span>
                   <span>Unduh Templat</span>
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500 font-sans">
+              <p className="text-[11px] text-gray-500 font-mono">
                 Kolom: tanggal, rekening, jenis_mutasi, nominal, saldo, keterangan
               </p>
             </div>
@@ -294,17 +294,17 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-purple-700">qr_code_scanner</span>
-                  <span className="font-bold text-gray-900 text-sm">3. Ekspor QRIS Merchant</span>
+                  <span className="font-bold text-gray-900 text-sm font-ui">3. Ekspor QRIS Merchant</span>
                 </div>
                 <button
                   onClick={() => handleDownloadTemplate('qris')}
-                  className="px-3 py-1 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer font-ui"
                 >
                   <span className="material-symbols-outlined text-sm">download</span>
                   <span>Unduh Templat</span>
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500 font-sans">
+              <p className="text-[11px] text-gray-500 font-mono">
                 Kolom: settlement_date, merchant_id, nominal_bruto, biaya_mdr, nominal_netto, rrn_qris
               </p>
             </div>
@@ -313,23 +313,23 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
       </div>
 
       {/* 3. Audit Logs of Consent Actions */}
-      <div className="bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-3 font-mono-tabular text-xs">
+      <div className="bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-3 text-xs font-ui">
         <div className="flex items-center justify-between pb-2 border-b border-gray-100">
           <div>
-            <h3 className="font-display font-bold text-sm text-[#0A2A22]">
+            <h3 className="font-ui font-semibold text-sm text-[#0A2A22]">
               Jejak Audit Izin &amp; Privasi Pemilik
             </h3>
-            <p className="text-xs text-gray-500 font-sans">
+            <p className="text-xs text-gray-500 font-ui font-normal">
               Rekaman legal kapan izin diberikan atau dicabut untuk kepatuhan UU PDP
             </p>
           </div>
-          <span className="text-gray-400">{auditLogs.length} peristiwa</span>
+          <span className="text-gray-400 font-mono tabular-nums">{auditLogs.length} peristiwa</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-gray-50 text-gray-600 uppercase text-[10px]">
+              <tr className="bg-gray-50 text-gray-600 uppercase text-[10px] font-mono tracking-[0.08em] border-b border-gray-200">
                 <th className="py-2.5 px-3">Waktu</th>
                 <th className="py-2.5 px-3">Tindakan Pemilik</th>
                 <th className="py-2.5 px-3">Target</th>
@@ -337,13 +337,13 @@ export const PrivacyConsentView: React.FC<PrivacyConsentViewProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {auditLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="py-2 px-3 text-gray-500">{log.timestamp} WIB</td>
-                  <td className="py-2 px-3 font-bold text-gray-900">{log.action}</td>
-                  <td className="py-2 px-3 text-gray-700">{log.target}</td>
+              {auditLogs.map((log, idx) => (
+                <tr key={`${log.id}-${idx}`} className="hover:bg-gray-50">
+                  <td className="py-2 px-3 text-gray-500 font-mono tabular-nums">{log.timestamp} WIB</td>
+                  <td className="py-2 px-3 font-semibold text-gray-900 font-ui">{log.action}</td>
+                  <td className="py-2 px-3 text-gray-700 font-mono">{log.target}</td>
                   <td className="py-2 px-3">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 font-ui">
                       {log.verificationStatus}
                     </span>
                   </td>

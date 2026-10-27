@@ -52,27 +52,27 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Peringatan Saya &bull; Hal Tidak Wajar di Toko
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-rose-500/30 text-rose-200 border border-rose-400/40 text-[10px] font-mono font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-rose-500/30 text-rose-200 border border-rose-400/40 text-[10px] font-mono font-medium tracking-[0.08em] uppercase">
                   Khusus Pemilik Usaha
                 </span>
               </div>
-              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed">
+              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed font-ui font-normal">
                 Daftar kejadian tidak lazim yang ditemukan sistem (seperti nota dibatalkan berkali-kali, diskon malam hari, atau penjualan tunai besar tanpa nota). Anda dapat memeriksa dan memutuskan tindakannya sendiri tanpa pihak luar.
               </p>
             </div>
           </div>
 
-          <div className="text-xs font-mono-tabular text-[#FFF637] bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
+          <div className="text-xs font-mono font-medium tracking-[0.04em] text-[#FFF637] bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
             Keputusan Langsung Pemilik (Mandiri)
           </div>
         </div>
       </section>
 
       {savedNotice && (
-        <div className="p-3 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-mono font-bold animate-fadeIn flex items-center gap-2">
+        <div className="p-3 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-mono font-medium animate-fadeIn flex items-center gap-2">
           <span className="material-symbols-outlined text-base">check_circle</span>
           <span>{savedNotice}</span>
         </div>
@@ -83,24 +83,24 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
         {/* Left: Alerts List */}
         <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl border border-[#F3D9CE] shadow-xs overflow-hidden">
           <div className="p-4 px-5 border-b border-gray-100 bg-[#FFF8F4] flex items-center justify-between">
-            <div className="flex items-center gap-2 font-mono-tabular">
-              <span className="font-display font-bold text-sm text-[#0A2A22]">
+            <div className="flex items-center gap-2 font-ui">
+              <span className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Daftar Peringatan Hari Ini
               </span>
-              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">
+              <span className="px-2 py-0.5 rounded-full text-xs font-mono tabular-nums font-bold bg-rose-100 text-rose-800">
                 {alertsList.length} hal
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono-tabular">
+            <div className="flex items-center gap-2 text-xs font-ui">
               {(['Perlu Perhatian', 'Sudah Selesai', 'Semua'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setFilterStatus(tab)}
-                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer font-ui ${
                     filterStatus === tab
-                      ? 'bg-[#0A2A22] text-[#FFF637] font-bold'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-[#0A2A22] text-[#FFF637] font-semibold'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 font-medium'
                   }`}
                 >
                   {tab}
@@ -109,17 +109,17 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
             </div>
           </div>
 
-          <div className="divide-y divide-gray-100 max-h-[580px] overflow-y-auto font-mono-tabular">
+          <div className="divide-y divide-gray-100 max-h-[580px] overflow-y-auto">
             {alertsList.length === 0 ? (
               <div className="p-8 text-center text-xs text-gray-400">
                 Tidak ada peringatan baru. Semua transaksi tercatat wajar.
               </div>
             ) : (
-              alertsList.map((trx) => {
+              alertsList.map((trx, index) => {
                 const isSelected = active?.id === trx.id;
                 return (
                   <div
-                    key={trx.id}
+                    key={`${trx.id}-${index}`}
                     onClick={() => {
                       setSelectedTrx(trx);
                       setOwnerNote(trx.catatan || '');
@@ -169,12 +169,12 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
         </div>
 
         {/* Right: Owner Resolution Worksheet */}
-        <div className="col-span-12 lg:col-span-5 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4 font-mono-tabular">
+        <div className="col-span-12 lg:col-span-5 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
           {active ? (
             <>
               <div className="pb-3 border-b border-gray-100">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-amber-700">{active.id}</span>
+                  <span className="text-xs font-mono font-medium text-amber-700">{active.id}</span>
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                       active.decisionStatus === 'Wajar'
@@ -187,16 +187,16 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
                     {active.decisionStatus}
                   </span>
                 </div>
-                <h2 className="font-display font-bold text-base text-[#0A2A22] mt-1">
+                <h2 className="font-ui font-semibold text-base text-[#0A2A22] mt-1">
                   Keputusan Tindakan Pemilik Usaha
                 </h2>
               </div>
 
               {/* Transaction details card */}
               <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 text-xs space-y-2">
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between text-gray-600 font-ui">
                   <span>Nominal Transaksi:</span>
-                  <span className="font-bold text-gray-900 text-base">
+                  <span className="font-mono tabular-nums font-bold text-gray-900 text-base">
                     Rp {new Intl.NumberFormat('id-ID').format(active.nominal)}
                   </span>
                 </div>
@@ -228,8 +228,23 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
                 </div>
               </div>
 
+              {/* Hak Klarifikasi Kasir */}
+              <div className="space-y-1.5 pt-1">
+                <label className="text-xs font-bold text-gray-800 flex items-center justify-between">
+                  <span>Tanggapan Pihak Terkait (Klarifikasi Kasir):</span>
+                  <span className="text-[10px] text-gray-500 font-normal">Hak Konfirmasi</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Penjelasan lisan kasir atau staf toko yang bersangkutan..."
+                  value={active.tanggapanPihakTerkait || ''}
+                  readOnly
+                  className="w-full text-xs p-2 rounded-xl border border-gray-200 bg-gray-50 text-gray-700"
+                />
+              </div>
+
               {/* Owner note */}
-              <div className="space-y-2 pt-2 border-t border-gray-100">
+              <div className="space-y-2 pt-1 border-t border-gray-100">
                 <label className="text-xs font-bold text-gray-700 block">
                   Catatan Anda (Pengingat Pribadi Pemilik):
                 </label>
@@ -240,6 +255,11 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
                   placeholder="Contoh: Sudah telepon kasir Dina, nota dibatalkan karena pembeli salah ambil barang..."
                   className="w-full text-xs p-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[#009770]"
                 />
+
+                {/* Mandatory Permanent Sanction Note */}
+                <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 leading-relaxed font-ui">
+                  <strong>Batas Kewenangan:</strong> Sanksi hanya setelah temuan terkonfirmasi di luar sistem melalui AD/ART dan musyawarah. Sistem SADAR tidak melakukan penindakan atau pemblokiran akses.
+                </div>
 
                 {/* 3 Decisions in Plain Owner Terms */}
                 <span className="text-[11px] font-bold text-gray-500 block mt-1">
@@ -260,6 +280,7 @@ export const OwnerAlertsView: React.FC<OwnerAlertsViewProps> = ({
                   </button>
                   <button
                     onClick={() => handleDecision('Perlu pemeriksaan lanjut')}
+                    title="Pemeriksaan fisik langsung oleh pemilik"
                     className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold transition-all cursor-pointer"
                   >
                     Periksa Fisik

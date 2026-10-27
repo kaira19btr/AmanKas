@@ -130,18 +130,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <SadarText variant="dark" className="text-xl leading-none" />
-                <span className="px-2 py-0.5 rounded-full bg-[#009770]/40 text-[#84F8CA] font-mono-tabular text-[9px] font-bold border border-[#84F8CA]/40 uppercase tracking-wider">
+                <span className="px-2 py-0.5 rounded-full bg-[#009770]/40 text-[#84F8CA] font-mono text-[9px] font-medium border border-[#84F8CA]/40 uppercase tracking-[0.08em]">
                   Explainable AI
                 </span>
               </div>
-              <span className="font-mono-tabular text-[10px] text-gray-400 tracking-wide mt-0.5 hidden sm:inline">
-                Pengendalian internal koperasi dan UMKM yang dapat dijelaskan
+              <span className="font-ui text-[11px] text-gray-400 tracking-wide mt-0.5 hidden sm:inline">
+                Sistem Analitik Deteksi Anomali dan Rapor Kas (Koperasi &amp; UMKM)
               </span>
             </div>
           </div>
 
           {/* Navigation Links (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-gray-300">
+          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-gray-300 font-ui">
             <button
               onClick={() => scrollToSection('segmen')}
               className="hover:text-[#84F8CA] transition-colors cursor-pointer py-1"
@@ -297,15 +297,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Left Column (7 cols): Exact 3-Line Headline & Narrative */}
             <div className="lg:col-span-7 space-y-6 text-left">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#F3D9CE] shadow-xs text-xs font-mono-tabular font-medium text-[#0A2A22]">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#F3D9CE] shadow-xs text-xs font-mono font-medium text-[#0A2A22] uppercase tracking-[0.08em]">
                 <span className="w-2 h-2 rounded-full bg-[#009770] radar-pulse-green" />
                 <span>Pengendalian Internal Berbasis Explainable AI (XAI)</span>
               </div>
 
               {/* Exact 3-Line Title */}
-              <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#0A2A22] tracking-tight leading-[1.12]">
+              <h1
+                className="hero-h1 text-[#0A2A22]"
+                style={{
+                  fontSize: 'clamp(44px, 6vw, 84px)',
+                  fontWeight: 450,
+                  lineHeight: 1.02,
+                  letterSpacing: '-0.02em',
+                }}
+              >
                 Deteksi Dini <br />
-                <span className="relative inline-block my-1 px-3.5 py-1 rounded-2xl bg-[#FFF637] text-[#009770] shadow-sm transform -rotate-1 border border-[#EEDC9A]/80">
+                <span className="relative inline-block my-1 px-3.5 py-0.5 rounded-2xl bg-[#FFF637] text-[#009770] shadow-sm transform -rotate-1 border border-[#EEDC9A]/80 font-display italic font-medium">
                   Risiko Keuangan
                 </span>{' '}
                 <br />
@@ -313,8 +321,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h1>
 
               {/* Exact Paragraph */}
-              <p className="text-base sm:text-lg text-[#6B5A55] max-w-2xl leading-relaxed font-body-md">
-                <SadarText variant="light" className="text-base sm:text-lg font-black mr-1 inline-flex" /> membaca catatan transaksi, menandai pola tidak biasa, menjelaskan alasannya, dan menyerahkan keputusan pada manusia.
+              <p className="font-ui text-[15.5px] sm:text-[16.5px] text-[#6B5A55] max-w-2xl leading-[1.6] font-normal sm:font-medium">
+                <SadarText variant="light" className="text-base sm:text-lg mr-1 inline-flex" /> membaca catatan transaksi, menandai pola tidak biasa, menjelaskan alasannya, dan menyerahkan keputusan pada manusia.
               </p>
 
               {/* Two CTA Buttons */}
@@ -343,7 +351,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Trust Indicators */}
-              <div className="pt-4 flex flex-wrap items-center gap-6 text-xs font-mono-tabular text-[#6B5A55]">
+              <div className="pt-4 flex flex-wrap items-center gap-6 text-[11px] font-mono text-[#6B5A55] uppercase tracking-[0.08em]">
                 <div className="flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-sm text-[#009770]">verified</span>
                   <span>Kepatuhan UU PDP No. 27/2022</span>
@@ -370,33 +378,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-display font-bold text-base text-[#0A2A22] flex items-center gap-1.5">
+                        <h3 className="font-ui font-semibold text-[17px] text-[#0A2A22] flex items-center gap-1.5">
                           <span>Pusat Kendali</span>
-                          <SadarText variant="light" className="text-base font-black" />
+                          <SadarText variant="light" className="text-base" />
                         </h3>
-                        <span className="px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[10px] font-bold flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[10px] font-medium tracking-[0.08em] uppercase flex items-center gap-1">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#009770] radar-pulse-green" />
                           LIVE
                         </span>
                       </div>
-                      <p className="text-[11px] text-[#6B5A55] mt-0.5">
+                      <p className="text-[11px] text-[#6B5A55] mt-0.5 font-ui">
                         Telemetri Pengendalian Internal Berkelanjutan
                       </p>
                     </div>
                   </div>
 
-                  <span className="px-2 py-0.5 rounded-md bg-[#FFF637]/40 text-[#6B5F00] font-mono-tabular text-[10px] font-bold border border-[#FFF637]">
+                  <span className="px-2 py-0.5 rounded-md bg-[#FFF637]/40 text-[#6B5F00] font-mono text-[10px] font-medium tracking-[0.08em] uppercase border border-[#FFF637]">
                     Data simulasi
                   </span>
                 </div>
 
                 {/* Subtitle */}
-                <div className="py-3 text-[10px] font-mono-tabular uppercase tracking-wider text-[#6B5A55] font-bold">
+                <div className="py-3 text-[10px] font-mono uppercase tracking-[0.08em] text-[#6B5A55] font-medium">
                   ARSITEKTUR TIGA BARIS SISTEM:
                 </div>
 
                 {/* Exact 3 Rows */}
-                <div className="space-y-3">
+                <div className="space-y-3 font-ui">
                   {/* Row 1: Skor Akun (Benford dan chi-square) */}
                   <div className="p-3.5 rounded-2xl bg-[#FFF8F4] border border-[#F3D9CE] flex items-center justify-between gap-3 hover:bg-[#F3FAF7] transition-colors">
                     <div className="flex items-center gap-3">
@@ -405,20 +413,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-display font-bold text-xs text-[#0A2A22]">
+                          <span className="font-ui font-semibold text-xs text-[#0A2A22]">
                             Skor Akun
                           </span>
-                          <span className="font-mono-tabular text-[10px] text-[#009770] bg-[#E0F4EE] px-1.5 py-0.2 rounded font-semibold">
+                          <span className="font-mono text-[10px] text-[#009770] bg-[#E0F4EE] px-1.5 py-0.2 rounded font-medium tracking-wide">
                             Benford &amp; Chi-Square
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#6B5A55] font-mono-tabular mt-0.5">
+                        <p className="text-[11px] text-[#6B5A55] mt-0.5 font-ui">
                           Uji digit pertama, Nigrini MAD &bull; Status Hijau/Kuning/Merah
                         </p>
                       </div>
                     </div>
 
-                    <span className="px-2.5 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[10px] font-bold border border-[#009770]/30 flex items-center gap-1 shrink-0">
+                    <span className="px-2.5 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[10px] font-medium tracking-wide border border-[#009770]/30 flex items-center gap-1 shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#009770] animate-pulse" />
                       Terpantau
                     </span>
@@ -432,15 +440,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-display font-bold text-xs text-[#0A2A22]">
+                          <span className="font-ui font-semibold text-xs text-[#0A2A22]">
                             Skor Transaksi
                           </span>
-                          <span className="font-mono-tabular text-[10px] text-[#6B5F00] bg-[#FFF637]/40 px-1.5 py-0.2 rounded font-semibold">
+                          <span className="font-mono text-[10px] text-[#6B5F00] bg-[#FFF637]/40 px-1.5 py-0.2 rounded font-medium tracking-wide">
                             Aturan + Anomali (50:50)
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#6B5A55] font-mono-tabular mt-0.5">
-                          <span className={pulseTick ? 'text-[#009770] font-bold' : ''}>
+                        <p className="text-[11px] text-[#6B5A55] mt-0.5 font-ui">
+                          <span className={`tabular-nums ${pulseTick ? 'text-[#009770] font-bold' : ''}`}>
                             <AnimatedCounter value={liveTrxCount} />
                           </span>{' '}
                           transaksi dievaluasi &bull; Klasifikasi persentil P90/P98
@@ -448,7 +456,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </div>
                     </div>
 
-                    <span className="px-2.5 py-1 rounded-full bg-[#FFF637] text-[#6B5F00] font-mono-tabular text-[10px] font-bold border border-[#6B5F00]/25 flex items-center gap-1 shrink-0">
+                    <span className="px-2.5 py-1 rounded-full bg-[#FFF637] text-[#6B5F00] font-mono text-[10px] font-medium tracking-wide border border-[#6B5F00]/25 flex items-center gap-1 shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#6B5F00]" />
                       Netral
                     </span>
@@ -462,20 +470,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-display font-bold text-xs text-[#0A2A22]">
+                          <span className="font-ui font-semibold text-xs text-[#0A2A22]">
                             Tinjauan Manusia
                           </span>
-                          <span className="font-mono-tabular text-[10px] text-[#009770] bg-[#E0F4EE] px-1.5 py-0.2 rounded font-semibold">
+                          <span className="font-mono text-[10px] text-[#009770] bg-[#E0F4EE] px-1.5 py-0.2 rounded font-medium tracking-wide">
                             Human-in-the-Loop
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#6B5A55] font-mono-tabular mt-0.5">
+                        <p className="text-[11px] text-[#6B5A55] mt-0.5 font-ui">
                           Keputusan Pengawas/Pemilik melatih bobot &bull; Hak koreksi
                         </p>
                       </div>
                     </div>
 
-                    <span className="px-2.5 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[10px] font-bold border border-[#009770]/30 flex items-center gap-1 shrink-0">
+                    <span className="px-2.5 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[10px] font-medium tracking-wide border border-[#009770]/30 flex items-center gap-1 shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#009770]" />
                       Aktif
                     </span>
@@ -490,14 +498,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     onClick={() => handleLaunchDashboard('pemantauan')}
                   >
                     <span className="material-symbols-outlined text-sm">lock_open</span>
-                    <span className="inline-flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1.5 font-ui font-semibold">
                       <span>Masuk ke Dasbor</span>
-                      <SadarText variant="dark" className="text-sm font-black" />
+                      <SadarText variant="dark" className="text-sm" />
                     </span>
                     <span className="material-symbols-outlined text-sm">arrow_forward</span>
                   </GradientButton>
-                  <p className="text-center font-mono-tabular text-[10px] text-[#6B5A55] mt-2">
-                    Data simulasi untuk demonstrasi · Koperasi &amp; UMKM
+                  <p className="text-center font-mono text-[10.5px] text-[#6B5A55] mt-2">
+                    Data simulasi untuk demonstrasi &bull; Koperasi &amp; UMKM
                   </p>
                 </div>
               </div>
@@ -512,13 +520,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <section id="segmen" className="py-20 bg-white border-y border-[#F3D9CE]">
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[11.5px] font-medium uppercase tracking-[0.08em]">
               Fleksibilitas Arsitektur
             </span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0A2A22]">
+            <h2 className="font-display font-medium text-[34px] sm:text-[40px] lg:text-[44px] text-[#0A2A22] leading-[1.15] tracking-[-0.015em]">
               Dua Segmen, Satu Mesin
             </h2>
-            <p className="text-sm text-[#6B5A55]">
+            <p className="font-ui text-[15px] sm:text-[16px] leading-[1.6] text-[#6B5A55] font-normal sm:font-medium">
               Satu mesin analitik explainable AI yang beradaptasi secara cerdas untuk tata kelola Koperasi dan kesederhanaan operasional UMKM.
             </p>
           </div>
@@ -531,19 +539,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="w-12 h-12 rounded-2xl bg-[#E0F4EE] text-[#009770] flex items-center justify-center">
                     <span className="material-symbols-outlined text-[28px]">account_balance</span>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-[#009770]/15 text-[#009770] font-mono-tabular text-xs font-bold border border-[#009770]/30">
+                  <span className="px-3 py-1 rounded-full bg-[#009770]/15 text-[#009770] font-mono text-[11px] font-medium tracking-[0.08em] uppercase border border-[#009770]/30">
                     Mode Koperasi
                   </span>
                 </div>
 
-                <h3 className="font-display font-bold text-xl text-[#0A2A22]">
+                <h3 className="font-ui font-semibold text-[17.5px] sm:text-[18px] text-[#0A2A22]">
                   Pengawasan KSP &amp; Simpan Pinjam
                 </h3>
-                <p className="text-xs sm:text-sm text-[#6B5A55] leading-relaxed">
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6] font-normal sm:font-medium">
                   Ditujukan bagi <strong>Pengawas dan Pengurus</strong> koperasi untuk mengawal integritas buku kas harian, simpanan anggota, angsuran pinjaman, dan dana cadangan risiko.
                 </p>
 
-                <div className="space-y-2.5 pt-2 text-xs font-mono-tabular">
+                <div className="space-y-2.5 pt-2 text-xs font-mono">
                   <div className="p-3 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] flex items-center gap-2">
                     <span className="material-symbols-outlined text-[#009770] text-sm">badge</span>
                     <span>Pengguna: Pengawas &amp; Pengurus Koperasi</span>
@@ -560,7 +568,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#F3D9CE] flex items-center justify-between">
-                <span className="text-xs text-[#6B5A55] font-mono-tabular">Data KSP fiktif</span>
+                <span className="text-xs text-[#6B5A55] font-mono">Data KSP fiktif</span>
                 <GradientButton
                   variant="outline"
                   size="sm"
@@ -568,7 +576,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     if (onToggleMode) onToggleMode('koperasi');
                     handleLaunchDashboard('pemantauan');
                   }}
-                  className="text-xs"
+                  className="text-xs font-ui font-semibold"
                 >
                   Buka Mode Koperasi &rarr;
                 </GradientButton>
@@ -582,19 +590,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="w-12 h-12 rounded-2xl bg-[#FFF637]/40 text-[#6B5F00] flex items-center justify-center">
                     <span className="material-symbols-outlined text-[28px]">storefront</span>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-[#FFF637]/50 text-[#6B5F00] font-mono-tabular text-xs font-bold border border-[#6B5F00]/30">
+                  <span className="px-3 py-1 rounded-full bg-[#FFF637]/50 text-[#6B5F00] font-mono text-[11px] font-medium tracking-[0.08em] uppercase border border-[#6B5F00]/30">
                     Mode UMKM (Opt-in)
                   </span>
                 </div>
 
-                <h3 className="font-display font-bold text-xl text-[#0A2A22]">
+                <h3 className="font-ui font-semibold text-[17.5px] sm:text-[18px] text-[#0A2A22]">
                   Pengendalian Toko &amp; Warung Retail
                 </h3>
-                <p className="text-xs sm:text-sm text-[#6B5A55] leading-relaxed">
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6] font-normal sm:font-medium">
                   Ditujukan bagi <strong>Pemilik Usaha</strong> mikro dan kecil untuk mengendalikan kebocoran kas kasir, void tidak wajar, dan pencampuran uang pribadi.
                 </p>
 
-                <div className="space-y-2.5 pt-2 text-xs font-mono-tabular">
+                <div className="space-y-2.5 pt-2 text-xs font-mono">
                   <div className="p-3 rounded-xl bg-white border border-[#EEDC9A] flex items-center gap-2">
                     <span className="material-symbols-outlined text-[#6B5F00] text-sm">person</span>
                     <span>Pengguna: Pemilik Usaha (Owner)</span>
@@ -611,7 +619,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#EEDC9A] flex items-center justify-between">
-                <span className="text-xs text-[#6B5A55] font-mono-tabular">Warung/Toko fiktif</span>
+                <span className="text-xs text-[#6B5A55] font-mono">Warung/Toko fiktif</span>
                 <GradientButton
                   variant="variant"
                   size="sm"
@@ -619,7 +627,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     if (onToggleMode) onToggleMode('umkm');
                     handleLaunchDashboard('pemantauan');
                   }}
-                  className="text-xs text-white"
+                  className="text-xs text-white font-ui font-semibold"
                 >
                   Buka Mode UMKM &rarr;
                 </GradientButton>
@@ -635,13 +643,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <section id="data-masalah" className="py-20 bg-gradient-to-b from-[#FFF8F4] to-[#FFE9DF]">
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-            <span className="px-3 py-1 rounded-full bg-[#FFDBCF] text-[#86513D] font-mono-tabular text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#FFDBCF] text-[#86513D] font-mono text-[11px] font-medium uppercase tracking-[0.08em]">
               Urgensi &amp; Fakta Empiris
             </span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0A2A22]">
+            <h2 className="font-display font-medium text-[34px] sm:text-[40px] text-[#0A2A22] leading-tight">
               Konteks Masalah Koperasi &amp; UMKM
             </h2>
-            <p className="text-sm text-[#6B5A55]">
+            <p className="font-ui text-[15px] sm:text-[16px] text-[#6B5A55] leading-[1.6]">
               Data empiris menunjukkan urgensi penguatan pengendalian internal di sektor koperasi simpan pinjam dan kesenjangan pembiayaan UMKM di Indonesia.
             </p>
           </div>
@@ -650,41 +658,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Card 1: Rp26 T */}
             <div className="glass-panel rounded-3xl p-6 border-t-4 border-t-[#CE2F2E] flex flex-col justify-between hover:-translate-y-1 transition-all">
               <div>
-                <span className="font-display font-black text-3xl sm:text-4xl text-[#CE2F2E] tracking-tight block">
+                <span className="font-display font-medium text-3xl sm:text-4xl text-[#CE2F2E] tracking-tight block lining-nums">
                   Rp 26 Triliun
                 </span>
-                <h4 className="font-display font-bold text-sm text-[#0A2A22] mt-2 mb-1">
-                  Kerugian Anggota Bermasalah
+                <h4 className="font-ui font-semibold text-[17px] text-[#0A2A22] mt-2 mb-1">
+                  Kerugian 8 KSP Bermasalah
                 </h4>
-                <p className="text-xs text-[#6B5A55] leading-relaxed">
-                  Kerugian anggota dari 8 koperasi bermasalah di Indonesia yang mengalami gagal bayar masif.
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6]">
+                  Kerugian 8 KSP bermasalah mencapai Rp26 triliun di Indonesia yang mengalami krisis likuiditas dan gagal bayar simpanan anggota.
                 </p>
                 <div className="w-full h-1.5 bg-[#FDE8E8] rounded-full mt-3 overflow-hidden">
                   <div className="h-full bg-[#CE2F2E] rounded-full w-full" />
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono-tabular text-[10px] text-[#86513D] leading-snug">
-                Sumber: Pernyataan Menkop, ANTARA 2025 (angka disebut sejak 2022, kasus belum tuntas)
+              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono text-[11px] text-[#86513D] uppercase tracking-[0.08em] leading-snug">
+                Sumber: ANTARA, 2025
               </div>
             </div>
 
-            {/* Card 2: Rp3,4 T dari Rp26 T (±13%) */}
+            {/* Card 2: Rp3,4 T */}
             <div className="glass-panel rounded-3xl p-6 border-t-4 border-t-[#009770] flex flex-col justify-between hover:-translate-y-1 transition-all">
               <div>
-                <span className="font-display font-black text-3xl sm:text-4xl text-[#009770] tracking-tight block">
-                  Rp 3,4 T <span className="text-base font-normal text-gray-500">(±13%)</span>
+                <span className="font-display font-medium text-3xl sm:text-4xl text-[#009770] tracking-tight block lining-nums">
+                  Rp 3,4 Triliun
                 </span>
-                <h4 className="font-display font-bold text-sm text-[#0A2A22] mt-2 mb-1">
-                  Realisasi Tagihan Terbayar
+                <h4 className="font-ui font-semibold text-[17px] text-[#0A2A22] mt-2 mb-1">
+                  Pembayaran Tertahan Anggota
                 </h4>
-                <p className="text-xs text-[#6B5A55] leading-relaxed">
-                  Dari total Rp26 T kerugian 8 koperasi bermasalah, baru sekitar 13% tagihan yang berhasil didorong terbayar kembali kepada anggota.
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6]">
+                  Kasus gagal bayar simpanan anggota dengan pembayaran tertahan Rp3,4 triliun yang belum terselesaikan.
                 </p>
                 <div className="w-full h-1.5 bg-[#E0F4EE] rounded-full mt-3 overflow-hidden">
                   <div className="h-full bg-[#009770] rounded-full w-[13%]" />
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono-tabular text-[10px] text-[#6B5A55] leading-snug">
+              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono text-[11px] text-[#6B5A55] uppercase tracking-[0.08em] leading-snug">
                 Sumber: Katadata, 2024
               </div>
             </div>
@@ -692,14 +700,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Card 3: 1,62% vs 13,58% */}
             <div className="glass-panel rounded-3xl p-6 border-t-4 border-t-[#6B5F00] flex flex-col justify-between hover:-translate-y-1 transition-all">
               <div>
-                <span className="font-display font-black text-2xl sm:text-3xl text-[#6B5F00] tracking-tight block">
-                  1,62% <span className="text-sm font-normal text-gray-500">vs</span> 13,58%
+                <span className="font-display font-medium text-2xl sm:text-3xl text-[#6B5F00] tracking-tight block lining-nums">
+                  1,62% <span className="font-ui text-sm font-normal text-gray-500">vs</span> 13,58%
                 </span>
-                <h4 className="font-display font-bold text-sm text-[#0A2A22] mt-2 mb-1">
-                  Pertumbuhan Kredit UMKM vs Bank
+                <h4 className="font-ui font-semibold text-[17px] text-[#0A2A22] mt-2 mb-1">
+                  Porsi Kredit UMKM vs Bank
                 </h4>
-                <p className="text-xs text-[#6B5A55] leading-relaxed">
-                  Pertumbuhan kredit UMKM hanya tumbuh 1,62% dibandingkan pertumbuhan kredit perbankan umum yang mencapai 13,58% pada Juli 2026.
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6]">
+                  Porsi kredit UMKM nasional baru 1,62% dibanding target 13,58% perbankan (per Juli 2026), menunjukkan kesenjangan pembiayaan modal kerja.
                 </p>
                 <div className="space-y-1 mt-3">
                   <div className="w-full h-1.5 bg-[#FFF637]/40 rounded-full overflow-hidden">
@@ -707,29 +715,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono-tabular text-[10px] text-[#6B5A55] leading-snug">
-                Sumber: Bank Indonesia (BI), via Infobanknews (Juli 2026)
+              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono text-[11px] text-[#6B5A55] uppercase tracking-[0.08em] leading-snug">
+                Sumber: IDX Channel, 2026
               </div>
             </div>
 
-            {/* Card 4: Belum dijamin */}
+            {/* Card 4: 83.380 Koperasi Merah Putih */}
             <div className="glass-panel rounded-3xl p-6 border-t-4 border-t-[#86513D] flex flex-col justify-between hover:-translate-y-1 transition-all">
               <div>
-                <span className="font-display font-black text-2xl sm:text-3xl text-[#86513D] tracking-tight block">
-                  Belum Dijamin
+                <span className="font-display font-medium text-2xl sm:text-3xl text-[#86513D] tracking-tight block lining-nums">
+                  83.380 Koperasi
                 </span>
-                <h4 className="font-display font-bold text-sm text-[#0A2A22] mt-2 mb-1">
-                  Status Penjaminan Simpanan
+                <h4 className="font-ui font-semibold text-[17px] text-[#0A2A22] mt-2 mb-1">
+                  Koperasi Desa Merah Putih
                 </h4>
-                <p className="text-xs text-[#6B5A55] leading-relaxed">
-                  Simpanan anggota pada koperasi belum dijamin oleh Lembaga Penjamin Simpanan (LPS); regulasi penjaminan khusus masih dalam tahap kajian.
+                <p className="font-ui text-[15px] text-[#6B5A55] leading-[1.6]">
+                  Sebanyak 83.380 Koperasi Desa/Kelurahan Merah Putih disiapkan beroperasi serentak, menuntut pengawasan digital yang tidak membebani kas kecil.
                 </p>
                 <div className="w-full h-1.5 bg-[#FFDBCF] rounded-full mt-3 overflow-hidden">
-                  <div className="h-full bg-[#86513D] rounded-full w-full opacity-60" />
+                  <div className="h-full bg-[#86513D] rounded-full w-full opacity-80" />
                 </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono-tabular text-[10px] text-[#86513D] leading-snug">
-                Sumber: Lembaga Penjamin Simpanan (LPS), 7 Okt 2026
+              <div className="mt-4 pt-3 border-t border-[#F3D9CE] font-mono text-[11px] text-[#86513D] uppercase tracking-[0.08em] leading-snug">
+                Sumber: ANTARA, 2026; iNews, 2026
               </div>
             </div>
           </div>
@@ -742,13 +750,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <section id="alur-kerja" className="py-20 bg-white border-y border-[#F3D9CE]">
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[11px] font-medium uppercase tracking-[0.08em]">
               Mekanisme Kerja
             </span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0A2A22]">
+            <h2 className="font-display font-medium text-[34px] sm:text-[40px] text-[#0A2A22] leading-tight">
               Alur Deteksi &amp; Intervensi Manusia
             </h2>
-            <p className="text-sm text-[#6B5A55]">
+            <p className="font-ui text-[15px] sm:text-[16px] text-[#6B5A55] leading-[1.6]">
               Dari penyerapan catatan transaksi hingga keputusan verifikasi tanpa ada aksi atau sanksi sepihak otomatis.
             </p>
           </div>
@@ -792,17 +800,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono-tabular font-extrabold text-sm text-[#009770] px-2.5 py-1 rounded-xl bg-[#E0F4EE]">
+                    <span className="font-mono font-medium text-xs text-[#009770] px-2.5 py-1 rounded-xl bg-[#E0F4EE] uppercase tracking-[0.08em]">
                       Langkah {st.step}
                     </span>
                     <span className="material-symbols-outlined text-[24px] text-[#009770]">
                       {st.icon}
                     </span>
                   </div>
-                  <h4 className="font-display font-bold text-sm text-[#0A2A22] mb-1.5">
+                  <h4 className="font-ui font-semibold text-[17px] text-[#0A2A22] mb-1.5">
                     {st.title}
                   </h4>
-                  <p className="text-xs text-[#6B5A55] leading-relaxed">
+                  <p className="font-ui text-[14px] text-[#6B5A55] leading-[1.6]">
                     {st.desc}
                   </p>
                 </div>
@@ -818,43 +826,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <section id="arsitektur-sistem" className="py-20 bg-gradient-to-b from-[#FFF8F4] to-[#FFE9DF]">
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[11px] font-medium uppercase tracking-[0.08em]">
               Arsitektur Terbuka
             </span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0A2A22]">
+            <h2 className="font-display font-medium text-[34px] sm:text-[40px] text-[#0A2A22] leading-tight">
               Arsitektur Sistem SADAR
             </h2>
-            <p className="text-sm text-[#6B5A55]">
+            <p className="font-ui text-[15px] sm:text-[16px] text-[#6B5A55] leading-[1.6]">
               Arsitektur modular berbasis Explainable AI: seluruh pemrosesan berjalan di browser tanpa menyimpan data sensitif di server luar.
             </p>
           </div>
 
           <div className="glass-panel rounded-3xl p-8 border border-[#F3D9CE] shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-xs font-mono-tabular">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="p-4 rounded-2xl bg-white border border-[#F3D9CE] space-y-2">
-                <span className="font-bold text-[#009770] block">1. Lapis Ingesti &amp; Privasi</span>
-                <p className="text-gray-600">
+                <span className="font-ui font-semibold text-[15px] text-[#009770] block">1. Lapis Ingesti &amp; Privasi</span>
+                <p className="font-ui text-[13px] text-gray-600 leading-[1.6]">
                   Pseudonimisasi deterministik ID (contoh: ANG-7F3A), minimisasi data, dan pemetaan kontrol kepatuhan UU PDP No. 27/2022.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-white border border-[#F3D9CE] space-y-2">
-                <span className="font-bold text-[#009770] block">2. Lapis Analisis Dual-Core</span>
-                <p className="text-gray-600">
+                <span className="font-ui font-semibold text-[15px] text-[#009770] block">2. Lapis Analisis Dual-Core</span>
+                <p className="font-ui text-[13px] text-gray-600 leading-[1.6]">
                   Uji digit pertama Benford (MAD &amp; Chi-Square) untuk tingkat akun, dipadu Isolation Forest &amp; Aturan Red-Flag untuk transaksi.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-white border border-[#F3D9CE] space-y-2">
-                <span className="font-bold text-[#009770] block">3. Lapis Tinjauan &amp; XAI</span>
-                <p className="text-gray-600">
+                <span className="font-ui font-semibold text-[15px] text-[#009770] block">3. Lapis Tinjauan &amp; XAI</span>
+                <p className="font-ui text-[13px] text-gray-600 leading-[1.6]">
                   Atribusi faktor pemicu (selisih terhadap median), tingkat prioritas, baris keterbatasan data, serta hak koreksi berjejak.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-white border border-[#F3D9CE] space-y-2">
-                <span className="font-bold text-[#009770] block">4. Lapis Akuntabilitas</span>
-                <p className="text-gray-600">
+                <span className="font-ui font-semibold text-[15px] text-[#009770] block">4. Lapis Akuntabilitas</span>
+                <p className="font-ui text-[13px] text-gray-600 leading-[1.6]">
                   Laporan agregat tanpa nama orang nyata untuk bahan RAT koperasi, ringkasan arus kas berizin untuk UMKM, dan Lab Validasi data sintetis.
                 </p>
               </div>
@@ -873,29 +881,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="md:col-span-5 space-y-4">
               <div className="flex items-center gap-3">
                 <SadarLogo size="sm" animated={false} />
-                <SadarText variant="light" className="text-2xl font-black" />
+                <SadarText variant="light" className="text-2xl font-semibold" />
               </div>
-              <p className="text-xs text-[#6B5A55] max-w-sm leading-relaxed">
+              <p className="font-ui text-xs text-[#6B5A55] max-w-sm leading-[1.6]">
                 Sistem Analitik Deteksi Anomali dan Risiko Keuangan Berbasis Explainable AI. Pengendalian internal koperasi dan UMKM yang dapat dijelaskan.
               </p>
-              <div className="p-3 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] text-[11px] text-[#6B5A55] leading-relaxed">
-                <strong className="text-[#0A2A22] block mb-0.5">Pernyataan Posisi Sistem:</strong>
-                <SadarText variant="light" className="text-[11px] font-bold mr-1 inline-flex" /> adalah alat bantu pengendalian internal: bukan alat penindakan dan bukan pengganti auditor.
+              <div className="p-3 rounded-xl bg-[#FFF8F4] border border-[#F3D9CE] font-ui text-[12px] text-[#6B5A55] leading-[1.6]">
+                <strong className="text-[#0A2A22] font-semibold block mb-0.5">Pernyataan Posisi Sistem:</strong>
+                <SadarText variant="light" className="text-[12px] font-semibold mr-1 inline-flex" /> adalah alat bantu pengendalian internal: bukan alat penindakan dan bukan pengganti auditor.
               </div>
             </div>
 
             {/* Links Col */}
             <div className="md:col-span-4 space-y-3">
-              <h4 className="font-display font-bold text-xs uppercase tracking-wider text-[#0A2A22] flex items-center gap-1.5">
+              <h4 className="font-ui font-semibold text-xs uppercase tracking-wider text-[#0A2A22] flex items-center gap-1.5">
                 <span>Modul Dasbor</span>
-                <SadarText variant="light" className="text-xs font-black" />
+                <SadarText variant="light" className="text-xs font-semibold" />
                 <span>(6 Modul):</span>
               </h4>
-              <ul className="space-y-2 text-xs font-mono-tabular">
+              <ul className="space-y-2 font-ui text-xs">
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('pemantauan')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">radar</span>
                     1. Pemantauan Langsung (Indikator Risiko)
@@ -904,7 +912,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('kesehatan')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">account_balance</span>
                     2. Kesehatan Akun (Uji Benford &amp; Chi-Square)
@@ -913,7 +921,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('antrean')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">fact_check</span>
                     3. Antrean Tinjauan (Human-in-the-Loop)
@@ -922,7 +930,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('sumber_data')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">security</span>
                     4. Sumber Data dan Privasi (UU 27/2022)
@@ -931,7 +939,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('laporan')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">query_stats</span>
                     5. Laporan Agregat (Bahan RAT &amp; Arus Kas)
@@ -940,7 +948,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button
                     onClick={() => handleLaunchDashboard('lab')}
-                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5"
+                    className="text-[#6B5A55] hover:text-[#009770] hover:underline cursor-pointer flex items-center gap-1.5 font-medium transition-colors"
                   >
                     <span className="material-symbols-outlined text-[14px]">science</span>
                     6. Lab Validasi (Ablasi Data Sintetis)
@@ -951,24 +959,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Competition Notice */}
             <div className="md:col-span-3 space-y-3">
-              <h4 className="font-display font-bold text-xs uppercase tracking-wider text-[#0A2A22]">
+              <h4 className="font-ui font-semibold text-xs uppercase tracking-wider text-[#0A2A22]">
                 Catatan Prototipe
               </h4>
-              <p className="text-xs text-[#6B5A55] leading-relaxed">
+              <p className="font-ui text-xs text-[#6B5A55] leading-[1.6]">
                 Prototipe untuk <strong>Indonesia Accounting Challenge 2026</strong>. Data sintetis. Seluruh algoritma berjalan lokal di browser.
               </p>
-              <div className="p-3 bg-[#E0F4EE] rounded-xl border border-[#009770]/30 text-[11px] font-mono-tabular text-[#009770]">
+              <div className="p-3 bg-[#E0F4EE] rounded-xl border border-[#009770]/30 font-mono text-[11px] text-[#009770] uppercase tracking-[0.08em]">
                 Mode: Koperasi &amp; UMKM (Dua Segmen, Satu Mesin)
               </div>
             </div>
           </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono-tabular text-[#6B5A55] gap-3">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between font-mono text-[11px] text-[#6B5A55] gap-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#009770] radar-pulse-green" />
               <span className="inline-flex items-center gap-1.5">
-                <SadarText variant="light" className="text-xs font-black" />
-                <span>v2.0 · Sistem Analitik Deteksi Anomali &amp; Risiko Keuangan</span>
+                <SadarText variant="light" className="text-xs font-semibold" />
+                <span>v2.0 · Sistem Analitik Deteksi Anomali dan Rapor Kas</span>
               </span>
             </div>
             <div>
@@ -1013,11 +1021,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             </div>
 
-            <h3 className="font-display font-bold text-xl text-white tracking-wide mt-2 flex items-center justify-center gap-2">
+            <h3 className="font-ui font-semibold text-lg sm:text-xl text-white tracking-wide mt-2 flex items-center justify-center gap-2">
               <span>SISTEM ANALITIK</span>
-              <SadarText variant="dark" className="text-xl font-black" />
+              <SadarText variant="dark" className="text-xl font-semibold" />
             </h3>
-            <p className="text-xs font-mono-tabular text-[#84F8CA] mt-1">
+            <p className="text-xs font-mono text-[#84F8CA] mt-1">
               {bootMessages[bootStep]}
             </p>
 

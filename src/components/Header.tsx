@@ -52,11 +52,43 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [isOnline, setIsOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [swRegistered, setSwRegistered] = useState<boolean | null>(() => {
+    return typeof (window as any)?.__swRegistered === 'boolean' ? (window as any).__swRegistered : null;
+  });
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    const handleSwStatus = (e: any) => {
+      setSwRegistered(e.detail?.registered ?? false);
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    window.addEventListener('sw-status', handleSwStatus);
+
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      setSwRegistered(true);
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('sw-status', handleSwStatus);
+    };
+  }, []);
 
   const personaName =
     mode === 'koperasi'
       ? role === 'Pengurus'
         ? 'Pengurus · Hendro P.'
+        : role === 'Pengawas Senior'
+        ? 'Pengawas Senior · Bambang S.'
+        : role === 'Dinas Koperasi'
+        ? 'Dinas Koperasi · Dra. Ratna'
+        : role === 'Anggota (RAT)'
+        ? 'Anggota KSP · Akses RAT'
         : 'Pengawas · Sari W.'
       : 'Pemilik · Warung Fiktif Bu Rina';
 
@@ -64,6 +96,12 @@ export const Header: React.FC<HeaderProps> = ({
     mode === 'koperasi'
       ? role === 'Pengurus'
         ? 'PG'
+        : role === 'Pengawas Senior'
+        ? 'PS'
+        : role === 'Dinas Koperasi'
+        ? 'DK'
+        : role === 'Anggota (RAT)'
+        ? 'AG'
         : 'SW'
       : 'BR';
 
@@ -83,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={mode === 'koperasi' ? 'Cari Pseudonim, ID, Akun...' : 'Cari Transaksi, Kasir, Struk...'}
-            className="w-full pl-10 pr-8 py-1.5 text-xs font-mono-tabular rounded-full border border-[#00B386]/30 bg-[#0A2A22]/90 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#84F8CA] focus:border-transparent transition-all shadow-inner"
+            className="w-full pl-10 pr-8 py-1.5 text-xs font-ui rounded-full border border-[#00B386]/30 bg-[#0A2A22]/90 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#84F8CA] focus:border-transparent transition-all shadow-inner"
           />
           {searchQuery && (
             <button
@@ -102,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center p-1 rounded-full bg-[#0A2A22] border border-[#00B386]/40 shadow-inner">
           <button
             onClick={() => onToggleMode('koperasi')}
-            className={`px-3.5 py-1 rounded-full text-xs font-display font-bold transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1 rounded-full text-xs font-ui font-semibold transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               mode === 'koperasi'
                 ? 'bg-gradient-to-r from-[#009770] to-[#00B386] text-white shadow-md'
                 : 'text-gray-400 hover:text-white'
@@ -113,9 +151,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onToggleMode('umkm')}
-            className={`px-3.5 py-1 rounded-full text-xs font-display font-bold transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1 rounded-full text-xs font-ui font-semibold transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               mode === 'umkm'
-                ? 'bg-gradient-to-r from-[#FFF637] to-[#E6DC17] text-[#0A2A22] shadow-md font-extrabold'
+                ? 'bg-gradient-to-r from-[#FFF637] to-[#E6DC17] text-[#0A2A22] shadow-md font-bold'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
@@ -125,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* System Principle Statement Pill */}
-        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono-tabular text-gray-300 flex items-center gap-1.5">
+        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-gray-300 flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-[#84F8CA]" />
           <span>Pengendalian Internal &bull; Bukan Penindakan &bull; Bukan Auditor</span>
         </div>
@@ -171,10 +209,37 @@ export const Header: React.FC<HeaderProps> = ({
           </GradientButton>
         )}
 
+        {/* PWA Online/Offline / Service Worker Status Badge */}
+        {!isOnline ? (
+          <div
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-mono"
+            title="Aplikasi berjalan dalam mode offline lokal."
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
+            <span>Offline</span>
+          </div>
+        ) : swRegistered === false ? (
+          <div
+            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-gray-300 text-[10px] font-mono"
+            title="Service worker tidak diizinkan di pratinjau iframe. Aplikasi tetap beroperasi offline setelah dipasang (PWA) atau di-host di domain publik."
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#84F8CA]" />
+            <span>Mode offline tersedia setelah aplikasi dipasang/dideploy</span>
+          </div>
+        ) : (
+          <div
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#009770]/25 border border-[#84F8CA]/40 text-[#84F8CA] text-[11px] font-mono"
+            title="Tersambung online & siap beroperasi offline"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#84F8CA] radar-pulse-green" />
+            <span>Online</span>
+          </div>
+        )}
+
         {/* Stream Toggle Pill */}
         <button
           onClick={() => setStreamingActive(!streamingActive)}
-          className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-mono-tabular transition-all cursor-pointer ${
+          className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-mono transition-all cursor-pointer ${
             streamingActive
               ? 'bg-[#009770]/25 border-[#84F8CA]/40 text-[#84F8CA]'
               : 'bg-white/5 border-white/15 text-gray-400'
@@ -192,7 +257,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Privacy Masking Toggle */}
         <button
           onClick={() => setIsMasked(!isMasked)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-mono-tabular transition-all cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] font-mono transition-all cursor-pointer ${
             isMasked
               ? 'bg-[#009770]/25 border-[#84F8CA]/40 text-[#84F8CA]'
               : 'bg-[#CE2F2E]/25 border-[#CE2F2E]/50 text-[#FFB89F]'
@@ -222,10 +287,10 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="absolute right-0 mt-2 w-80 bg-[#031B15] text-white rounded-2xl shadow-2xl border border-[#00B386]/30 p-4 z-50 animate-fadeIn">
               <div className="flex items-center justify-between pb-2 border-b border-[#00B386]/20">
                 <div className="flex items-center gap-2">
-                  <span className="font-display font-bold text-sm text-white">
+                  <span className="font-ui font-semibold text-sm text-white">
                     Indikator Risiko Baru
                   </span>
-                  <span className="px-1.5 py-0.5 rounded-full bg-[#CE2F2E]/30 text-[#FFB89F] border border-[#CE2F2E]/40 text-[10px] font-bold font-mono">
+                  <span className="px-1.5 py-0.5 rounded-full bg-[#CE2F2E]/30 text-[#FFB89F] border border-[#CE2F2E]/40 text-[10px] font-medium font-mono tabular-nums">
                     {recentAlerts.length}
                   </span>
                 </div>
@@ -239,13 +304,13 @@ export const Header: React.FC<HeaderProps> = ({
 
               <div className="mt-3 space-y-2 max-h-72 overflow-y-auto">
                 {recentAlerts.length === 0 ? (
-                  <p className="text-xs text-gray-400 text-center py-4">
+                  <p className="text-xs text-gray-400 text-center py-4 font-ui">
                     Tidak ada transaksi prioritas tinggi saat ini.
                   </p>
                 ) : (
-                  recentAlerts.slice(0, 5).map((alert) => (
+                  recentAlerts.slice(0, 5).map((alert, idx) => (
                     <div
-                      key={alert.id}
+                      key={`${alert.id}-${idx}`}
                       onClick={() => {
                         if (onSelectAlert) onSelectAlert(alert.id);
                         setShowNotifications(false);
@@ -253,17 +318,17 @@ export const Header: React.FC<HeaderProps> = ({
                       className="p-2.5 rounded-xl bg-[#0A2A22] border border-[#CE2F2E]/30 hover:border-[#CE2F2E] cursor-pointer transition-all"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono-tabular font-bold text-[#FF6665]">
+                        <span className="text-[10px] font-mono tabular-nums font-semibold text-[#FF6665]">
                           SKOR {alert.finalScore}/100 ({alert.status})
                         </span>
-                        <span className="text-[10px] text-gray-400 font-mono-tabular">
+                        <span className="text-[10px] text-gray-400 font-mono tabular-nums">
                           {alert.jam || alert.timestamp || ''}
                         </span>
                       </div>
-                      <div className="font-semibold text-xs text-white mt-0.5">
+                      <div className="font-semibold text-xs text-white mt-0.5 font-mono tabular-nums">
                         Rp {new Intl.NumberFormat('id-ID').format(alert.nominal || alert.amount || 0)}
                       </div>
-                      <p className="text-[11px] text-gray-300 truncate mt-0.5">
+                      <p className="text-[11px] text-gray-300 truncate mt-0.5 font-ui">
                         {alert.deskripsi || alert.description || alert.id}
                       </p>
                     </div>
@@ -332,6 +397,42 @@ export const Header: React.FC<HeaderProps> = ({
                   >
                     <span>Pengurus (Hendro P.)</span>
                     {role === 'Pengurus' && <span className="material-symbols-outlined text-xs">check</span>}
+                  </button>
+                  <button
+                    onClick={() => {
+                      onSelectRole('Pengawas Senior');
+                      setShowRoleMenu(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-xl transition-all flex items-center justify-between cursor-pointer ${
+                      role === 'Pengawas Senior' ? 'bg-[#009770] text-white font-bold' : 'hover:bg-white/10 text-gray-200'
+                    }`}
+                  >
+                    <span>Pengawas Senior (Bambang S.)</span>
+                    {role === 'Pengawas Senior' && <span className="material-symbols-outlined text-xs">check</span>}
+                  </button>
+                  <button
+                    onClick={() => {
+                      onSelectRole('Dinas Koperasi');
+                      setShowRoleMenu(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-xl transition-all flex items-center justify-between cursor-pointer ${
+                      role === 'Dinas Koperasi' ? 'bg-[#009770] text-white font-bold' : 'hover:bg-white/10 text-gray-200'
+                    }`}
+                  >
+                    <span>Dinas Koperasi (Dra. Ratna)</span>
+                    {role === 'Dinas Koperasi' && <span className="material-symbols-outlined text-xs">check</span>}
+                  </button>
+                  <button
+                    onClick={() => {
+                      onSelectRole('Anggota (RAT)');
+                      setShowRoleMenu(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-xl transition-all flex items-center justify-between cursor-pointer ${
+                      role === 'Anggota (RAT)' ? 'bg-[#009770] text-white font-bold' : 'hover:bg-white/10 text-gray-200'
+                    }`}
+                  >
+                    <span>Anggota (Akses Bahan RAT)</span>
+                    {role === 'Anggota (RAT)' && <span className="material-symbols-outlined text-xs">check</span>}
                   </button>
                 </>
               ) : (

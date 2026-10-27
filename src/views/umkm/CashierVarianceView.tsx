@@ -103,14 +103,14 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Kasir, Selisih Laci Kas &amp; Pembatalan (Void)
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-medium tracking-[0.08em] uppercase">
                   Rekonsiliasi Harian Pemilik
                 </span>
               </div>
-              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed">
+              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed font-ui font-normal">
                 Ketikkan jumlah uang fisik yang Anda hitung di laci kasir untuk mencocokkannya dengan rekap sistem. Anda juga dapat memantau kasir mana yang paling sering membatalkan transaksi atau memberi diskon di luar jam operasional.
               </p>
             </div>
@@ -121,13 +121,13 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
       {/* 2. Interactive Cash Drawer Reconciliation Form */}
       <div className="grid grid-cols-12 gap-6 items-start">
         {/* Form Input Box */}
-        <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4 font-mono-tabular">
+        <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100">
             <div>
-              <h2 className="font-display font-bold text-sm text-[#0A2A22]">
+              <h2 className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Hitung Kas Fisik Laci Hari Ini
               </h2>
-              <p className="text-xs text-gray-500 font-sans">
+              <p className="text-xs text-gray-500 font-ui font-normal">
                 Cocokkan uang tunai hasil penjualan dengan catatan sistem POS
               </p>
             </div>
@@ -237,27 +237,27 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
         </div>
 
         {/* Right: History Log of Cash Reconciliation */}
-        <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4 font-mono-tabular">
+        <div className="col-span-12 lg:col-span-6 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100">
             <div>
-              <h3 className="font-display font-bold text-sm text-[#0A2A22]">
+              <h3 className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Riwayat Rekonsiliasi Laci Kas
               </h3>
-              <p className="text-xs text-gray-500 font-sans">
+              <p className="text-xs text-gray-500 font-ui font-normal">
                 Catatan pengecekan fisik hari ini dan hari sebelumnya
               </p>
             </div>
-            <span className="text-xs text-gray-400">{reconciliations.length} rekap</span>
+            <span className="text-xs text-gray-400 font-mono tabular-nums">{reconciliations.length} rekap</span>
           </div>
 
           <div className="space-y-2.5 max-h-[420px] overflow-y-auto">
-            {reconciliations.map((rec) => (
+            {reconciliations.map((rec, idx) => (
               <div
-                key={rec.id}
-                className="p-3.5 rounded-xl border border-gray-100 bg-gray-50/70 hover:bg-white transition-all space-y-2 text-xs"
+                key={`${rec.id}-${idx}`}
+                className="p-3.5 rounded-xl border border-gray-100 bg-gray-50/70 hover:bg-white transition-all space-y-2 text-xs font-mono tabular-nums"
               >
                 <div className="flex items-center justify-between">
-                  <div className="font-bold text-gray-900">{rec.shift}</div>
+                  <div className="font-ui font-bold text-gray-900">{rec.shift}</div>
                   <span
                     className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                       rec.status === 'Sesuai'
@@ -274,7 +274,7 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
                 <div className="grid grid-cols-2 gap-2 text-[11px] text-gray-600 pt-1 border-t border-gray-200/50">
                   <div>Kas Sistem: Rp {rec.kasSistem.toLocaleString('id-ID')}</div>
                   <div>Kas Fisik: Rp {rec.kasFisikInput.toLocaleString('id-ID')}</div>
-                  <div className="col-span-2 text-gray-500 italic">
+                  <div className="col-span-2 text-gray-500 italic font-ui">
                     &ldquo;{rec.catatan}&rdquo;
                   </div>
                 </div>
@@ -292,16 +292,16 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
       {/* 3. Breakdown of Void, Retur, Diskon per Kasir & Shift */}
       <div className="bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
         <div>
-          <h3 className="font-display font-bold text-sm text-[#0A2A22]">
+          <h3 className="font-ui font-semibold text-sm text-[#0A2A22]">
             Rangkuman Pembatalan (Void), Retur &amp; Diskon per Kasir
           </h3>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 font-ui font-normal">
             Kasir dengan pola pembatalan atau diskon tidak wajar ditandai untuk pemeriksaan rekaman CCTV
           </p>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono-tabular">
+          <table className="w-full text-left text-xs font-mono tabular-nums">
             <thead>
               <tr className="bg-gray-50 text-gray-600 uppercase text-[10px] border-b border-gray-200">
                 <th className="py-2.5 px-3">Kasir &amp; Shift</th>
@@ -347,13 +347,13 @@ export const CashierVarianceView: React.FC<CashierVarianceViewProps> = ({
       </div>
 
       {/* 4. Heatmap Jam × Hari untuk Void & Diskon */}
-      <div className="bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4 font-mono-tabular">
+      <div className="bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
-            <h3 className="font-display font-bold text-sm text-[#0A2A22]">
+            <h3 className="font-ui font-semibold text-sm text-[#0A2A22]">
               Peta Panas (Heatmap) Jam &times; Hari: Frekuensi Void &amp; Diskon
             </h3>
-            <p className="text-xs text-gray-500 font-sans">
+            <p className="text-xs text-gray-500 font-ui font-normal">
               Semakin gelap warna merah/kuning, semakin sering terjadi pembatalan nota atau diskon di waktu tersebut
             </p>
           </div>

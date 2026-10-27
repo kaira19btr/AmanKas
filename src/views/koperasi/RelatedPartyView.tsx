@@ -54,33 +54,33 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Pemantauan Transaksi Pihak Terkait
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 border border-purple-400/40 text-[10px] font-mono font-bold tracking-wider uppercase">
+                <span className="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 border border-purple-400/40 text-[10px] font-mono font-medium tracking-[0.08em] uppercase">
                   Hipotesis Kerja
                 </span>
               </div>
-              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed">
+              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed font-ui">
                 Pengawasan transaksi yang melibatkan Pengurus, Pengawas, atau pihak terafiliasi. Label <strong>"Hipotesis Kerja"</strong> menegaskan bahwa temuan awal adalah bahan verifikasi dokumen dan bukan penetapan kesalahan.
               </p>
             </div>
           </div>
 
-          <div className="px-3 py-1.5 rounded-xl bg-purple-900/40 border border-purple-400/30 text-[11px] font-mono-tabular text-purple-200 shrink-0">
+          <div className="px-3 py-1.5 rounded-xl bg-purple-900/40 border border-purple-400/30 text-[11px] font-mono text-purple-200 shrink-0">
             Asas Praduga Tak Bersalah &bull; UU 25/1992
           </div>
         </div>
       </section>
 
       {/* 2. Comparative Exposure Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-ui">
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs">
-          <div className="flex justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex justify-between text-xs text-gray-500 font-mono">
             <span>Total Portofolio Terkait</span>
             <span className="material-symbols-outlined text-purple-600">pie_chart</span>
           </div>
-          <div className="text-xl font-bold font-display text-[#0A2A22] mt-1">
+          <div className="text-xl font-semibold font-mono tabular-nums text-[#0A2A22] mt-1">
             Rp {new Intl.NumberFormat('id-ID').format(totalRelatedVolume)}
           </div>
           <div className="text-[11px] text-gray-500 mt-1">
@@ -89,13 +89,13 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs">
-          <div className="flex justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex justify-between text-xs text-gray-500 font-mono">
             <span>Pihak Pengurus</span>
-            <span className="px-2 py-0.2 rounded text-[10px] bg-blue-100 text-blue-800 font-bold">
+            <span className="px-2 py-0.2 rounded text-[10px] bg-blue-100 text-blue-800 font-medium">
               Pengurus
             </span>
           </div>
-          <div className="text-xl font-bold font-display text-blue-900 mt-1">
+          <div className="text-xl font-semibold font-mono tabular-nums text-blue-900 mt-1">
             Rp {new Intl.NumberFormat('id-ID').format(pengurusVolume)}
           </div>
           <div className="text-[11px] text-gray-500 mt-1">
@@ -104,13 +104,13 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs">
-          <div className="flex justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex justify-between text-xs text-gray-500 font-mono">
             <span>Pihak Pengawas</span>
-            <span className="px-2 py-0.2 rounded text-[10px] bg-purple-100 text-purple-800 font-bold">
+            <span className="px-2 py-0.2 rounded text-[10px] bg-purple-100 text-purple-800 font-medium">
               Pengawas
             </span>
           </div>
-          <div className="text-xl font-bold font-display text-purple-900 mt-1">
+          <div className="text-xl font-semibold font-mono tabular-nums text-purple-900 mt-1">
             Rp {new Intl.NumberFormat('id-ID').format(pengawasVolume)}
           </div>
           <div className="text-[11px] text-gray-500 mt-1">
@@ -119,13 +119,13 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs">
-          <div className="flex justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex justify-between text-xs text-gray-500 font-mono">
             <span>Afiliasi Keluarga</span>
-            <span className="px-2 py-0.2 rounded text-[10px] bg-amber-100 text-amber-800 font-bold">
+            <span className="px-2 py-0.2 rounded text-[10px] bg-amber-100 text-amber-800 font-medium">
               Afiliasi
             </span>
           </div>
-          <div className="text-xl font-bold font-display text-amber-900 mt-1">
+          <div className="text-xl font-semibold font-mono tabular-nums text-amber-900 mt-1">
             Rp {new Intl.NumberFormat('id-ID').format(familyVolume)}
           </div>
           <div className="text-[11px] text-gray-500 mt-1">
@@ -135,12 +135,12 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
       </div>
 
       {/* 3. Filter and Details Grid */}
-      <div className="grid grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-12 gap-6 items-start font-ui">
         {/* Table of Related Party Transactions */}
         <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl border border-[#F3D9CE] shadow-xs overflow-hidden">
           <div className="p-4 px-5 border-b border-gray-100 flex flex-wrap items-center justify-between gap-2 bg-[#FFF8F4]">
             <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-sm text-[#0A2A22]">
+              <span className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Daftar Transaksi Pihak Terkait
               </span>
               <span className="text-xs font-mono-tabular text-gray-500">
@@ -177,11 +177,11 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filteredList.map((trx) => {
+                {filteredList.map((trx, index) => {
                   const isSelected = activeTrx?.id === trx.id;
                   return (
                     <tr
-                      key={trx.id}
+                      key={`${trx.id}-${index}`}
                       onClick={() => setSelectedTrx(trx)}
                       className={`hover:bg-purple-50/50 cursor-pointer transition-colors ${
                         isSelected ? 'bg-purple-100/60 font-bold' : ''
@@ -242,7 +242,7 @@ export const RelatedPartyView: React.FC<RelatedPartyViewProps> = ({
                       {activeTrx.pihakTerkaitLabel}
                     </span>
                   </div>
-                  <h3 className="font-display font-bold text-sm text-[#0A2A22] mt-1">
+                  <h3 className="font-ui font-semibold text-sm text-[#0A2A22] mt-1">
                     Analisis Selisih terhadap Pola Anggota Lain
                   </h3>
                 </div>

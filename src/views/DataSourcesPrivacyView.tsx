@@ -546,8 +546,8 @@ export const DataSourcesPrivacyView: React.FC<DataSourcesPrivacyViewProps> = ({
                 Catatan kekal setiap de-pseudonimisasi, keputusan audit, dan izin berbagi
               </p>
             </div>
-            <span className="font-mono-tabular text-xs text-[#6B5A55] bg-[#FFF8F4] px-2.5 py-1 rounded-lg border border-[#F3D9CE]">
-              Immutable Record
+            <span className="font-mono-tabular text-xs text-[#009770] bg-[#FFF8F4] px-2.5 py-1 rounded-lg border border-[#F3D9CE] font-semibold">
+              Append-Only, Tamper-Evident
             </span>
           </div>
 
@@ -564,8 +564,8 @@ export const DataSourcesPrivacyView: React.FC<DataSourcesPrivacyViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F3D9CE]/50">
-                {auditLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-[#FFF8F4]/50">
+                {auditLogs.map((log, idx) => (
+                  <tr key={`${log.id}-${idx}`} className="hover:bg-[#FFF8F4]/50">
                     <td className="py-2.5 px-3 font-mono-tabular text-[#6B5A55] whitespace-nowrap">
                       {log.timestamp}
                     </td>

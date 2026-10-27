@@ -344,7 +344,7 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F3D9CE]/50">
-                {displayedTransactions.slice(0, 30).map((t) => {
+                {displayedTransactions.slice(0, 30).map((t, idx) => {
                   const isCritical = t.status === 'Prioritas tinggi';
                   const isReview = t.status === 'Perlu ditinjau';
                   const rowBg = isCritical
@@ -354,7 +354,7 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
                     : 'hover:bg-[#FFF8F4]/80';
 
                   return (
-                    <tr key={t.id} className={`transition-colors ${rowBg}`}>
+                    <tr key={`${t.id}-${idx}`} className={`transition-colors ${rowBg}`}>
                       <td className="py-2.5 px-3 font-mono-tabular text-[#6B5A55] whitespace-nowrap">
                         {t.timestamp}
                       </td>
@@ -432,9 +432,9 @@ export const LiveMonitoringView: React.FC<LiveMonitoringViewProps> = ({
               </div>
             ) : (
               <div className="space-y-3">
-                {instantAlerts.map((alt) => (
+                {instantAlerts.map((alt, idx) => (
                   <div
-                    key={alt.id}
+                    key={`${alt.id}-${idx}`}
                     className="p-3 rounded-xl border border-[#F3D9CE] bg-[#FFF8F4]/60 hover:bg-[#FFF8F4] transition-all cursor-pointer"
                     onClick={() => onSelectTransaction(alt)}
                   >

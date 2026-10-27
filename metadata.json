@@ -1,6 +1,6 @@
 {
   "name": "SADAR - Pengendalian Internal Koperasi & UMKM",
-  "description": "Sistem Analitik Deteksi Anomali dan Risiko Keuangan Berbasis Explainable AI untuk Koperasi dan UMKM.",
+  "description": "SADAR: Sistem Analitik Deteksi Anomali dan Rapor Kas berbasis Explainable AI untuk Koperasi dan UMKM.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

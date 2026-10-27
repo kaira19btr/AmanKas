@@ -239,7 +239,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                     key={r.id}
                     type="button"
                     onClick={() => handleRoleSelect(r.id as any)}
-                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between font-ui ${
                       isActive
                         ? 'border-[#009770] bg-[#E0F4EE] shadow-sm ring-1 ring-[#009770]'
                         : 'border-[#F3D9CE] bg-white hover:bg-[#FFF8F4]'
@@ -258,11 +258,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                           <span className="w-1.5 h-1.5 rounded-full bg-[#009770] animate-ping" />
                         )}
                       </div>
-                      <div className="font-display font-bold text-xs text-[#0A2A22] leading-tight">
+                      <div className="font-ui font-semibold text-xs text-[#0A2A22] leading-tight">
                         {r.label}
                       </div>
                     </div>
-                    <div className="mt-2 text-[9px] font-mono-tabular text-[#6B5A55] truncate">
+                    <div className="mt-2 text-[10px] text-[#6B5A55] truncate font-medium">
                       {r.name.split(',')[0]}
                     </div>
                   </button>
@@ -428,11 +428,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </div>
 
             {/* Neural Matrix Status Title */}
-            <h3 className="font-display font-bold text-xl text-white tracking-wide mt-2 flex items-center justify-center gap-2">
+            <h3 className="font-ui font-semibold text-lg sm:text-xl text-white tracking-wide mt-2 flex items-center justify-center gap-2">
               <span>OTENTIKASI AI</span>
-              <SadarText variant="dark" className="text-xl font-black" />
+              <SadarText variant="dark" className="text-xl font-semibold" />
             </h3>
-            <p className="text-xs font-mono-tabular text-[#84F8CA] mt-1">
+            <p className="text-xs font-mono text-[#84F8CA] mt-1">
               {bootMessages[bootStep]}
             </p>
 

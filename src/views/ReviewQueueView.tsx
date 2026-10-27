@@ -251,7 +251,7 @@ export const ReviewQueueView: React.FC<ReviewQueueViewProps> = ({
                 Tidak ada transaksi dalam kategori ini.
               </div>
             ) : (
-              queueList.map((t) => {
+              queueList.map((t, idx) => {
                 const isSelected = activeTrx?.id === t.id;
                 const isCritical = t.status === 'Prioritas tinggi';
                 const isReview = t.status === 'Perlu ditinjau';
@@ -259,7 +259,7 @@ export const ReviewQueueView: React.FC<ReviewQueueViewProps> = ({
 
                 return (
                   <div
-                    key={t.id}
+                    key={`${t.id}-${idx}`}
                     onClick={() => {
                       soundEngine.playClick(750);
                       onSelectTransaction(t);

@@ -40,7 +40,7 @@ export const SadarText: React.FC<SadarTextProps> = ({
 
   return (
     <span
-      className={`inline-flex items-baseline font-display font-black tracking-tight select-none ${className}`}
+      className={`inline-flex items-baseline font-display font-semibold uppercase tracking-[0.06em] select-none ${className}`}
       aria-label="SADAR"
     >
       {letters.map((char, idx) => (

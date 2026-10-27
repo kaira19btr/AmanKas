@@ -19,6 +19,7 @@ import { RelatedPartyView } from './views/koperasi/RelatedPartyView';
 import { KoperasiReviewQueueView } from './views/koperasi/KoperasiReviewQueueView';
 import { RatReportView } from './views/koperasi/RatReportView';
 import { KoperasiDataSourcesPrivacyView } from './views/koperasi/KoperasiDataSourcesPrivacyView';
+import { InternalControlCenterView } from './views/koperasi/InternalControlCenterView';
 
 // Dedicated UMKM Views
 import { BusinessHomeView } from './views/umkm/BusinessHomeView';
@@ -26,7 +27,13 @@ import { CashierVarianceView } from './views/umkm/CashierVarianceView';
 import { PersonalMixingView } from './views/umkm/PersonalMixingView';
 import { OwnerAlertsView } from './views/umkm/OwnerAlertsView';
 import { CashflowReadinessView } from './views/umkm/CashflowReadinessView';
+import { RaporKasView } from './views/umkm/RaporKasView';
 import { PrivacyConsentView } from './views/umkm/PrivacyConsentView';
+
+// Shared Cross-Mode & Dinas Views
+import { DataPreparationView } from './views/DataPreparationView';
+import { IndicatorCenterView } from './views/IndicatorCenterView';
+import { DinasKoperasiView } from './views/dinas/DinasKoperasiView';
 
 // Mode-Specific Seed Datasets & Shared Engine
 import {
@@ -48,6 +55,15 @@ import {
   AuditLogEntry,
 } from './types';
 import { calculateBenford } from './utils/benford';
+import {
+  loadAllFromIndexedDB,
+  saveToIndexedDB,
+  clearAllIndexedDB,
+} from './utils/indexedDB';
+import {
+  appendAuditLogWithHash,
+  generateInitialChainedAuditLogs,
+} from './utils/hashChain';
 
 export type ViewMode = 'landing' | 'login' | 'dashboard';
 
@@ -92,14 +108,14 @@ export default function App() {
   const [retentionDays, setRetentionDays] = useState<number>(1825);
 
   // =========================================================================
-  // SEPARATE IN-MEMORY DATASETS: RETAINED IN MEMORY ACROSS MODE SWITCHES
+  // SEPARATE IN-MEMORY & INDEXEDDB PERSISTED DATASETS
   // =========================================================================
   const initialKoperasiRef = useRef(generateKoperasiInitialData());
   const [koperasiAccounts, setKoperasiAccounts] = useState<Account[]>(initialKoperasiRef.current.accounts);
   const [koperasiTransactions, setKoperasiTransactions] = useState<KoperasiTransaction[]>(
     initialKoperasiRef.current.transactions
   );
-  const [koperasiAuditLogs, setKoperasiAuditLogs] = useState<AuditLogEntry[]>(initialKoperasiRef.current.auditLogs);
+  const [koperasiAuditLogs, setKoperasiAuditLogs] = useState<AuditLogEntry[]>([]);
   const [selectedKoperasiTrx, setSelectedKoperasiTrx] = useState<KoperasiTransaction | null>(null);
 
   const initialUmkmRef = useRef(generateUmkmInitialData());
@@ -115,6 +131,65 @@ export default function App() {
     lenderShareToken: null,
   });
 
+  // Load from IndexedDB on startup or generate initial hash-chained logs
+  useEffect(() => {
+    let isMounted = true;
+    async function initDb() {
+      try {
+        const persisted = await loadAllFromIndexedDB();
+        if (!isMounted) return;
+
+        if (persisted.koperasiTransactions && persisted.koperasiTransactions.length > 0) {
+          setKoperasiTransactions(persisted.koperasiTransactions);
+        } else {
+          saveToIndexedDB('koperasi_transactions', initialKoperasiRef.current.transactions);
+        }
+
+        if (persisted.umkmTransactions && persisted.umkmTransactions.length > 0) {
+          setUmkmTransactions(persisted.umkmTransactions);
+        } else {
+          saveToIndexedDB('umkm_transactions', initialUmkmRef.current.transactions);
+        }
+
+        if (persisted.auditLogs && persisted.auditLogs.length > 0) {
+          setKoperasiAuditLogs(persisted.auditLogs);
+        } else {
+          // Initialize cryptographic hash chain
+          const chained = await generateInitialChainedAuditLogs(initialKoperasiRef.current.auditLogs);
+          if (isMounted) {
+            setKoperasiAuditLogs(chained);
+            saveToIndexedDB('audit_logs', chained);
+          }
+        }
+
+        if (persisted.umkmReconciliations && persisted.umkmReconciliations.length > 0) {
+          setUmkmReconciliations(persisted.umkmReconciliations);
+        }
+      } catch (err) {
+        console.warn('IndexedDB initial load fallback:', err);
+      }
+    }
+    initDb();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Compute empirical P90 and P98 thresholds from currently loaded dataset
+  const { actualP90, actualP98 } = useMemo(() => {
+    const list = mode === 'koperasi' ? koperasiTransactions : umkmTransactions;
+    if (!list || list.length === 0) {
+      return { actualP90: 42, actualP98: 78 };
+    }
+    const scores = list.map((t) => t.finalScore).sort((a, b) => a - b);
+    const p90Index = Math.floor(0.90 * (scores.length - 1));
+    const p98Index = Math.floor(0.98 * (scores.length - 1));
+    return {
+      actualP90: scores[p90Index] ?? 42,
+      actualP98: scores[p98Index] ?? 78,
+    };
+  }, [mode, koperasiTransactions, umkmTransactions]);
+
   // Switch Mode Handler (Perilaku Pengalih Mode)
   const handleToggleMode = (newMode: AppMode) => {
     if (newMode === mode) return;
@@ -122,16 +197,19 @@ export default function App() {
     setMode(newMode);
     if (newMode === 'umkm') {
       setUserRole('Pemilik UMKM');
-      setActiveTab('beranda_usaha'); // Default route for UMKM
-      setRetentionDays(90); // 90 days default for UMKM
+      setActiveTab('beranda_usaha');
+      setRetentionDays(90);
     } else {
       setUserRole('Pengawas');
-      setActiveTab('pemantauan_langsung'); // Default route for Koperasi
-      setRetentionDays(1825); // 5 years default for KSP
+      setActiveTab('pemantauan_langsung');
+      setRetentionDays(1825);
     }
   };
 
   // Live Stream Simulation for active mode
+  const nextKopSeqRef = useRef<number>(100);
+  const nextUmkSeqRef = useRef<number>(100);
+
   useEffect(() => {
     if (!streamingActive) return;
 
@@ -140,7 +218,8 @@ export default function App() {
       const nowStr = new Date().toTimeString().slice(0, 5);
 
       if (mode === 'koperasi') {
-        const randId = `KOP-2026-${Math.floor(100 + Math.random() * 900)}`;
+        nextKopSeqRef.current += 1;
+        const uniqueId = `KOP-2026-${Date.now().toString().slice(-4)}${nextKopSeqRef.current}`;
         const accountsList = ['Simpanan Sukarela', 'Angsuran Pinjaman', 'Kas Operasional'] as const;
         const randomAcc = accountsList[Math.floor(Math.random() * accountsList.length)];
         const unitsList = ['Cabang Utama', 'Cabang Barat', 'Cabang Timur'] as const;
@@ -148,7 +227,7 @@ export default function App() {
         const amount = 350000 + Math.floor(Math.random() * 3500000);
 
         const newTrx: KoperasiTransaction = {
-          id: randId,
+          id: uniqueId,
           tanggal: `2026-10-25 ${nowStr}`,
           jam: nowStr,
           akun: randomAcc,
@@ -164,17 +243,28 @@ export default function App() {
           ruleScore: 12,
           isolationScore: 15,
           finalScore: 13,
-          status: 'Normal',
+          status: 'Hijau · Risiko rendah',
           decisionStatus: 'Wajar',
           flagReasons: [],
         };
 
-        setKoperasiTransactions((prev) => [newTrx, ...prev]);
+        setKoperasiTransactions((prev) => {
+          const seen = new Set<string>([uniqueId]);
+          const deduped = prev.filter((trx) => {
+            if (seen.has(trx.id)) return false;
+            seen.add(trx.id);
+            return true;
+          });
+          const nextList = [newTrx, ...deduped.slice(0, 199)];
+          saveToIndexedDB('koperasi_transactions', nextList);
+          return nextList;
+        });
       } else {
-        const randId = `UMK-2026-${Math.floor(100 + Math.random() * 900)}`;
+        nextUmkSeqRef.current += 1;
+        const uniqueId = `UMK-2026-${Date.now().toString().slice(-4)}${nextUmkSeqRef.current}`;
         const amount = 25000 + Math.floor(Math.random() * 250000);
         const newTrx: UmkmTransaction = {
-          id: randId,
+          id: uniqueId,
           tanggalJam: `2026-10-25 ${nowStr}`,
           jam: nowStr,
           tanggal: '2026-10-25',
@@ -190,37 +280,74 @@ export default function App() {
           isolationScore: 10,
           finalScore: 9,
           volumeCukup: false,
-          status: 'Normal',
+          status: 'Hijau · Risiko rendah',
           decisionStatus: 'Wajar',
           flagReasons: [],
         };
 
-        setUmkmTransactions((prev) => [newTrx, ...prev]);
+        setUmkmTransactions((prev) => {
+          const seen = new Set<string>([uniqueId]);
+          const deduped = prev.filter((trx) => {
+            if (seen.has(trx.id)) return false;
+            seen.add(trx.id);
+            return true;
+          });
+          const nextList = [newTrx, ...deduped.slice(0, 199)];
+          saveToIndexedDB('umkm_transactions', nextList);
+          return nextList;
+        });
       }
     }, intervalTime);
 
     return () => clearInterval(interval);
   }, [streamingActive, mode]);
 
-  // Koperasi Decision Maker (with dynamic feedback weights calibration)
-  const handleMakeKoperasiDecision = (trxId: string, decision: DecisionStatus, note: string) => {
+  // Log action with SHA-256 hash chaining (append-only, tamper-evident)
+  const handleLogAuditAction = async (action: string, target: string, reason: string) => {
+    const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const rawEntry = {
+      id: `AUD-KOP-${Date.now().toString().slice(-4)}`,
+      timestamp: nowStr,
+      actor: userRole,
+      role: userRole,
+      action,
+      target,
+      reason,
+      verificationStatus: 'Tercatat Resmi',
+      verified: true,
+    };
+
+    const updatedChain = await appendAuditLogWithHash(koperasiAuditLogs, rawEntry);
+    setKoperasiAuditLogs(updatedChain);
+    saveToIndexedDB('audit_logs', updatedChain);
+  };
+
+  // Koperasi Decision Maker (with dynamic feedback weights calibration & hash chaining)
+  const handleMakeKoperasiDecision = async (
+    trxId: string,
+    decision: DecisionStatus,
+    note: string,
+    tanggapan?: string
+  ) => {
     const nowStr = new Date().toTimeString().slice(0, 8);
     const targetTrx = koperasiTransactions.find((t) => t.id === trxId);
 
-    setKoperasiTransactions((prev) =>
-      prev.map((t) => {
-        if (t.id === trxId) {
-          return {
-            ...t,
-            decisionStatus: decision,
-            catatan: note || t.catatan,
-            decisionTime: nowStr,
-            decisionBy: userRole,
-          };
-        }
-        return t;
-      })
-    );
+    const updated = koperasiTransactions.map((t) => {
+      if (t.id === trxId) {
+        return {
+          ...t,
+          decisionStatus: decision,
+          catatan: note || t.catatan,
+          tanggapanPihakTerkait: tanggapan !== undefined ? tanggapan : t.tanggapanPihakTerkait,
+          decisionTime: nowStr,
+          decisionBy: userRole,
+        };
+      }
+      return t;
+    });
+
+    setKoperasiTransactions(updated);
+    saveToIndexedDB('koperasi_transactions', updated);
 
     // Calibrate shared system weights
     setSystemWeights((prev) => {
@@ -237,38 +364,41 @@ export default function App() {
       };
     });
 
-    // Record to Koperasi audit log
-    const newLog: AuditLogEntry = {
+    // Append to tamper-evident audit log with SHA-256 chaining
+    const rawLog: Omit<AuditLogEntry, 'hash'> = {
       id: `AUD-KOP-${Date.now().toString().slice(-4)}`,
       timestamp: nowStr,
       actor: userRole,
       role: userRole,
       action: `Keputusan Pengawas: ${decision}`,
       target: `${trxId} (${targetTrx?.akun || ''})`,
-      reason: note || `Keputusan ${decision} oleh pengawas internal`,
+      reason: note || (tanggapan ? `Klarifikasi: "${tanggapan}"` : `Keputusan ${decision} oleh pengawas internal`),
       verificationStatus: 'Tercatat Resmi',
       verified: true,
     };
-    setKoperasiAuditLogs((prev) => [newLog, ...prev]);
+    const updatedChain = await appendAuditLogWithHash(koperasiAuditLogs, rawLog);
+    setKoperasiAuditLogs(updatedChain);
+    saveToIndexedDB('audit_logs', updatedChain);
   };
 
   // UMKM Decision Maker
   const handleMakeUmkmDecision = (trxId: string, decision: DecisionStatus, note: string) => {
     const nowStr = new Date().toTimeString().slice(0, 8);
-    setUmkmTransactions((prev) =>
-      prev.map((t) => {
-        if (t.id === trxId) {
-          return {
-            ...t,
-            decisionStatus: decision,
-            catatan: note || t.catatan,
-            decisionTime: nowStr,
-            decisionBy: 'Pemilik · Warung Fiktif Bu Rina',
-          };
-        }
-        return t;
-      })
-    );
+    const updated = umkmTransactions.map((t) => {
+      if (t.id === trxId) {
+        return {
+          ...t,
+          decisionStatus: decision,
+          catatan: note || t.catatan,
+          decisionTime: nowStr,
+          decisionBy: 'Pemilik · Warung Fiktif Bu Rina',
+        };
+      }
+      return t;
+    });
+
+    setUmkmTransactions(updated);
+    saveToIndexedDB('umkm_transactions', updated);
 
     const newLog: AuditLogEntry = {
       id: `AUD-UMK-${Date.now().toString().slice(-4)}`,
@@ -286,17 +416,18 @@ export default function App() {
 
   // UMKM Separate Personal Transaction Handler
   const handleSeparateUmkmTransaction = (trxId: string) => {
-    setUmkmTransactions((prev) =>
-      prev.map((t) => {
-        if (t.id === trxId) {
-          return {
-            ...t,
-            dipisahkanDariUsaha: !t.dipisahkanDariUsaha,
-          };
-        }
-        return t;
-      })
-    );
+    const updated = umkmTransactions.map((t) => {
+      if (t.id === trxId) {
+        return {
+          ...t,
+          dipisahkanDariUsaha: !t.dipisahkanDariUsaha,
+        };
+      }
+      return t;
+    });
+
+    setUmkmTransactions(updated);
+    saveToIndexedDB('umkm_transactions', updated);
 
     const nowStr = new Date().toTimeString().slice(0, 8);
     setUmkmAuditLogs((prev) => [
@@ -329,7 +460,10 @@ export default function App() {
 
   // Add Cash Reconciliation Record
   const handleAddReconciliation = (rec: CashReconciliationRecord) => {
-    setUmkmReconciliations((prev) => [rec, ...prev]);
+    const nextList = [rec, ...umkmReconciliations];
+    setUmkmReconciliations(nextList);
+    saveToIndexedDB('umkm_reconciliations', nextList);
+
     const nowStr = new Date().toTimeString().slice(0, 8);
     setUmkmAuditLogs((prev) => [
       {
@@ -368,8 +502,9 @@ export default function App() {
     );
   };
 
-  // Clear data handler (Right to be Forgotten)
-  const handleClearData = () => {
+  // Clear data handler (Purges IndexedDB completely)
+  const handleClearData = async () => {
+    await clearAllIndexedDB();
     if (mode === 'koperasi') {
       setKoperasiTransactions([]);
     } else {
@@ -382,10 +517,10 @@ export default function App() {
   const criticalCount =
     mode === 'koperasi'
       ? koperasiTransactions.filter(
-          (t) => t.status === 'Prioritas tinggi' && t.decisionStatus === 'Menunggu Keputusan'
+          (t) => (t.status.includes('Merah') || t.status === 'Prioritas tinggi') && t.decisionStatus === 'Menunggu Keputusan'
         ).length
       : umkmTransactions.filter(
-          (t) => t.status === 'Prioritas tinggi' && t.decisionStatus === 'Menunggu Keputusan'
+          (t) => (t.status.includes('Merah') || t.status === 'Prioritas tinggi') && t.decisionStatus === 'Menunggu Keputusan'
         ).length;
 
   const pendingReviewCount =
@@ -397,7 +532,7 @@ export default function App() {
   const recentAlerts = useMemo(() => {
     if (mode === 'koperasi') {
       return koperasiTransactions
-        .filter((t) => t.status === 'Prioritas tinggi')
+        .filter((t) => t.status.includes('Merah') || t.status === 'Prioritas tinggi')
         .slice(0, 5)
         .map((t) => ({
           id: t.id,
@@ -409,7 +544,7 @@ export default function App() {
         }));
     } else {
       return umkmTransactions
-        .filter((t) => t.status === 'Prioritas tinggi')
+        .filter((t) => t.status.includes('Merah') || t.status === 'Prioritas tinggi')
         .slice(0, 5)
         .map((t) => ({
           id: t.id,
@@ -478,7 +613,7 @@ export default function App() {
   // 3. Operational Dual-Mode Interactive Dashboard
   return (
     <div className="min-h-screen text-[#0A2A22] antialiased flex flex-col justify-between selection:bg-[#009770] selection:text-white bg-[#FFF8F4]">
-      {/* 1. Left Sidebar Navigation (100% Mode-Specific Menus) */}
+      {/* 1. Left Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -519,7 +654,7 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
-      {/* 3. Main Content Canvas with Smooth Transition */}
+      {/* 3. Main Content Canvas */}
       <main className="ml-64 pt-20 pb-12 px-8 min-h-screen flex-1">
         <div className="max-w-[1440px] mx-auto transition-all duration-200">
           {/* =========================================================
@@ -527,73 +662,113 @@ export default function App() {
              ========================================================= */}
           {mode === 'koperasi' && (
             <>
-              {activeTab === 'pemantauan_langsung' && (
-                <KoperasiLiveMonitoringView
-                  transactions={koperasiTransactions}
-                  onSelectTransaction={(trx) => {
-                    setSelectedKoperasiTrx(trx);
-                    setActiveTab('antrean_pengawas');
-                  }}
-                  onNavigateToQueue={() => setActiveTab('antrean_pengawas')}
-                  onNavigateToHealth={() => setActiveTab('kesehatan_akun')}
-                  isMasked={isMasked}
-                  streamingActive={streamingActive}
-                  setStreamingActive={setStreamingActive}
-                />
-              )}
+              {/* Special Dinas Koperasi View when role is selected */}
+              {userRole === 'Dinas Koperasi' ? (
+                <DinasKoperasiView onAppendAuditLog={handleLogAuditAction} />
+              ) : userRole === 'Anggota (RAT)' ? (
+                <div className="space-y-4">
+                  <div className="p-4 rounded-2xl bg-[#E0F4EE] border border-[#009770]/30 text-xs text-[#0A2A22] flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#009770]">verified_user</span>
+                    <span>
+                      <strong>Mode Akses Anggota (RAT):</strong> Anda melihat laporan agregat tahunan yang telah diverifikasi dan disetujui pengawas tanpa akses ke data mentah atau antrean penelaahan transaksi internal.
+                    </span>
+                  </div>
+                  <RatReportView
+                    transactions={koperasiTransactions}
+                    accounts={koperasiAccounts}
+                    onLogAuditAction={handleLogAuditAction}
+                  />
+                </div>
+              ) : (
+                <>
+                  {activeTab === 'pemantauan_langsung' && (
+                    <KoperasiLiveMonitoringView
+                      transactions={koperasiTransactions}
+                      onSelectTransaction={(trx) => {
+                        setSelectedKoperasiTrx(trx);
+                        setActiveTab('antrean_pengawas');
+                      }}
+                      onNavigateToQueue={() => setActiveTab('antrean_pengawas')}
+                      onNavigateToHealth={() => setActiveTab('kesehatan_akun')}
+                      isMasked={isMasked}
+                      streamingActive={streamingActive}
+                      setStreamingActive={setStreamingActive}
+                    />
+                  )}
 
-              {activeTab === 'kesehatan_akun' && (
-                <KoperasiAccountHealthView
-                  accounts={koperasiAccounts}
-                  transactions={koperasiTransactions}
-                  onToggleAccountExclusion={handleToggleAccountExclusion}
-                  onNavigateToQueueWithAccount={(accName) => {
-                    const match = koperasiTransactions.find((t) => t.akun === accName && t.status !== 'Normal');
-                    if (match) setSelectedKoperasiTrx(match);
-                    setActiveTab('antrean_pengawas');
-                  }}
-                />
-              )}
+                  {activeTab === 'kesehatan_akun' && (
+                    <KoperasiAccountHealthView
+                      accounts={koperasiAccounts}
+                      transactions={koperasiTransactions}
+                      onToggleAccountExclusion={handleToggleAccountExclusion}
+                      onNavigateToQueueWithAccount={(accName) => {
+                        const match = koperasiTransactions.find((t) => t.akun === accName && t.status !== 'Normal');
+                        if (match) setSelectedKoperasiTrx(match);
+                        setActiveTab('antrean_pengawas');
+                      }}
+                    />
+                  )}
 
-              {activeTab === 'pihak_terkait' && (
-                <RelatedPartyView
-                  transactions={koperasiTransactions}
-                  onSelectTransaction={(trx) => {
-                    setSelectedKoperasiTrx(trx);
-                    setActiveTab('antrean_pengawas');
-                  }}
-                  onMakeDecision={handleMakeKoperasiDecision}
-                  isMasked={isMasked}
-                />
-              )}
+                  {activeTab === 'pihak_terkait' && (
+                    <RelatedPartyView
+                      transactions={koperasiTransactions}
+                      onSelectTransaction={(trx) => {
+                        setSelectedKoperasiTrx(trx);
+                        setActiveTab('antrean_pengawas');
+                      }}
+                      onMakeDecision={handleMakeKoperasiDecision}
+                      isMasked={isMasked}
+                    />
+                  )}
 
-              {activeTab === 'antrean_pengawas' && (
-                <KoperasiReviewQueueView
-                  transactions={koperasiTransactions}
-                  selectedTransaction={selectedKoperasiTrx}
-                  onSelectTransaction={setSelectedKoperasiTrx}
-                  onMakeDecision={handleMakeKoperasiDecision}
-                  systemWeights={systemWeights}
-                  isMasked={isMasked}
-                />
-              )}
+                  {activeTab === 'antrean_pengawas' && (
+                    <KoperasiReviewQueueView
+                      transactions={koperasiTransactions}
+                      selectedTransaction={selectedKoperasiTrx}
+                      onSelectTransaction={setSelectedKoperasiTrx}
+                      onMakeDecision={handleMakeKoperasiDecision}
+                      systemWeights={systemWeights}
+                      isMasked={isMasked}
+                    />
+                  )}
 
-              {activeTab === 'bahan_rat' && (
-                <RatReportView
-                  transactions={koperasiTransactions}
-                  accounts={koperasiAccounts}
-                />
-              )}
+                  {activeTab === 'kontrol_internal' && (
+                    <InternalControlCenterView
+                      accounts={koperasiAccounts}
+                      transactions={koperasiTransactions}
+                      currentRole={userRole}
+                      onAppendAuditLog={handleLogAuditAction}
+                    />
+                  )}
 
-              {activeTab === 'sumber_data_privasi' && (
-                <KoperasiDataSourcesPrivacyView
-                  auditLogs={koperasiAuditLogs}
-                  retentionDays={retentionDays}
-                  onUpdateRetentionDays={setRetentionDays}
-                  onClearData={handleClearData}
-                  isMasked={isMasked}
-                  setIsMasked={setIsMasked}
-                />
+                  {activeTab === 'persiapan_data' && (
+                    <DataPreparationView mode="koperasi" />
+                  )}
+
+                  {activeTab === 'pusat_indikator' && (
+                    <IndicatorCenterView mode="koperasi" onNavigateToTab={setActiveTab} />
+                  )}
+
+                  {activeTab === 'bahan_rat' && (
+                    <RatReportView
+                      transactions={koperasiTransactions}
+                      accounts={koperasiAccounts}
+                      onLogAuditAction={handleLogAuditAction}
+                    />
+                  )}
+
+                  {activeTab === 'sumber_data_privasi' && (
+                    <KoperasiDataSourcesPrivacyView
+                      auditLogs={koperasiAuditLogs}
+                      retentionDays={retentionDays}
+                      onUpdateRetentionDays={setRetentionDays}
+                      onClearData={handleClearData}
+                      isMasked={isMasked}
+                      setIsMasked={setIsMasked}
+                      onLogAuditAction={handleLogAuditAction}
+                    />
+                  )}
+                </>
               )}
             </>
           )}
@@ -609,7 +784,15 @@ export default function App() {
                   onNavigateToVariance={() => setActiveTab('kasir_selisih_kas')}
                   onNavigateToMixing={() => setActiveTab('pencampuran_uang')}
                   onNavigateToAlerts={() => setActiveTab('peringatan_saya')}
-                  onNavigateToReadiness={() => setActiveTab('arus_kas_kesiapan')}
+                  onNavigateToReadiness={() => setActiveTab('rapor_kas')}
+                />
+              )}
+
+              {(activeTab === 'rapor_kas' || activeTab === 'arus_kas_kesiapan') && (
+                <RaporKasView
+                  transactions={umkmTransactions}
+                  umkmConsent={umkmConsent}
+                  onUpdateConsent={(up) => setUmkmConsent((prev) => ({ ...prev, ...up }))}
                 />
               )}
 
@@ -636,12 +819,12 @@ export default function App() {
                 />
               )}
 
-              {activeTab === 'arus_kas_kesiapan' && (
-                <CashflowReadinessView
-                  transactions={umkmTransactions}
-                  umkmConsent={umkmConsent}
-                  onNavigateToConsent={() => setActiveTab('izin_data_saya')}
-                />
+              {activeTab === 'persiapan_data' && (
+                <DataPreparationView mode="umkm" />
+              )}
+
+              {activeTab === 'pusat_indikator' && (
+                <IndicatorCenterView mode="umkm" onNavigateToTab={setActiveTab} />
               )}
 
               {activeTab === 'izin_data_saya' && (
@@ -664,7 +847,7 @@ export default function App() {
           )}
 
           {/* =========================================================
-             C. SHARED BOTTOM ROUTE (Kedua Mode): Lab Validasi
+             C. SHARED BOTTOM ROUTE: Lab Validasi
              ========================================================= */}
           {activeTab === 'lab_validasi' && <ValidationLabView />}
         </div>
@@ -676,7 +859,7 @@ export default function App() {
           <span className="w-2 h-2 rounded-full bg-[#84F8CA] radar-pulse-green" />
           <span className="inline-flex items-center gap-1.5">
             <SadarText variant="dark" className="text-sm font-black" />
-            <span>&bull; Pengendalian internal koperasi dan UMKM yang dapat dijelaskan</span>
+            <span>&bull; Sistem Analitik Deteksi Anomali dan Rapor Kas</span>
           </span>
         </div>
         <div className="flex items-center gap-2 text-center text-gray-300 font-sans text-[11px]">
@@ -707,6 +890,8 @@ export default function App() {
         onToggleAdaptiveThreshold={setAdaptiveThresholdEnabled}
         minVolumeThreshold={minVolumeThreshold}
         onUpdateMinVolumeThreshold={setMinVolumeThreshold}
+        actualP90={actualP90}
+        actualP98={actualP98}
       />
     </div>
   );

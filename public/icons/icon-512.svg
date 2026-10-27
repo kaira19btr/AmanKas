@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="128" fill="#031B15"/>
+  <rect x="24" y="24" width="464" height="464" rx="104" fill="none" stroke="#009770" stroke-width="8" opacity="0.6"/>
+  <!-- Shield Emblem -->
+  <path d="M256 96 L384 144 V264 C384 340 328 404 256 428 C184 404 128 340 128 264 V144 Z" fill="#009770"/>
+  <!-- Glowing radar/chart wave -->
+  <path d="M192 272 L232 232 L272 288 L320 208" fill="none" stroke="#FFF637" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Center beacon -->
+  <circle cx="320" cy="208" r="14" fill="#FFF637"/>
+  <!-- SADAR Typography text -->
+  <text x="256" y="372" text-anchor="middle" font-family="'Fraunces', serif" font-weight="700" font-size="44" fill="#FFFFFF" letter-spacing="4">SADAR</text>
+</svg>

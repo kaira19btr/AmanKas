@@ -77,10 +77,10 @@ export const KoperasiLiveMonitoringView: React.FC<KoperasiLiveMonitoringViewProp
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Pemantauan Langsung Buku Kas &amp; Simpan Pinjam
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#009770]/40 text-[#84F8CA] border border-[#84F8CA]/30 text-[10px] font-mono font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#009770]/40 text-[#84F8CA] border border-[#84F8CA]/30 text-[10px] font-mono font-medium uppercase tracking-[0.08em]">
                   Mode Koperasi
                 </span>
               </div>
@@ -109,33 +109,33 @@ export const KoperasiLiveMonitoringView: React.FC<KoperasiLiveMonitoringViewProp
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Metric 1 */}
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs hover:border-[#009770] transition-all">
-          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-ui font-medium">
             <span>Volume Buku Kas Hari Ini</span>
             <span className="material-symbols-outlined text-[#009770] text-lg">receipt_long</span>
           </div>
-          <div className="text-xl font-bold font-display text-[#0A2A22] mt-1">
+          <div className="text-xl font-bold font-ui tabular-nums text-[#0A2A22] mt-1">
             Rp <AnimatedCounter value={totalVol} />
           </div>
-          <div className="text-[11px] text-gray-500 mt-1 flex items-center gap-1">
-            <span className="font-semibold text-[#009770]">{transactions.length} transaksi</span>
+          <div className="text-[11px] text-gray-500 mt-1 flex items-center gap-1 font-ui font-normal">
+            <span className="font-semibold text-[#009770] font-mono tabular-nums">{transactions.length} transaksi</span>
             <span>tercatat di semua unit</span>
           </div>
         </div>
 
         {/* Metric 2 */}
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs hover:border-[#CE2F2E] transition-all">
-          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-ui font-medium">
             <span>Prioritas Tinggi</span>
             <span className="w-2.5 h-2.5 rounded-full bg-[#CE2F2E] radar-pulse-red" />
           </div>
-          <div className="text-xl font-bold font-display text-[#CE2F2E] mt-1">
+          <div className="text-xl font-bold font-ui tabular-nums text-[#CE2F2E] mt-1">
             {urgentCount} Kasus
           </div>
-          <div className="text-[11px] text-gray-500 mt-1 flex items-center justify-between">
+          <div className="text-[11px] text-gray-500 mt-1 flex items-center justify-between font-ui font-normal">
             <span>Perlu dokumen pendukung</span>
             <button
               onClick={onNavigateToQueue}
-              className="text-[#009770] font-semibold hover:underline cursor-pointer"
+              className="text-[#009770] font-semibold hover:underline cursor-pointer font-ui"
             >
               Buka Antrean &rarr;
             </button>
@@ -144,28 +144,28 @@ export const KoperasiLiveMonitoringView: React.FC<KoperasiLiveMonitoringViewProp
 
         {/* Metric 3 */}
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs hover:border-[#B38300] transition-all">
-          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-ui font-medium">
             <span>Perlu Ditinjau</span>
             <span className="material-symbols-outlined text-[#B38300] text-lg">rule</span>
           </div>
-          <div className="text-xl font-bold font-display text-[#B38300] mt-1">
+          <div className="text-xl font-bold font-ui tabular-nums text-[#B38300] mt-1">
             {reviewCount} Transaksi
           </div>
-          <div className="text-[11px] text-gray-500 mt-1">
+          <div className="text-[11px] text-gray-500 mt-1 font-ui font-normal">
             Deviasi wajar dalam verifikasi berkas
           </div>
         </div>
 
         {/* Metric 4 */}
         <div className="bg-white rounded-2xl p-4 border border-[#F3D9CE] shadow-xs hover:border-[#6C47FF] transition-all">
-          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-[#6B5A55] font-ui font-medium">
             <span>Pihak Terkait (Hipotesis)</span>
             <span className="material-symbols-outlined text-[#6C47FF] text-lg">supervised_user_circle</span>
           </div>
-          <div className="text-xl font-bold font-display text-[#6C47FF] mt-1">
+          <div className="text-xl font-bold font-ui tabular-nums text-[#6C47FF] mt-1">
             {relatedCount} Transaksi
           </div>
-          <div className="text-[11px] text-gray-500 mt-1">
+          <div className="text-[11px] text-gray-500 mt-1 font-ui font-normal">
             Pengurus, pengawas, atau afiliasi
           </div>
         </div>
@@ -265,7 +265,7 @@ export const KoperasiLiveMonitoringView: React.FC<KoperasiLiveMonitoringViewProp
       <div className="bg-white rounded-2xl border border-[#F3D9CE] shadow-xs overflow-hidden">
         <div className="p-4 px-6 border-b border-[#F3D9CE] flex items-center justify-between bg-gradient-to-r from-[#FFF8F4] to-white">
           <div className="flex items-center gap-2">
-            <span className="font-display font-bold text-sm text-[#0A2A22]">
+            <span className="font-ui font-semibold text-sm text-[#0A2A22]">
               Umpan Transaksi Buku Kas Koperasi
             </span>
             <span className="text-xs font-mono-tabular text-gray-500">
@@ -294,13 +294,13 @@ export const KoperasiLiveMonitoringView: React.FC<KoperasiLiveMonitoringViewProp
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 font-mono-tabular">
-              {filteredTransactions.map((trx) => {
+              {filteredTransactions.map((trx, index) => {
                 const isHighRisk = trx.status === 'Prioritas tinggi';
                 const isMediumRisk = trx.status === 'Perlu ditinjau';
 
                 return (
                   <tr
-                    key={trx.id}
+                    key={`${trx.id}-${index}`}
                     className={`hover:bg-[#FFF8F4] transition-colors cursor-pointer ${
                       trx.isPihakTerkait ? 'bg-purple-50/40' : ''
                     }`}

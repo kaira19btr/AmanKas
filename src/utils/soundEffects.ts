@@ -190,6 +190,13 @@ class SoundEngine {
   }
 
   /**
+   * Processing / computing sound alias
+   */
+  public playProcessing() {
+    this.playDataPulse();
+  }
+
+  /**
    * Warning / Anomaly Alert sound
    */
   public playAlert() {

@@ -5,7 +5,14 @@
 
 export type AppMode = 'koperasi' | 'umkm';
 
-export type UserRole = 'Pengawas' | 'Pengurus' | 'Pemilik UMKM';
+export type UserRole =
+  | 'Pengawas'
+  | 'Pengurus'
+  | 'Pengawas Senior'
+  | 'Dinas Koperasi'
+  | 'Anggota (RAT)'
+  | 'Kasir'
+  | 'Pemilik UMKM';
 
 // Koperasi Navigation Tabs
 export type KoperasiActiveTab =
@@ -13,16 +20,23 @@ export type KoperasiActiveTab =
   | 'kesehatan_akun'
   | 'pihak_terkait'
   | 'antrean_pengawas'
+  | 'kontrol_internal'
+  | 'persiapan_data'
+  | 'pusat_indikator'
   | 'bahan_rat'
   | 'sumber_data_privasi'
-  | 'lab_validasi';
+  | 'lab_validasi'
+  | 'dinas_koperasi';
 
 // UMKM Navigation Tabs
 export type UmkmActiveTab =
   | 'beranda_usaha'
+  | 'rapor_kas'
   | 'kasir_selisih_kas'
   | 'pencampuran_uang'
   | 'peringatan_saya'
+  | 'persiapan_data'
+  | 'pusat_indikator'
   | 'arus_kas_kesiapan'
   | 'izin_data_saya'
   | 'lab_validasi';
@@ -31,12 +45,18 @@ export type LegacyTab = 'pemantauan' | 'kesehatan' | 'antrean' | 'sumber_data' |
 
 export type ActiveTab = KoperasiActiveTab | UmkmActiveTab | LegacyTab;
 
+export type StandardRiskStatus =
+  | 'Hijau · Risiko rendah'
+  | 'Kuning · Risiko sedang (≥ P90)'
+  | 'Merah · Risiko tinggi (≥ P98)'
+  | 'Volume belum cukup'
+  | 'Dikecualikan (Nominal Tetap)';
+
 export type AccountStatus =
+  | StandardRiskStatus
   | 'Hijau'
   | 'Kuning'
   | 'Merah'
-  | 'Volume belum cukup'
-  | 'Dikecualikan (Nominal Tetap)'
   | 'Wajar'
   | 'Mencurigakan'
   | 'Anomali Kuat';
@@ -48,18 +68,29 @@ export interface Account {
   type?: string;
   isFixedAmount: boolean; // toggle for exclusion policy (angsuran, iuran, harga baku)
   totalTrx: number;
-  mad: number; // Nigrini Mean Absolute Deviation
+  mad: number; // Nigrini Mean Absolute Deviation (worst of 1st and 2nd)
   chiSquare: number; // Chi-Square statistic
   status: AccountStatus;
   sampleValid: boolean;
-  actualDigitFrequencies: number[]; // [digit1%, ..., digit9%]
+  actualDigitFrequencies: number[]; // First digit [1..9] frequencies (0..1)
   actualDigitCounts: number[];
+  secondDigitFrequencies?: number[]; // Second digit [0..9] frequencies (0..1)
+  secondDigitCounts?: number[];
+  madFirstDigit?: number;
+  madSecondDigit?: number;
+  conformityFirst?: string;
+  conformitySecond?: string;
   medianAmount: number;
   medianIntervalMin: number;
   notes?: string;
 }
 
-export type TransactionStatus = 'Normal' | 'Perlu ditinjau' | 'Prioritas tinggi' | 'Segera verifikasi';
+export type TransactionStatus =
+  | StandardRiskStatus
+  | 'Normal'
+  | 'Perlu ditinjau'
+  | 'Prioritas tinggi'
+  | 'Segera verifikasi';
 
 export type DecisionStatus =
   | 'Menunggu Keputusan'
@@ -68,6 +99,77 @@ export type DecisionStatus =
   | 'Perlu pemeriksaan lanjut'
   | 'Dinyatakan Wajar'
   | 'Ditindaklanjuti';
+
+/**
+ * Standardizes display labels to exact essay specifications:
+ * - "Hijau · Risiko rendah"
+ * - "Kuning · Risiko sedang (≥ P90)"
+ * - "Merah · Risiko tinggi (≥ P98)"
+ * - "Volume belum cukup"
+ * - "Dikecualikan (Nominal Tetap)"
+ */
+export function formatRiskStatus(status: string | undefined): StandardRiskStatus {
+  if (!status) return 'Hijau · Risiko rendah';
+  if (status.includes('Merah') || status === 'Prioritas tinggi' || status === 'Anomali Kuat') {
+    return 'Merah · Risiko tinggi (≥ P98)';
+  }
+  if (status.includes('Kuning') || status === 'Perlu ditinjau' || status === 'Segera verifikasi' || status === 'Mencurigakan') {
+    return 'Kuning · Risiko sedang (≥ P90)';
+  }
+  if (status.includes('Volume')) {
+    return 'Volume belum cukup';
+  }
+  if (status.includes('Dikecualikan')) {
+    return 'Dikecualikan (Nominal Tetap)';
+  }
+  return 'Hijau · Risiko rendah';
+}
+
+export function getRiskBadgeClasses(status: string | undefined): {
+  bg: string;
+  text: string;
+  border: string;
+  icon: string;
+} {
+  const norm = formatRiskStatus(status);
+  switch (norm) {
+    case 'Merah · Risiko tinggi (≥ P98)':
+      return {
+        bg: 'bg-rose-50',
+        text: 'text-rose-800',
+        border: 'border-rose-200',
+        icon: 'error',
+      };
+    case 'Kuning · Risiko sedang (≥ P90)':
+      return {
+        bg: 'bg-amber-50',
+        text: 'text-amber-800',
+        border: 'border-amber-200',
+        icon: 'warning',
+      };
+    case 'Volume belum cukup':
+      return {
+        bg: 'bg-gray-100',
+        text: 'text-gray-700',
+        border: 'border-gray-200',
+        icon: 'info',
+      };
+    case 'Dikecualikan (Nominal Tetap)':
+      return {
+        bg: 'bg-blue-50',
+        text: 'text-blue-800',
+        border: 'border-blue-200',
+        icon: 'lock',
+      };
+    default:
+      return {
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-800',
+        border: 'border-emerald-200',
+        icon: 'check_circle',
+      };
+  }
+}
 
 export interface AttributionFactors {
   nominalDeltaMedianPct?: number;
@@ -121,6 +223,7 @@ export interface Transaction {
   decisionBy?: string;
   decisionRole?: string;
   correctionHistory?: CorrectionEntry[];
+  tanggapanPihakTerkait?: string;
   relatedTransactions?: Array<{
     id: string;
     timestamp: string;
@@ -170,6 +273,9 @@ export interface KoperasiTransaction {
   decisionStatus: DecisionStatus;
   flagReasons: string[];
   catatan?: string;
+  tanggapanPihakTerkait?: string; // Hak klarifikasi pihak terkait sebelum pembahasan RAT
+  isOverdue48h?: boolean; // Melewati batas waktu peninjauan 48 jam
+  hoursRemaining48h?: number; // Sisa jam menuju batas 48 jam
   decisionTime?: string;
   decisionBy?: string;
   correctionHistory?: CorrectionEntry[];
@@ -212,6 +318,9 @@ export interface UmkmTransaction {
   decisionStatus: DecisionStatus;
   flagReasons: string[];
   catatan?: string;
+  tanggapanPihakTerkait?: string; // Hak klarifikasi kasir/staf
+  isOverdue48h?: boolean;
+  hoursRemaining48h?: number;
   decisionTime?: string;
   decisionBy?: string;
   correctionHistory?: CorrectionEntry[];
@@ -265,8 +374,10 @@ export interface AuditLogEntry {
   action: string;
   target: string;
   reason: string;
-  verificationStatus: string;
-  verified: boolean;
+  prevHash?: string;
+  hash?: string;
+  verificationStatus?: string;
+  verified?: boolean;
 }
 
 export interface SupervisorNote {
@@ -300,6 +411,7 @@ export interface ValidationAblationResult {
   recall: MetricStats | number;
   recallStd?: number;
   f1Score?: MetricStats | number;
+  f1ScoreStd?: number;
   f1?: MetricStats | number;
   f1Std?: number;
   falsePositiveRate?: MetricStats | number;

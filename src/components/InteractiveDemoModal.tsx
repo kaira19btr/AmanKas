@@ -99,15 +99,15 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-display font-bold text-base text-[#0A2A22]">
+                <h3 className="font-ui font-semibold text-[17px] text-[#0A2A22]">
                   Demo Layar Penuh: Simulasi Umpan Transaksi
                 </h3>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono-tabular text-[10px] font-bold">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-mono text-[10px] font-medium tracking-[0.08em] uppercase">
                   <span className={`w-2 h-2 rounded-full ${isLivePaused ? 'bg-gray-400' : 'bg-[#009770] radar-pulse-green'}`} />
                   {isLivePaused ? 'STREAM DIJEDA' : 'LIVE TELEMETRI'}
                 </span>
               </div>
-              <p className="text-xs text-[#6B5A55]">
+              <p className="font-ui text-xs text-[#6B5A55] mt-0.5">
                 Memperagakan mesin deteksi anomali Benford's Law &amp; Isolation Forest secara langsung.
               </p>
             </div>
@@ -116,7 +116,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsLivePaused(!isLivePaused)}
-              className="px-3 py-1.5 rounded-xl border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4] text-xs font-mono-tabular font-medium text-[#0A2A22] flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-3 py-1.5 rounded-xl border border-[#F3D9CE] bg-white hover:bg-[#FFF8F4] text-xs font-ui font-semibold text-[#0A2A22] flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-sm">
                 {isLivePaused ? 'play_arrow' : 'pause'}
@@ -135,7 +135,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
 
         {/* Filter bar & stats banner */}
         <div className="px-6 py-3 bg-[#FFF8F4] border-b border-[#F3D9CE] flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="inline-flex p-1 rounded-xl bg-white border border-[#F3D9CE] font-mono-tabular text-xs">
+          <div className="inline-flex p-1 rounded-xl bg-white border border-[#F3D9CE] font-ui text-xs font-semibold">
             {(['Semua', 'Perlu Ditinjau', 'Prioritas Tinggi'] as const).map((f) => (
               <button
                 key={f}
@@ -151,16 +151,16 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
             ))}
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono-tabular text-[#6B5A55]">
+          <div className="flex items-center gap-4 text-xs font-mono tabular-nums text-[#6B5A55]">
             <span>
-              Total Ditampilkan: <strong className="text-[#0A2A22]">{filtered.length}</strong>
+              Total Ditampilkan: <strong className="text-[#0A2A22] font-semibold">{filtered.length}</strong>
             </span>
             <span>•</span>
-            <span className="text-[#CE2F2E] font-semibold">
+            <span className="text-[#CE2F2E] font-medium">
               Prioritas Tinggi: {simulatedStream.filter((t) => t.status === 'Prioritas tinggi').length}
             </span>
             <span>•</span>
-            <span className="text-[#86513D] font-semibold">
+            <span className="text-[#86513D] font-medium">
               Perlu Ditinjau: {simulatedStream.filter((t) => t.status === 'Perlu ditinjau').length}
             </span>
           </div>
@@ -170,7 +170,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
         <div className="flex-1 overflow-y-auto p-6">
           <table className="w-full text-left border-collapse text-xs">
             <thead className="sticky top-0 bg-[#FFF8F4] z-10 shadow-xs">
-              <tr className="border-b border-[#F3D9CE] font-mono-tabular font-semibold uppercase text-[#6B5A55] text-[11px] tracking-wider">
+              <tr className="border-b border-[#F3D9CE] font-mono font-medium uppercase text-[#6B5A55] text-[11px] tracking-[0.08em]">
                 <th className="py-2.5 px-3">Waktu</th>
                 <th className="py-2.5 px-3">ID &amp; Buku Kas</th>
                 <th className="py-2.5 px-3">Anggota</th>
@@ -180,14 +180,14 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
                 <th className="py-2.5 px-3 text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F3D9CE]/60 font-mono-tabular">
-              {filtered.map((trx) => {
-                const isCrit = trx.status === 'Segera verifikasi';
+            <tbody className="divide-y divide-[#F3D9CE]/60 font-ui text-xs">
+              {filtered.map((trx, idx) => {
+                const isCrit = trx.status === 'Segera verifikasi' || trx.status === 'Prioritas tinggi';
                 const isRev = trx.status === 'Perlu ditinjau';
 
                 return (
                   <tr
-                    key={trx.id}
+                    key={`${trx.id}-${idx}`}
                     className={`transition-colors hover:bg-[#F3FAF7] ${
                       isCrit
                         ? 'bg-[#FFEAEA]/60 border-l-4 border-[#CE2F2E]'
@@ -196,30 +196,30 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
                         : 'bg-white'
                     }`}
                   >
-                    <td className="py-3 px-3 text-[#0A2A22] whitespace-nowrap">
+                    <td className="py-3 px-3 text-[#0A2A22] whitespace-nowrap font-mono tabular-nums text-[11px]">
                       {trx.timestamp}
                     </td>
                     <td className="py-3 px-3">
-                      <div className="font-bold text-[#0A2A22]">{trx.id}</div>
-                      <div className="text-[10px] text-[#86513D]">{trx.accountId}</div>
+                      <div className="font-mono font-semibold text-[#0A2A22] text-xs">{trx.id}</div>
+                      <div className="font-mono text-[10px] text-[#86513D]">{trx.accountId}</div>
                     </td>
                     <td className="py-3 px-3">
-                      <div className="font-semibold text-[#0A2A22]">{trx.memberName}</div>
-                      <div className="text-[10px] text-[#6B5A55]">{trx.memberId}</div>
+                      <div className="font-ui font-semibold text-[#0A2A22]">{trx.memberName}</div>
+                      <div className="font-mono text-[10px] text-[#6B5A55]">{trx.memberId}</div>
                     </td>
-                    <td className="py-3 px-3 max-w-xs">
+                    <td className="py-3 px-3 max-w-xs font-ui">
                       <div className="font-medium text-[#0A2A22] truncate">{trx.description}</div>
-                      <div className={`text-[10px] truncate ${isCrit ? 'text-[#CE2F2E]' : isRev ? 'text-[#6B5F00]' : 'text-[#6B5A55]'}`}>
+                      <div className={`text-[11px] truncate ${isCrit ? 'text-[#CE2F2E]' : isRev ? 'text-[#6B5F00]' : 'text-[#6B5A55]'}`}>
                         {trx.flagReasons[0] || 'Transaksi wajar'}
                       </div>
                     </td>
-                    <td className="py-3 px-3 text-right font-bold text-[#0A2A22] whitespace-nowrap">
+                    <td className="py-3 px-3 text-right font-mono tabular-nums font-semibold text-[#0A2A22] whitespace-nowrap">
                       Rp {new Intl.NumberFormat('id-ID').format(trx.amount)}
                     </td>
                     <td className="py-3 px-3 text-center">
                       <div className="inline-flex flex-col items-center gap-1 w-16">
                         <span
-                          className={`font-bold text-[11px] ${
+                          className={`font-mono tabular-nums font-semibold text-[11px] ${
                             isCrit ? 'text-[#CE2F2E]' : isRev ? 'text-[#6B5F00]' : 'text-[#009770]'
                           }`}
                         >
@@ -237,17 +237,17 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
                     </td>
                     <td className="py-3 px-3 text-center whitespace-nowrap">
                       {isCrit ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FDE8E8] text-[#CE2F2E] font-bold text-[10px] border border-[#CE2F2E]/30">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FDE8E8] text-[#CE2F2E] font-ui font-semibold text-[10px] border border-[#CE2F2E]/30">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#CE2F2E] radar-pulse-red" />
                           Segera Verifikasi
                         </span>
                       ) : isRev ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFF637] text-[#6B5F00] font-bold text-[10px] border border-[#6B5F00]/30">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FFF637] text-[#6B5F00] font-ui font-semibold text-[10px] border border-[#6B5F00]/30">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#6B5F00]" />
                           Perlu Ditinjau
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E0F4EE] text-[#009770] font-ui font-semibold text-[10px]">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#009770]" />
                           Normal
                         </span>
@@ -262,7 +262,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
 
         {/* Modal Bottom CTA */}
         <div className="px-6 py-4 border-t border-[#F3D9CE] bg-[#FFF8F4] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-xs font-mono-tabular text-[#6B5A55]">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#6B5A55]">
             <span className="w-2 h-2 rounded-full bg-[#009770]" />
             <span>Data simulasi untuk demonstrasi · KSP Mitra Sejahtera (Demo)</span>
           </div>
@@ -272,7 +272,7 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
               variant="outline"
               size="sm"
               onClick={onClose}
-              className="flex-1 sm:flex-none"
+              className="flex-1 sm:flex-none font-ui font-semibold"
             >
               Tutup Demo
             </GradientButton>
@@ -281,11 +281,11 @@ export const InteractiveDemoModal: React.FC<InteractiveDemoModalProps> = ({
               variant="default"
               size="sm"
               onClick={onEnterFullDashboard}
-              className="flex-1 sm:flex-none"
+              className="flex-1 sm:flex-none font-ui font-semibold"
             >
               <span className="inline-flex items-center gap-1.5">
                 <span>Masuk ke Dasbor Lengkap</span>
-                <SadarText variant="dark" className="text-xs font-black" />
+                <SadarText variant="dark" className="text-xs font-semibold" />
               </span>
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </GradientButton>

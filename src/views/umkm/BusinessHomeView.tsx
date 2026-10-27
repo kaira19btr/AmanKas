@@ -50,52 +50,52 @@ export const BusinessHomeView: React.FC<BusinessHomeViewProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display font-bold text-base text-white">
+                <h1 className="font-ui font-semibold text-base text-white">
                   Beranda Usaha &bull; Warung Fiktif Bu Rina
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#FFF637]/30 text-[#FFF637] border border-[#FFF637]/40 text-[10px] font-mono font-medium tracking-[0.08em] uppercase">
                   Mode Pemilik UMKM
                 </span>
               </div>
-              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed">
+              <p className="text-xs text-gray-300 mt-0.5 leading-relaxed font-ui">
                 Ringkasan sederhana keuangan toko Anda hari ini dalam bahasa yang praktis. Membantu Anda memantau penjualan harian, memeriksa selisih laci kasir, dan memisahkan uang pribadi dari uang usaha toko.
               </p>
             </div>
           </div>
 
-          <div className="text-xs font-mono-tabular text-gray-300 shrink-0 self-end md:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
+          <div className="text-xs font-mono text-gray-300 shrink-0 self-end md:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
             Kepemilikan Data: <strong className="text-[#84F8CA]">100% Milik Anda</strong>
           </div>
         </div>
       </section>
 
       {/* 2. Simple Non-Technical Overview Cards (4 Key Metrics) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-ui">
         {/* Card 1: Penjualan Hari Ini */}
         <div className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs hover:border-[#009770] transition-all">
-          <div className="flex items-center justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-gray-500 font-mono">
             <span>Total Penjualan (Omzet) Hari Ini</span>
             <span className="material-symbols-outlined text-[#009770] text-xl">payments</span>
           </div>
-          <div className="text-2xl font-bold font-display text-[#0A2A22] mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-[#0A2A22] mt-2">
             Rp <AnimatedCounter value={totalSales} />
           </div>
-          <div className="text-[11px] text-gray-500 mt-1 flex items-center justify-between">
+          <div className="text-[11px] text-gray-500 mt-1 flex items-center justify-between font-ui">
             <span>{salesTrx.length} pembeli dilayani</span>
-            <span className="text-[#009770] font-bold">Tunai &amp; QRIS</span>
+            <span className="text-[#009770] font-semibold">Tunai &amp; QRIS</span>
           </div>
         </div>
 
         {/* Card 2: Pengeluaran Toko */}
         <div className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs hover:border-[#B38300] transition-all">
-          <div className="flex items-center justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-gray-500 font-mono">
             <span>Pengeluaran Belanja Toko</span>
             <span className="material-symbols-outlined text-amber-600 text-xl">shopping_cart_checkout</span>
           </div>
-          <div className="text-2xl font-bold font-display text-[#0A2A22] mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-[#0A2A22] mt-2">
             Rp <AnimatedCounter value={totalExpenses} />
           </div>
-          <div className="text-[11px] text-gray-500 mt-1">
+          <div className="text-[11px] text-gray-500 mt-1 font-ui">
             Kulakan grosir, kantong kresek, es batu
           </div>
         </div>
@@ -105,15 +105,15 @@ export const BusinessHomeView: React.FC<BusinessHomeViewProps> = ({
           onClick={onNavigateToAlerts}
           className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs hover:border-[#CE2F2E] transition-all cursor-pointer group"
         >
-          <div className="flex items-center justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-gray-500 font-mono">
             <span>Peringatan Butuh Perhatian</span>
             <span className="w-2.5 h-2.5 rounded-full bg-[#CE2F2E] radar-pulse-red" />
           </div>
-          <div className="text-2xl font-bold font-display text-[#CE2F2E] mt-2 flex items-baseline gap-1.5">
+          <div className="text-2xl font-bold font-mono tabular-nums text-[#CE2F2E] mt-2 flex items-baseline gap-1.5">
             <span>{alerts.length} Hal</span>
-            <span className="text-xs text-gray-500 font-normal">perlu dicek</span>
+            <span className="text-xs text-gray-500 font-normal font-ui">perlu dicek</span>
           </div>
-          <div className="text-[11px] text-rose-600 mt-1 group-hover:underline flex items-center gap-1 font-semibold">
+          <div className="text-[11px] text-rose-600 mt-1 group-hover:underline flex items-center gap-1 font-semibold font-ui">
             <span>Buka Peringatan Saya &rarr;</span>
           </div>
         </div>
@@ -123,26 +123,26 @@ export const BusinessHomeView: React.FC<BusinessHomeViewProps> = ({
           onClick={onNavigateToMixing}
           className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs hover:border-purple-500 transition-all cursor-pointer group"
         >
-          <div className="flex items-center justify-between text-xs text-gray-500 font-mono-tabular">
+          <div className="flex items-center justify-between text-xs text-gray-500 font-mono">
             <span>Uang Pribadi Tercampur</span>
             <span className="material-symbols-outlined text-purple-600 text-xl">account_balance_wallet</span>
           </div>
-          <div className="text-2xl font-bold font-display text-purple-900 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-purple-900 mt-2">
             Rp <AnimatedCounter value={totalPersonal} />
           </div>
-          <div className="text-[11px] text-purple-700 mt-1 group-hover:underline flex items-center gap-1 font-semibold">
+          <div className="text-[11px] text-purple-700 mt-1 group-hover:underline flex items-center gap-1 font-semibold font-ui">
             <span>{personalTrx.length} transaksi belum dipisahkan &rarr;</span>
           </div>
         </div>
       </div>
 
       {/* 3. Operational Shortcuts & Daily Checklist for Owner */}
-      <div className="grid grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-12 gap-6 items-start font-ui">
         {/* Left Column: Quick Action Hub */}
         <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl p-6 border border-[#F3D9CE] shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100">
             <div>
-              <h2 className="font-display font-bold text-sm text-[#0A2A22]">
+              <h2 className="font-ui font-semibold text-sm text-[#0A2A22]">
                 Aksi Cepat Pengendalian Warung
               </h2>
               <p className="text-xs text-gray-500">
@@ -237,17 +237,17 @@ export const BusinessHomeView: React.FC<BusinessHomeViewProps> = ({
 
         {/* Right Column: Tips & Layman Financial Advice */}
         <div className="col-span-12 lg:col-span-5 space-y-4">
-          <div className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs space-y-3 font-mono-tabular">
+          <div className="bg-white rounded-2xl p-5 border border-[#F3D9CE] shadow-xs space-y-3 font-ui">
             <div className="flex items-center gap-2 text-[#0A2A22]">
               <span className="material-symbols-outlined text-[#FFF637] bg-[#0A2A22] p-1 rounded-lg text-lg">lightbulb</span>
-              <h3 className="font-display font-bold text-sm">
+              <h3 className="font-ui font-semibold text-sm">
                 Tips Pengendalian Kas Warung Hari Ini
               </h3>
             </div>
-            <p className="text-xs text-gray-600 leading-relaxed font-sans">
+            <p className="text-xs text-gray-600 leading-relaxed font-ui font-normal">
               &ldquo;Jangan biarkan uang kembalian pribadi diambil dari laci kasir toko tanpa dicatat. Pisahkan dompet pribadi dan uang kasir sejak pagi agar selisih kas fisik di akhir shift selalu nol.&rdquo;
             </p>
-            <div className="text-[11px] text-[#009770] font-bold pt-2 border-t border-gray-100">
+            <div className="text-[11px] text-[#009770] font-semibold pt-2 border-t border-gray-100 font-ui">
               Prinsip SADAR: Tertib Kasir &bull; Transparan &bull; Untung Terjaga
             </div>
           </div>
